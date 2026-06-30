@@ -92,7 +92,17 @@ export default function Outcome({
   const [revealed, setRevealed] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
 
-  const scores = useMemo(() => computeScores(policy, allies), [policy, allies])
+  // En mecánicas no-PD no hay coalición: los scores del outcome se usan directo.
+  // En el dilema, se ajustan según aliados afines (computeScores).
+  const scores = useMemo(() => {
+    if (isCustomMechanic) {
+      const out = {}
+      for (const d of DIMENSIONS)
+        out[d.key] = Math.max(0, Math.min(100, Math.round(policy?.scores?.[d.key] ?? 0)))
+      return out
+    }
+    return computeScores(policy, allies)
+  }, [policy, allies, isCustomMechanic])
   const curve = policy?.inflationCurve ?? [100, 80, 60, 40, 30, 20]
   const global = Math.round(
     DIMENSIONS.reduce((s, d) => s + scores[d.key], 0) / DIMENSIONS.length,

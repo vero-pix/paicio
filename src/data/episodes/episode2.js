@@ -4,8 +4,9 @@
 //
 // Misma estructura que episode1.js. Componentes leen de aquí sin cambios.
 //
-// Mecánica: dilema del prisionero estándar (igual que Ep1).
-// Narrativa: negociación en dos frentes — bancos vs. gente en la calle.
+// Mecánica: CORRIDA BANCARIA (juego de coordinación). El jugador contiene el
+// pánico a lo largo de 5 días manejando reservas y confianza. Los 4 personajes
+// reaccionan como asesores. Lógica en src/utils/bankRun.js, UI en BankRun.jsx.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -18,6 +19,9 @@ export default {
   resumen:
     'Los bancos cierran. La gente no puede sacar su plata. El presidente huyó.',
   bloqueado: false,
+
+  // Mecánica central del episodio (ver src/utils/bankRun.js).
+  mechanic: 'bankRun',
 
   // Periódico de la pantalla de celda.
   newspaper: {
@@ -186,99 +190,113 @@ export default {
     },
   ],
 
-  policies: [
-    {
-      id: 'default',
-      letter: 'A',
-      name: 'Default soberano + devaluación',
-      summary:
-        'Declarar la cesación de pagos, romper la convertibilidad y devaluar el peso.',
-      effect: 'Libera presión fiscal y permite exportar.',
-      cost: 'Colapso del poder adquisitivo. Los ahorros en pesos se evaporan.',
-      impact: {
-        inflacion: { fill: 1, label: 'Se dispara', good: false },
-        empleo: { fill: 2, label: 'Cae fuerte', good: false },
+  // ── MECÁNICA DE CORRIDA BANCARIA ───────────────────────────────────────
+  // Config leída por BankRun.jsx / bankRun.js. El jugador maneja reservas y
+  // confianza durante `dias` días, eligiendo una acción por día.
+  bankRun: {
+    intro:
+      'La gente corre a sacar su plata. Mientras más corren, menos reservas quedan; y mientras menos reservas, más corren. Tu trabajo: cortar el pánico antes de que los bancos se queden secos. Tienes 5 días.',
+    dias: 5,
+    reservasIniciales: 100,
+    confianzaInicial: 42,
+    presionBase: 30, // retiro base cuando la confianza es 0
+    umbralCalma: 60, // confianza necesaria para "calmar" la corrida
+    freezeFactor: 0.3, // el corralito multiplica el retiro por esto
+    acciones: [
+      {
+        id: 'garantia',
+        name: 'Garantizar los depósitos',
+        icon: '🛡️',
+        desc: 'Anuncias que el Estado respalda cada peso. Devuelve la calma de golpe… si te creen.',
+        confianza: 30,
+        reservas: -4,
+        usos: 1,
+        advisor: 'banquero2',
+        reaccion:
+          '"Por fin algo sensato, ministro. Con respaldo estatal de verdad, la gente deja de correr."',
       },
-      inflationCurve: [100, 130, 175, 150, 110, 85],
-      concept: 'riesgoSoberano',
-      supportedBy: ['vecina'],
-      rejectedBy: ['banquero2', 'acreedor'],
-      scores: {
-        estabilidad: 35,
-        empleo: 42,
-        confianza: 28,
-        crecimiento: 55,
+      {
+        id: 'corralito',
+        name: 'Imponer el corralito',
+        icon: '🔒',
+        desc: 'Limitas los retiros por decreto. Frena la sangría de reservas, pero la gente se siente atrapada.',
+        confianza: -22,
+        reservas: 0,
+        usos: 1,
+        advisor: 'vecina',
+        reaccion:
+          '"¿Mi plata atrapada adentro? ¡Es un robo! Esta noche volvemos con las cacerolas, ministro."',
       },
-      headlineWin:
-        'PAICIO ROMPE CON EL DÓLAR: DEFAULT Y DEVALUACIÓN',
-      headlineWeak:
-        'DEFAULT SIN PLAN: LA DEVALUACIÓN APLASTA A LOS MÁS POBRES',
-      resultText:
-        'El peso se derrumba. Los que tenían ahorros en pesos pierden la mitad de la noche a la mañana. Pero las exportaciones renacen y en dos años la economía crece de nuevo. El dolor fue brutal, pero breve.',
-      history:
-        'Argentina declaró el default más grande de la historia en diciembre de 2001, seguido de una devaluación del 200%. El PIB cayó 11% en 2002, pero la economía creció a tasas chinas del 2003 al 2007. El default fue caótico, pero rompió la trampa de la convertibilidad y permitió una recuperación exportadora inesperadamente rápida.',
-    },
-    {
-      id: 'dolarizacion',
-      letter: 'B',
-      name: 'Dolarización total',
-      summary:
-        'Eliminar el peso y adoptar el dólar estadounidense como moneda única.',
-      effect: 'Mata la incertidumbre cambiaria de raíz.',
-      cost: 'Paicio pierde toda soberanía monetaria. Sin moneda propia, no hay política monetaria.',
-      impact: {
-        inflacion: { fill: 4, label: 'Desaparece', good: true },
-        empleo: { fill: 2, label: 'Se estanca', good: false },
+      {
+        id: 'fmi',
+        name: 'Abrir la línea del FMI',
+        icon: '🌐',
+        desc: 'Traes dólares frescos a las reservas, a cambio de condiciones que la calle detesta.',
+        confianza: -8,
+        reservas: 32,
+        usos: 1,
+        advisor: 'acreedor',
+        reaccion:
+          '"Liberamos el crédito. Pero esperamos disciplina fiscal a cambio. Nada de sorpresas."',
       },
-      inflationCurve: [100, 60, 30, 18, 12, 10],
-      concept: 'convertibilidad',
-      supportedBy: ['gobernador'],
-      rejectedBy: ['vecina'],
-      scores: {
-        estabilidad: 80,
-        empleo: 38,
-        confianza: 70,
-        crecimiento: 35,
+      {
+        id: 'calmar',
+        name: 'Hablarle al país',
+        icon: '📣',
+        desc: 'Sales en cadena nacional a dar calma. Funciona la primera vez; después, cada vez menos.',
+        confianza: 12,
+        reservas: 0,
+        decae: true,
+        advisor: 'gobernador',
+        reaccion:
+          '"Palabras bonitas, ministro. Pero acá en la provincia ya imprimimos Patacones por las dudas."',
       },
-      headlineWin:
-        'ADIÓS AL PESO: PAICIO ADOPTA EL DÓLAR',
-      headlineWeak:
-        'DOLARIZACIÓN A MEDIAS: EL PAÍS PIERDE SOBERANÍA SIN GANAR ESTABILIDAD',
-      resultText:
-        'El dólar llega. La inflación muere. Pero sin moneda propia, Paicio no puede devaluar para competir ni ajustar la política monetaria cuando venga la siguiente crisis. Ecuador lo hizo en 2000: la inflación desapareció, pero la pobreza tardó una década en bajar.',
-      history:
-        'Ecuador dolarizó en enero de 2000 tras una crisis bancaria catastrófica. La inflación cayó a un dígito, pero perdió toda flexibilidad monetaria. En las crisis siguientes, sin moneda que devaluar, el ajuste lo pagó el empleo. Argentina lo discutió en 2001 pero nunca lo ejecutó: el costo político era enorme y no tenían suficientes reservas.',
-    },
-    {
-      id: 'convertibilidad',
-      letter: 'C',
-      name: 'Mantener la convertibilidad a toda costa',
-      summary:
-        'Defender el 1-a-1 con más ajuste fiscal, más deuda y más corralito.',
-      effect: 'Evita la devaluación... por ahora.',
-      cost: 'Cada mes que pasa la bomba crece. La recesión se profundiza y la calle estalla.',
-      impact: {
-        inflacion: { fill: 3, label: 'Controlada', good: true },
-        empleo: { fill: 1, label: 'Se hunde', good: false },
-      },
-      inflationCurve: [100, 95, 88, 92, 105, 130],
+    ],
+  },
+
+  // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
+  outcomes: {
+    // Calmó la corrida sin congelar: confianza alta y sin corralito.
+    perfect: {
+      id: 'perfect',
       concept: 'corridaBancaria',
-      supportedBy: ['banquero2', 'acreedor'],
-      rejectedBy: ['vecina', 'gobernador'],
-      scores: {
-        estabilidad: 55,
-        empleo: 25,
-        confianza: 45,
-        crecimiento: 20,
-      },
       headlineWin:
-        'EL 1-A-1 RESISTE: PAICIO APUESTA A LA CONVERTIBILIDAD',
-      headlineWeak:
-        'AJUSTE SIN FIN: LA CONVERTIBILIDAD ASFIXIA A PAICIO',
+        'PAICIO CALMA LA CORRIDA: LOS BANCOS REABREN SIN CONGELAR LOS AHORROS',
       resultText:
-        'El tipo de cambio se sostiene, pero a costa de una recesión cada vez más profunda. Más ajuste, más desempleo, más enojo. Es como poner una tapa a una olla a presión: el estallido no desaparece, solo se posterga.',
+        'Mantuviste la confianza alta y el pánico se apagó solo. Cuando la gente creyó que su plata estaba segura, dejó de correr a sacarla — y al dejar de correr, quedó segura de verdad. Cortaste la profecía autocumplida sin atrapar el ahorro de nadie.',
+      scores: { estabilidad: 82, empleo: 60, confianza: 88, crecimiento: 58 },
+      inflationCurve: [100, 80, 55, 38, 28, 22],
       history:
-        'La convertibilidad argentina (1991-2001) mantuvo 1 peso = 1 dólar durante una década. Funcionó para matar la hiperinflación, pero se convirtió en una camisa de fuerza: Argentina no podía devaluar para competir y se endeudó en dólares para financiar el déficit. Cuando los mercados dejaron de prestar, el sistema implosionó.',
+        'Una corrida bancaria es un juego de coordinación: el banco es solvente si nadie corre, e insolvente si todos corren. Por eso existen los seguros de depósito (como el FDIC en EE.UU.): no tanto para pagar tras la quiebra, sino para que la quiebra nunca pase. Si la gente sabe que su plata está garantizada, no tiene motivo para correr.',
     },
-  ],
+    // Sobrevivió, pero con corralito o confianza baja.
+    partial: {
+      id: 'partial',
+      concept: 'corridaBancaria',
+      headlineWin:
+        'EL CORRALITO CONTIENE EL PÁNICO, PERO ATRAPA LOS AHORROS DE MILLONES',
+      resultText:
+        'Sobreviviste, pero tuviste que cerrar la jaula: limitaste los retiros para frenar la sangría. Los bancos no quebraron, pero la gente quedó con su plata adentro y la bronca en la calle. Ganaste tiempo a cambio de confianza.',
+      scores: { estabilidad: 52, empleo: 44, confianza: 35, crecimiento: 40 },
+      inflationCurve: [100, 105, 110, 98, 90, 85],
+      history:
+        'El corralito argentino (diciembre de 2001) limitó los retiros a $250 por semana. Frenó la corrida, pero atrapó los ahorros de millones y desató los cacerolazos que tumbaron al gobierno. Es la paradoja del corralito: la medida que salva a los bancos es la misma que destruye la confianza en ellos.',
+    },
+    // Las reservas llegaron a cero: colapso.
+    wrong: {
+      id: 'wrong',
+      concept: 'riesgoSoberano',
+      headlineWin:
+        'COLAPSO BANCARIO: PAICIO SE QUEDA SIN RESERVAS Y LOS BANCOS QUIEBRAN',
+      resultText:
+        'Las reservas llegaron a cero. Cuando el último dólar salió por la ventanilla, los bancos cerraron para siempre. La gente perdió sus ahorros, el sistema de pagos se paralizó y el país cayó en el caos que tratabas de evitar.',
+      scores: { estabilidad: 18, empleo: 28, confianza: 12, crecimiento: 22 },
+      inflationCurve: [100, 130, 175, 190, 180, 170],
+      history:
+        'Cuando una corrida se completa, no queda banco en pie: las reservas se agotan y hasta las instituciones solventes caen arrastradas por el pánico. Argentina llegó al borde en 2001; el costo final fue una caída del PIB de ~11% en 2002, pobreza del 57% y el mayor default soberano de la historia hasta entonces (~US$100.000 millones).',
+    },
+  },
+
+  // Vacío: en modo mecánica no se usan políticas, pero Outcome lo referencia.
+  policies: [],
 }
