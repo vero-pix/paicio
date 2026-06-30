@@ -2,9 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// `base` se ajusta al nombre del repositorio en GitHub Pages.
-// Si el repo se llama diferente, cambiar '/paicio/' por '/nombre-del-repo/'.
+// En Vercel el sitio se sirve desde la raíz, por eso `base` es '/'.
+// (En GitHub Pages era '/paicio/' porque iba en un subdirectorio.)
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/paicio/',
+  base: '/',
 })
