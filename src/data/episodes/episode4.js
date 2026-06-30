@@ -4,9 +4,10 @@
 //
 // Misma estructura que episode1.js. Componentes leen de aquí sin cambios.
 //
-// Mecánica especial narrativa: la credibilidad del jugador empieza baja
-// (5 planes anteriores fracasaron). No requiere código de componente
-// nuevo — se modela via initialTrust bajo en todos los prisioneros.
+// Mecánica: EXPECTATIVAS E INERCIA. La inflación se autocumple porque todos la
+// esperan e indexan. El jugador debe bajar las expectativas construyendo
+// credibilidad; los congelamientos rebotan (la trampa de los planes fallidos).
+// Lógica en src/utils/expectations.js, UI en Expectations.jsx.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -19,6 +20,9 @@ export default {
   resumen:
     'Cinco planes económicos fracasaron. Nadie cree en ninguno. Te piden un sexto.',
   bloqueado: false,
+
+  // Mecánica central del episodio (ver src/utils/expectations.js).
+  mechanic: 'expectations',
 
   // Periódico de la pantalla de celda.
   newspaper: {
@@ -187,99 +191,109 @@ export default {
     },
   ],
 
-  policies: [
-    {
-      id: 'shock',
-      letter: 'A',
-      name: 'Otro shock heterodoxo',
-      summary:
-        'Congelar precios, salarios y tipo de cambio por decreto. El sexto intento.',
-      effect: 'Alivio inmediato. La inflación desaparece... por un tiempo.',
-      cost: 'Si falla otra vez, será la última gota. La credibilidad se agota para siempre.',
-      impact: {
-        inflacion: { fill: 4, label: 'Desaparece (¿por cuánto?)', good: null },
-        empleo: { fill: 3, label: 'Estable', good: true },
+  // ── MECÁNICA DE EXPECTATIVAS E INERCIA ─────────────────────────────────
+  // Config leída por Expectations.jsx / expectations.js.
+  expectations: {
+    intro:
+      'La inflación de Paicio se autocumple: todos la esperan, la indexan en precios y salarios, y entonces ocurre. No puedes matarla por decreto: tienes que bajar las EXPECTATIVAS, y para eso necesitas algo que ningún ministro tuvo en seis años: que te crean.',
+    rondas: 6,
+    expectativasIniciales: 80,
+    credibilidadInicial: 22,
+    reboteCongelar: 32, // cuánto rebotan las expectativas tras un congelamiento
+    umbralExito: 32, // expectativas por debajo = inercia rota
+    credExito: 50, // credibilidad mínima para el éxito
+    umbralColapso: 10, // credibilidad por debajo = otro plan fallido
+    acciones: [
+      {
+        id: 'ajusteFiscal',
+        name: 'Hacer el ajuste fiscal de verdad',
+        icon: '✂️',
+        desc: 'Recortas el déficit en serio. Construye credibilidad de a poco — la materia prima de cualquier plan que funcione.',
+        cred: 14,
+        exp: -4,
+        advisor: 'congreso',
+        reaccion:
+          '"Te doy los votos para el ajuste… pero después de octubre, y que no se note demasiado. Año electoral, ministro."',
       },
-      inflationCurve: [100, 30, 18, 35, 70, 95],
-      concept: 'indexacionInercial',
-      supportedBy: ['ministro', 'congreso'],
-      rejectedBy: ['indexador', 'empresario'],
-      scores: {
-        estabilidad: 40,
-        empleo: 58,
-        confianza: 25,
-        crecimiento: 38,
+      {
+        id: 'congelar',
+        name: 'Congelar los precios por decreto',
+        icon: '❄️',
+        desc: 'Alivio instantáneo: las expectativas caen de golpe. Pero si nadie te cree, rebotan peor al mes siguiente y tu credibilidad se hunde.',
+        exp: -26,
+        cred: -15,
+        congela: true,
+        advisor: 'empresario',
+        reaccion:
+          '"¿Otro congelamiento? La última vez me quedé con la mercadería a pérdida. Esta vez remarco antes de que se derrita."',
       },
-      headlineWin:
-        'SEXTO PLAN: PAICIO CONGELA PRECIOS OTRA VEZ',
-      headlineWeak:
-        'EL CONGELAMIENTO SE DERRITE: LA INFLACIÓN VUELVE EN MESES',
-      resultText:
-        'Funciona 6 meses. Los supermercados bajan los precios, la gente respira. Pero los empresarios dejan de producir lo que venden a pérdida. Las góndolas se vacían. La inflación vuelve peor que antes. El sexto plan muere como los cinco anteriores.',
-      history:
-        'Brasil probó cinco planes de shock entre 1986 y 1991: Cruzado, Bresser, Verão, Collor I y Collor II. Todos congelaron precios por decreto. Todos funcionaron por meses. Todos fracasaron porque atacaban el síntoma (los precios) sin resolver la causa (la inercia indexatoria). El sexto intento nunca llegó: el Plan Real (1994) usó una estrategia completamente diferente.',
-    },
-    {
-      id: 'gradual',
-      letter: 'B',
-      name: 'Plan gradual con ancla cambiaria',
-      summary:
-        'Desindexar la economía de a poco y usar el tipo de cambio como ancla antiinflacionaria.',
-      effect: 'Requiere paciencia y credibilidad que no tienes.',
-      cost: 'Si el mercado no te cree, el ancla se rompe y la inflación se come la transición.',
-      impact: {
-        inflacion: { fill: 3, label: 'Baja de a poco', good: true },
-        empleo: { fill: 3, label: 'Aguanta', good: true },
+      {
+        id: 'urv',
+        name: 'Crear una unidad de cuenta estable',
+        icon: '📐',
+        desc: 'Una referencia de valor estable (como la URV) desactiva la inercia sin congelar nada. Funciona mejor cuanto más creíble seas.',
+        cred: 8,
+        advisor: 'indexador',
+        reaccion:
+          '"Ah… una unidad de cuenta estable. Eso sí puede funcionar: no matas la indexación, la haces irrelevante."',
       },
-      inflationCurve: [100, 82, 60, 42, 30, 22],
+      {
+        id: 'desindexar',
+        name: 'Desindexar los contratos de a poco',
+        icon: '🔗',
+        desc: 'Desatas, uno a uno, los contratos atados a la inflación pasada. Reduce la inercia y suma algo de credibilidad.',
+        cred: 6,
+        exp: -6,
+        advisor: 'ministro',
+        reaccion:
+          '"Desindexar de a poco, sin congelar nada. Es lento, pero es lo único que no probamos todavía."',
+      },
+    ],
+  },
+
+  // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
+  outcomes: {
+    // Rompió la inercia con credibilidad.
+    perfect: {
+      id: 'perfect',
       concept: 'memoriaInflacionaria',
-      supportedBy: ['indexador', 'empresario'],
-      rejectedBy: ['ministro'],
-      scores: {
-        estabilidad: 72,
-        empleo: 55,
-        confianza: 65,
-        crecimiento: 58,
-      },
       headlineWin:
-        'PLAN GRADUAL: PAICIO DESATA LOS NUDOS DE LA INFLACIÓN',
-      headlineWeak:
-        'EL GRADUALISMO NO CONVENCE: EL MERCADO DUDA DEL ANCLA',
+        'PAICIO ROMPE LA INERCIA: LA INFLACIÓN CEDE SIN CONGELAR UN SOLO PRECIO',
       resultText:
-        'No hay magia ni congelamiento. Se desindexan los contratos de a uno, se ancla el tipo de cambio, se gana credibilidad milímetro a milímetro. Es lento y vulnerable, pero si funciona, es la base del plan que finalmente matará la inflación.',
+        'No hubo magia ni congelamiento. Construiste credibilidad de a poco y desactivaste la inercia con una unidad de cuenta estable. Cuando la gente dejó de esperar inflación, dejó de indexarla — y la inflación cedió sola. Por primera vez en una década, el precio de mañana se parece al de hoy.',
+      scores: { estabilidad: 88, empleo: 68, confianza: 82, crecimiento: 72 },
+      inflationCurve: [100, 78, 55, 38, 27, 20],
       history:
-        'El camino gradual anticipó la lógica del Plan Real (1994): en vez de congelar, crear una unidad de cuenta estable (la URV) que desindexara la economía voluntariamente. Cardoso entendió que el problema no eran los precios sino la memoria inflacionaria incrustada en cada contrato. Tu plan gradual sigue esa intuición, aunque en 1987 nadie tenía la credibilidad para ejecutarlo.',
+        'La inflación crónica no vive en los precios — vive en las expectativas. Mientras todos esperan inflación, la indexan y la inflación se cumple sola. El Plan Real (1994) rompió ese círculo sin congelar nada: creó una unidad de cuenta estable (la URV) que desindexó la economía de forma voluntaria, una vez que el gobierno tenía credibilidad fiscal. Atacó la causa, no el síntoma.',
     },
-    {
-      id: 'defaultInterno',
-      letter: 'C',
-      name: 'Default interno y reestructuración',
-      summary:
-        'Congelar depósitos, reestructurar la deuda interna y eliminar contratos indexados por la fuerza.',
-      effect: 'Rompe la inercia de golpe.',
-      cost: 'Confiscación de facto. La clase media pierde los ahorros. Colapsas la confianza.',
-      impact: {
-        inflacion: { fill: 2, label: 'Baja por shock', good: null },
-        empleo: { fill: 1, label: 'Se desploma', good: false },
-      },
-      inflationCurve: [100, 55, 38, 30, 45, 60],
+    // Bajó a medias: faltó credibilidad para rematarla.
+    partial: {
+      id: 'partial',
       concept: 'expectativasAdaptativas',
-      supportedBy: [],
-      rejectedBy: ['empresario', 'congreso'],
-      scores: {
-        estabilidad: 45,
-        empleo: 30,
-        confianza: 20,
-        crecimiento: 28,
-      },
       headlineWin:
-        'PAICIO CONGELA DEPÓSITOS: EL GOBIERNO CONFISCA PARA SOBREVIVIR',
-      headlineWeak:
-        'CONFISCACIÓN SIN RESULTADO: EL DEFAULT INTERNO DESTRUYE LA CONFIANZA',
+        'LA INFLACIÓN BAJA A MEDIAS: FALTÓ CREDIBILIDAD PARA REMATARLA',
       resultText:
-        'Congelas los depósitos como hizo Collor en 1990. La inflación baja un momento porque sacaste dinero de circulación. Pero la economía se paraliza, la gente pierde la confianza en los bancos para siempre, y el costo político es una condena.',
+        'Avanzaste, pero te quedaste corto. La inflación bajó un poco y se estancó: la gente, todavía con un pie en la desconfianza, siguió indexando "por las dudas". Sin esa última pizca de credibilidad, la inercia no terminó de romperse.',
+      scores: { estabilidad: 52, empleo: 50, confianza: 45, crecimiento: 48 },
+      inflationCurve: [100, 86, 72, 64, 60, 56],
       history:
-        'El Plan Collor (marzo 1990) congeló el 80% de todos los depósitos bancarios en Brasil de la noche a la mañana. Fue la confiscación más agresiva de la historia democrática brasileña. La inflación bajó temporalmente, pero la economía se paralizó y Collor terminó destituido por corrupción. La lección: atacar la liquidez no mata la inercia.',
+        'Las expectativas adaptativas hacen que la inflación de hoy dependa de la de ayer. Bajarlas un poco no basta: si la gente no cree del todo que el plan va a durar, sigue indexando por las dudas, y la inflación se estabiliza alta en vez de morir.',
     },
-  ],
+    // Otro plan fallido: credibilidad agotada o expectativas disparadas.
+    wrong: {
+      id: 'wrong',
+      concept: 'indexacionInercial',
+      headlineWin:
+        'OTRO PLAN FRACASA: LAS EXPECTATIVAS SE DISPARAN Y LA CREDIBILIDAD SE AGOTA',
+      resultText:
+        'Buscaste el alivio rápido del congelamiento y la trampa se cerró: las expectativas rebotaron peor, la gente remarcó antes de que se derritiera, y tu credibilidad —ya escasa— se hizo polvo. El sexto plan muere como los cinco anteriores.',
+      scores: { estabilidad: 22, empleo: 35, confianza: 15, crecimiento: 28 },
+      inflationCurve: [100, 58, 40, 72, 110, 140],
+      history:
+        'Entre 1986 y 1991 Brasil congeló precios cinco veces (Cruzado, Bresser, Verão, Collor I y II). Cada congelamiento dio alivio por meses y después la inflación volvió peor, porque atacaba el síntoma sin tocar la inercia. Cada fracaso destruía más credibilidad, hasta que ningún anuncio servía. Repetir la receta fallida solo acelera el colapso.',
+    },
+  },
+
+  // Vacío: en modo mecánica no se usan políticas, pero Outcome lo referencia.
+  policies: [],
 }
