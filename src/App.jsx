@@ -4,6 +4,7 @@ import { useInflation } from './hooks/useInflation.js'
 import { episodesById } from './data/episodes/index.js'
 import { portraits } from './assets/portraits.js'
 
+import Intro from './components/Intro.jsx'
 import EpisodeSelect from './components/EpisodeSelect.jsx'
 import InflationTicker from './components/InflationTicker.jsx'
 import Cell from './components/Cell.jsx'
@@ -37,6 +38,24 @@ export default function App() {
   // Id del prisionero con el que se está negociando (modal abierto).
   const [negotiating, setNegotiating] = useState(null)
 
+  // Introducción: se muestra una vez por navegador. Se puede volver a ver
+  // desde el selector con el enlace "¿Qué es PAICIO?".
+  const [showIntro, setShowIntro] = useState(() => {
+    try {
+      return localStorage.getItem('paicio.introSeen') !== '1'
+    } catch {
+      return true
+    }
+  })
+  function dismissIntro() {
+    try {
+      localStorage.setItem('paicio.introSeen', '1')
+    } catch {
+      /* localStorage no disponible: la intro no se vuelve a ocultar, no es crítico */
+    }
+    setShowIntro(false)
+  }
+
   // El ticker corre durante negociación y propuesta; se congela en celda y desenlace.
   const tickerActive = state.phase === 'negotiation' || state.phase === 'policy'
   const ticker = episode?.ticker
@@ -55,11 +74,15 @@ export default function App() {
     setNegotiating(null)
   }
 
-  // FASE 0 — Selector de episodios
+  // FASE 0 — Selector de episodios (precedido por la intro la primera vez)
   if (state.phase === 'select' || !episode) {
     return (
       <div className="min-h-full">
-        <EpisodeSelect onSelect={startEpisode} />
+        {showIntro ? (
+          <Intro onEnter={dismissIntro} />
+        ) : (
+          <EpisodeSelect onSelect={startEpisode} onShowIntro={() => setShowIntro(true)} />
+        )}
       </div>
     )
   }

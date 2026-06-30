@@ -2,7 +2,7 @@ import { episodes } from '../data/episodes/index.js'
 
 // Pantalla inicial: selector de episodios. El 1 es jugable; 2-5 están bloqueados
 // ("Próximamente") y funcionan como gancho de serie.
-export default function EpisodeSelect({ onSelect }) {
+export default function EpisodeSelect({ onSelect, onShowIntro }) {
   return (
     <div className="grain vignette relative mx-auto min-h-[80vh] max-w-md px-5 py-10">
       <div className="relative z-10">
@@ -16,6 +16,15 @@ export default function EpisodeSelect({ onSelect }) {
           <p className="mx-auto mt-4 max-w-xs font-body text-[0.86rem] italic leading-snug text-paper/80">
             Cinco crisis económicas reales. Un país ficticio. ¿Sobrevives a todas?
           </p>
+          {onShowIntro && (
+            <button
+              type="button"
+              onClick={onShowIntro}
+              className="mt-3 font-mono text-[0.58rem] uppercase tracking-[0.18em] text-paper-dim underline-offset-4 transition-colors hover:text-paper hover:underline"
+            >
+              ¿Qué es PAICIO?
+            </button>
+          )}
         </header>
 
         <div className="mt-8 space-y-3">
