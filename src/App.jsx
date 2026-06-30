@@ -100,6 +100,17 @@ export default function App() {
 
   return (
     <div className="min-h-full">
+      {/* Barra de navegación: volver al menú de episodios desde cualquier fase. */}
+      <div className="mx-auto flex max-w-md items-center px-3 pt-3 pb-1">
+        <button
+          type="button"
+          onClick={backToSelect}
+          className="flex items-center gap-1.5 rounded-sm border border-edge bg-cell/60 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wide text-paper-dim transition-colors hover:border-paper-dim hover:text-paper"
+        >
+          ⌂ Episodios
+        </button>
+      </div>
+
       {showTicker && (
         <InflationTicker
           price={price}
@@ -128,18 +139,9 @@ export default function App() {
       {state.phase === 'negotiation' && isPD && (
         <div className="grain relative mx-auto max-w-md px-5 py-6">
           <div className="relative z-10">
-            <div className="flex items-center justify-between gap-2">
-              <h2 className="font-display text-2xl font-black text-paper">
-                Las Negociaciones
-              </h2>
-              <button
-                type="button"
-                onClick={backToSelect}
-                className="font-mono text-[0.6rem] uppercase tracking-wide text-paper-dim hover:text-paper"
-              >
-                ← Episodios
-              </button>
-            </div>
+            <h2 className="font-display text-2xl font-black text-paper">
+              Las Negociaciones
+            </h2>
             <p className="mt-2 font-body text-[0.88rem] leading-snug text-paper-dim">
               {episode.negotiationIntro}
             </p>
