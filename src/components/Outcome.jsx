@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { portraits } from '../assets/portraits.js'
 import { episodes } from '../data/episodes/index.js'
+import TrendChart from './TrendChart.jsx'
 
 const DIMENSIONS = [
   { key: 'estabilidad', label: 'Estabilidad monetaria' },
@@ -112,8 +113,8 @@ export default function Outcome({
   return (
     <div className="grain relative mx-auto max-w-md px-5 py-6">
       <div className="relative z-10">
-        {/* Gráfico de inflación animado (se dibuja durante el suspenso) */}
-        <InflationGraph curve={curve} />
+        {/* Gráfico de tendencia educativo (se dibuja durante el suspenso) */}
+        <TrendChart curve={curve} config={episode.trendChart} />
 
         {!revealed ? (
           <p className="animate-slow-pulse mt-6 text-center font-mono text-[0.7rem] uppercase tracking-[0.2em] text-paper-dim">
@@ -278,74 +279,6 @@ export default function Outcome({
           </div>
         )}
       </div>
-    </div>
-  )
-}
-
-// Gráfico de inflación SVG que se "dibuja" al montar.
-function InflationGraph({ curve }) {
-  const w = 320
-  const h = 140
-  const max = Math.max(...curve)
-  const pts = curve.map((val, i) => {
-    const x = (i / (curve.length - 1)) * w
-    const y = h - (val / max) * (h - 16) - 8
-    return [x, y]
-  })
-  const path = pts
-    .map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0].toFixed(1)},${p[1].toFixed(1)}`)
-    .join(' ')
-  const ends = curve[curve.length - 1] > curve[0] * 0.6
-  const color = ends ? 'var(--color-crisis)' : 'var(--color-positive)'
-
-  return (
-    <div className="rounded-md border border-edge bg-cell-2/60 p-4">
-      <p className="mb-2 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim">
-        Inflación en Paicio (índice)
-      </p>
-      <svg
-        viewBox={`0 0 ${w} ${h}`}
-        className="w-full"
-        role="img"
-        aria-label="Curva de inflación"
-      >
-        {[0.25, 0.5, 0.75].map((g) => (
-          <line
-            key={g}
-            x1="0"
-            x2={w}
-            y1={h * g}
-            y2={h * g}
-            stroke="var(--color-edge)"
-            strokeWidth="0.5"
-            opacity="0.4"
-          />
-        ))}
-        <path
-          d={path}
-          fill="none"
-          stroke={color}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{
-            strokeDasharray: 1000,
-            strokeDashoffset: 1000,
-            animation: 'draw 2.4s ease-out forwards',
-          }}
-        />
-        {pts.map((p, i) => (
-          <circle
-            key={i}
-            cx={p[0]}
-            cy={p[1]}
-            r="3"
-            fill={color}
-            opacity={i === pts.length - 1 ? 1 : 0.5}
-          />
-        ))}
-      </svg>
-      <style>{`@keyframes draw { to { stroke-dashoffset: 0; } }`}</style>
     </div>
   )
 }

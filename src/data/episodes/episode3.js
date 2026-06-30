@@ -80,6 +80,18 @@ export default {
     titulo: 'Chile, 1975-1983',
   },
 
+  // Config del gráfico de tendencia del desenlace (cifras + comparación real).
+  trendChart: {
+    titulo: 'Desempleo en Paicio',
+    unidad: 'índice (inicio = 100)',
+    ejeX: ['Mes 0', '6', '12', '18', '24', '30'],
+    real: {
+      cifra: '−14%',
+      cifraEtiqueta: 'cayó el PIB de Chile en 1982',
+      nota: 'El "milagro" se derrumbó: el PIB cayó 14% en 1982 y el desempleo llegó a cerca del 30% contando los planes de empleo de emergencia (PEM y POJH). El Estado tuvo que rescatar a la banca quebrada y el ingreso por persona retrocedió a niveles de los años 60.',
+    },
+  },
+
   prisoners: [
     {
       id: 'tecnocrata',

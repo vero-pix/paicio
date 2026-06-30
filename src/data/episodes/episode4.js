@@ -72,6 +72,18 @@ export default {
     titulo: 'Brasil, 1980-1994',
   },
 
+  // Config del gráfico de tendencia del desenlace (cifras + comparación real).
+  trendChart: {
+    titulo: 'Inflación en Paicio',
+    unidad: 'índice (inicio = 100)',
+    ejeX: ['Mes 0', '3', '6', '9', '12', '18'],
+    real: {
+      cifra: '≈3.000%',
+      cifraEtiqueta: 'inflación anual en el peak (Brasil, 1990)',
+      nota: 'Durante más de una década los precios subieron sin control: la inflación anual llegó a casi 3.000% en 1990 y rondó el 2.500% en 1993. Brasil intentó seis planes para frenarla (Cruzado, Bresser, Verão, Collor I y II...) y todos fracasaron porque atacaban el síntoma, no la causa.',
+    },
+  },
+
   prisoners: [
     {
       id: 'ministro',

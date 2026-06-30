@@ -81,6 +81,18 @@ export default {
     titulo: 'Alemania, 1923',
   },
 
+  // Config del gráfico de tendencia del desenlace (cifras + comparación real).
+  trendChart: {
+    titulo: 'Inflación en Paicio',
+    unidad: 'índice (pico = 100)',
+    ejeX: ['Mes 0', '3', '6', '9', '12', '18'],
+    real: {
+      cifra: '×1.000.000',
+      cifraEtiqueta: 'subió el precio del pan en un año (real)',
+      nota: 'En la Alemania de 1923 los precios se duplicaban cada ~3 días. Un pan pasó de 250 marcos a 200.000 millones. El Rentenmark frenó la hiperinflación en pocas semanas al respaldar la moneda y cortar la emisión.',
+    },
+  },
+
   prisoners: [
     {
       id: 'marcos',

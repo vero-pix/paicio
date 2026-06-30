@@ -71,6 +71,18 @@ export default {
     titulo: 'Argentina, 2001',
   },
 
+  // Config del gráfico de tendencia del desenlace (cifras + comparación real).
+  trendChart: {
+    titulo: 'Crisis del peso en Paicio',
+    unidad: 'índice de inestabilidad (inicio = 100)',
+    ejeX: ['Mes 0', '3', '6', '9', '12', '18'],
+    real: {
+      cifra: '−75%',
+      cifraEtiqueta: 'cayó el peso frente al dólar (2001-02)',
+      nota: 'Argentina rompió la paridad 1-a-1 con el dólar: pasó de $1 a casi $4. El corralito congeló los ahorros (límite de $250 por semana), el PIB cayó cerca de 11% en 2002 y la pobreza saltó del 26% al 57%. Declaró el mayor default soberano de la historia hasta entonces: unos US$100.000 millones.',
+    },
+  },
+
   prisoners: [
     {
       id: 'banquero2',

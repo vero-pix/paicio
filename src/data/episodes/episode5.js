@@ -81,6 +81,18 @@ export default {
     titulo: 'Brasil, 1994 — El Plan Real',
   },
 
+  // Config del gráfico de tendencia del desenlace (cifras + comparación real).
+  trendChart: {
+    titulo: 'Inflación en Paicio',
+    unidad: 'índice (inicio = 100)',
+    ejeX: ['Mes 0', '3', '6', '9', '12', '18'],
+    real: {
+      cifra: '48% → 2%',
+      cifraEtiqueta: 'inflación mensual: junio vs. agosto 1994',
+      nota: 'El Plan Real terminó con décadas de inflación crónica sin congelar precios: creó una unidad de cuenta estable (la URV) y luego una moneda nueva, el Real (1 de julio de 1994). La inflación mensual cayó de 48% en junio a 1,9% en agosto, y de ~2.500% anual a un dígito en menos de tres años.',
+    },
+  },
+
   prisoners: [
     {
       id: 'economistaJoven',
