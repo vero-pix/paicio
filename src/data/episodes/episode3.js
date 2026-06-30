@@ -9,7 +9,10 @@
 //
 // Esto se modela con `startsAtTop: true` — el Cell muestra un periódico
 // de éxito (no de crisis) y la narración revela el colapso gradualmente.
-// La mecánica de negociación y políticas es igual a los otros episodios.
+//
+// Mecánica: DEFENDER LA PARIDAD (guerra de desgaste). El jugador resiste un
+// ataque especulativo a la paridad fija manejando reservas y empleo, y debe
+// devaluar a tiempo. Lógica en src/utils/speculativeAttack.js.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -26,6 +29,9 @@ export default {
   // Flag especial: el jugador empieza "en la cima", no en la celda.
   // El Cell muestra periódico de éxito → narración revela el colapso.
   startsAtTop: true,
+
+  // Mecánica central del episodio (ver src/utils/speculativeAttack.js).
+  mechanic: 'speculativeAttack',
 
   // Periódico: muestra el éxito pasado (contraste con el colapso que viene).
   newspaper: {
@@ -195,99 +201,109 @@ export default {
     },
   ],
 
-  policies: [
-    {
-      id: 'rescate',
-      letter: 'A',
-      name: 'Rescatar la banca privada con fondos públicos',
-      summary:
-        'El Estado absorbe la deuda de los bancos, los recapitaliza y negocia con los acreedores externos.',
-      effect: 'Evita el pánico bancario y mantiene el crédito.',
-      cost: 'Los contribuyentes pagan la fiesta de los banqueros. El riesgo moral se institucionaliza.',
-      impact: {
-        inflacion: { fill: 2, label: 'Sube moderada', good: false },
-        empleo: { fill: 3, label: 'Se estabiliza', good: true },
+  // ── MECÁNICA DE DEFENSA DE LA PARIDAD ──────────────────────────────────
+  // Config leída por SpeculativeAttack.jsx / speculativeAttack.js.
+  speculativeAttack: {
+    intro:
+      'La paridad fija de Paicio quedó sobrevaluada y el mercado lo huele. Cada día los especuladores atacan más fuerte. Defenderla quema reservas o empleo. No puedes aguantar para siempre: el arte es soltarla a tiempo.',
+    dias: 6,
+    reservasIniciales: 100,
+    empleoInicial: 72,
+    ataqueBase: 14, // presión especulativa del día 1
+    ataqueRamp: 6, // cuánto crece el ataque cada día
+    recesionRonda: 2, // caída de empleo de fondo por ronda
+    minRondaOrdenada: 2, // antes de esta ronda, devaluar = pánico (no "ordenado")
+    acciones: [
+      {
+        id: 'tasas',
+        name: 'Subir las tasas de interés',
+        icon: '📈',
+        desc: 'Encarece atacar la moneda: frena la fuga de capitales, pero estrangula la economía y el empleo.',
+        ataqueMult: 0.45,
+        empleo: -13,
+        advisor: 'tecnocrata',
+        reaccion:
+          '"Tasas altas, disciplina de mercado. Duele, pero el modelo se defiende solo si lo dejamos actuar."',
       },
-      inflationCurve: [100, 85, 70, 55, 48, 42],
-      concept: 'riesgoMoral',
-      supportedBy: ['banqueroDeuda', 'fmiChile'],
-      rejectedBy: ['trabajadorChile'],
-      scores: {
-        estabilidad: 68,
-        empleo: 48,
-        confianza: 72,
-        crecimiento: 55,
+      {
+        id: 'intervenir',
+        name: 'Vender reservas para sostener',
+        icon: '💵',
+        desc: 'Intervienes el mercado comprando tu propia moneda. Sostiene la paridad hoy, a costa de munición.',
+        ataqueMult: 0.3,
+        reservasCosto: 6,
+        advisor: 'banqueroDeuda',
+        reaccion:
+          '"Defienda el tipo de cambio, ministro. Si devalúa, mi deuda en dólares nos entierra a mí y a medio país."',
       },
+      {
+        id: 'fmi',
+        name: 'Pedir un préstamo al FMI',
+        icon: '🌐',
+        desc: 'Recargas reservas con dólares frescos, pero con condiciones que pesan sobre el empleo.',
+        reservas: 34,
+        empleo: -7,
+        usos: 1,
+        advisor: 'fmiChile',
+        reaccion:
+          '"Adelantamos los dólares. A cambio, esperamos el ajuste firmado. Ya conoce la rutina, ministro."',
+      },
+      {
+        id: 'devaluar',
+        name: 'Soltar la paridad (devaluar)',
+        icon: '⚖️',
+        desc: 'Dejas que la moneda encuentre su valor. Termina el ataque — pero si lo haces tarde, el daño ya está hecho.',
+        advisor: 'trabajadorChile',
+        reaccion:
+          '"Por fin algo de aire. La moneda cara solo servía para importar lujos mientras cerraban las fábricas."',
+      },
+    ],
+  },
+
+  // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
+  // La curva representa el ÍNDICE DE DESEMPLEO (más bajo = mejor).
+  outcomes: {
+    // Devaluación ordenada y a tiempo.
+    perfect: {
+      id: 'perfect',
+      concept: 'trinidadImposible',
       headlineWin:
-        'EL ESTADO SALVA A LA BANCA: PAICIO ABSORBE LA DEUDA PRIVADA',
-      headlineWeak:
-        'RESCATE SIN CONDICIONES: LOS BANQUEROS GANAN, LA GENTE PAGA',
+        'DEVALUACIÓN ORDENADA: PAICIO SUELTA LA PARIDAD A TIEMPO Y SALVA EL EMPLEO',
       resultText:
-        'El Estado absorbe las deudas de los bancos. Los depósitos se salvan, el crédito fluye de nuevo. Pero la factura la pagan los contribuyentes con una década de austeridad fiscal. Los que causaron la crisis salen indemnes.',
+        'Resististe lo justo y soltaste la paridad antes de quemar todo. La moneda encontró un valor competitivo, las exportaciones repuntaron y el empleo aguantó. Aceptaste que la paridad era insostenible en vez de pelear una guerra perdida.',
+      scores: { estabilidad: 70, empleo: 66, confianza: 60, crecimiento: 68 },
+      inflationCurve: [100, 96, 84, 70, 58, 50],
       history:
-        'Chile hizo exactamente esto en 1982-83: el Estado intervino los bancos, absorbió sus deudas en dólares y los recapitalizó con fondos públicos. El costo fue enorme — equivalente al 35% del PIB — pero evitó un colapso sistémico. La economía se recuperó, pero la desigualdad creció y los contribuyentes pagaron la fiesta de los banqueros durante 20 años.',
+        'Un tipo de cambio fijo sobrevaluado no se puede defender para siempre: el mercado tiene más munición que cualquier banco central. Los países que devaluaron a tiempo —en vez de quemar todas sus reservas— sufrieron mucho menos. La clave es reconocer cuándo la paridad es insostenible y soltarla de forma ordenada.',
     },
-    {
-      id: 'purismo',
-      letter: 'B',
-      name: 'Dejar quebrar a los bancos',
-      summary:
-        'Respetar el mercado: si tomaron riesgos y perdieron, que asuman las consecuencias.',
-      effect: 'Envía una señal de disciplina de mercado.',
-      cost: 'Los depósitos se pierden. Pánico bancario. Recesión profunda.',
-      impact: {
-        inflacion: { fill: 3, label: 'Controlada', good: true },
-        empleo: { fill: 1, label: 'Colapsa', good: false },
-      },
-      inflationCurve: [100, 90, 78, 65, 55, 50],
+    // Devaluó tarde (con daño) o demasiado pronto (pánico), o nunca soltó.
+    partial: {
+      id: 'partial',
+      concept: 'ataqueEspeculativo',
+      headlineWin:
+        'PAICIO DEVALÚA, PERO TARDE: LA DEFENSA SE COMIÓ RESERVAS Y EMPLEO',
+      resultText:
+        'Al final soltaste la paridad, pero recién cuando ya casi no quedaba con qué defenderla. Las tasas altas y la fuga de reservas dejaron una recesión más profunda de la necesaria. La corrección llegó, cara.',
+      scores: { estabilidad: 45, empleo: 38, confianza: 40, crecimiento: 42 },
+      inflationCurve: [100, 108, 120, 126, 122, 118],
+      history:
+        'Chile defendió su paridad fija (39 pesos por dólar) hasta mediados de 1982, perdiendo reservas y subiendo tasas que ahogaron la economía. Cuando finalmente devaluó, el daño ya estaba hecho. Aguantar de más convierte una corrección manejable en una crisis.',
+    },
+    // Reservas agotadas: devaluación caótica / empleo destruido.
+    wrong: {
+      id: 'wrong',
       concept: 'descalceMoneda',
-      supportedBy: ['tecnocrata'],
-      rejectedBy: ['banqueroDeuda', 'trabajadorChile'],
-      scores: {
-        estabilidad: 55,
-        empleo: 25,
-        confianza: 60,
-        crecimiento: 30,
-      },
       headlineWin:
-        'EL MERCADO MANDA: PAICIO DEJA CAER A LOS BANCOS INSOLVENTES',
-      headlineWeak:
-        'PURISMO SUICIDA: LOS DEPÓSITOS SE PIERDEN Y EL PÁNICO SE EXTIENDE',
+        'SE ACABARON LAS RESERVAS: DEVALUACIÓN CAÓTICA Y COLAPSO EN PAICIO',
       resultText:
-        'Los bancos quiebran. Los depósitos desaparecen. Es la consecuencia lógica del libre mercado, pero la gente que perdió sus ahorros no quiere lógica — quiere su dinero. El desempleo supera el 25%.',
+        'Peleaste hasta el último dólar. Cuando las reservas llegaron a cero, la devaluación se impuso sola, brutal y sin control. La deuda en dólares explotó, los bancos cayeron y el desempleo se disparó. La guerra de desgaste tenía un solo final, y lo postergaste hasta hacerlo peor.',
+      scores: { estabilidad: 20, empleo: 22, confianza: 18, crecimiento: 25 },
+      inflationCurve: [100, 122, 150, 175, 185, 180],
       history:
-        'Ningún país ha dejado quebrar a toda su banca en una crisis sistémica — el costo social es demasiado alto. Incluso los más ortodoxos (EE.UU. en 2008, Suecia en 1992) intervinieron. El purismo total es coherente en teoría pero suicida en la práctica: la destrucción de depósitos genera una espiral recesiva que dura años.',
+        'En 1982 Chile agotó reservas defendiendo una paridad insostenible. La devaluación llegó igual, pero tarde y caótica: el PIB cayó 14%, el desempleo trepó a cerca del 30% (con planes de emergencia) y el Estado tuvo que rescatar a toda la banca. Es el costo de pelear una guerra de desgaste imposible de ganar.',
     },
-    {
-      id: 'nacionalizar',
-      letter: 'C',
-      name: 'Nacionalización temporal',
-      summary:
-        'El Estado interviene los bancos, los sanea, y los devuelve al sector privado después.',
-      effect: 'Protege los depósitos sin regalar la recapitalización.',
-      cost: 'Requiere capacidad estatal que Paicio quizás no tiene. Los mercados desconfían.',
-      impact: {
-        inflacion: { fill: 2, label: 'Moderada', good: null },
-        empleo: { fill: 2, label: 'Baja con red', good: null },
-      },
-      inflationCurve: [100, 80, 62, 50, 44, 38],
-      concept: 'cicloAugeCaida',
-      supportedBy: ['trabajadorChile'],
-      rejectedBy: ['tecnocrata', 'fmiChile'],
-      scores: {
-        estabilidad: 62,
-        empleo: 55,
-        confianza: 42,
-        crecimiento: 52,
-      },
-      headlineWin:
-        'INTERVENCIÓN PRAGMÁTICA: PAICIO NACIONALIZA LA BANCA PARA SANEARLA',
-      headlineWeak:
-        'NACIONALIZACIÓN SIN RUMBO: EL ESTADO NO SABE MANEJAR BANCOS',
-      resultText:
-        'El Estado toma control de los bancos, protege los depósitos y hace pagar a los accionistas — no a los contribuyentes. Es el camino del medio: ni purismo suicida ni regalo a los banqueros. Pero requiere una capacidad estatal que en Paicio escasea.',
-      history:
-        'Suecia usó este modelo en 1992: nacionalizó temporalmente sus bancos, los saneó y los reprivatizó con ganancias para el Estado. Funcionó brillantemente. Chile en 1983 hizo algo similar pero menos limpio: intervino los bancos pero terminó subsidiando a los accionistas. La diferencia está en la ejecución, no en el concepto.',
-    },
-  ],
+  },
+
+  // Vacío: en modo mecánica no se usan políticas, pero Outcome lo referencia.
+  policies: [],
 }

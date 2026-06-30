@@ -190,28 +190,30 @@ export default function Outcome({
               {policy.resultText}
             </p>
 
-            {/* Coalición final */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {allies.length > 0 ? (
-                allies.map((id) => (
-                  <span
-                    key={id}
-                    className="flex items-center gap-1.5 rounded-sm border border-positive/50 bg-positive/10 py-1 pl-1 pr-2 font-mono text-[0.6rem] text-positive"
-                  >
-                    <img
-                      src={portraits[id]}
-                      alt=""
-                      className="h-4 w-4 rounded-full object-cover"
-                    />
-                    {prisonersById[id].name}
+            {/* Coalición final (solo en el dilema del prisionero) */}
+            {!isCustomMechanic && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {allies.length > 0 ? (
+                  allies.map((id) => (
+                    <span
+                      key={id}
+                      className="flex items-center gap-1.5 rounded-sm border border-positive/50 bg-positive/10 py-1 pl-1 pr-2 font-mono text-[0.6rem] text-positive"
+                    >
+                      <img
+                        src={portraits[id]}
+                        alt=""
+                        className="h-4 w-4 rounded-full object-cover"
+                      />
+                      {prisonersById[id].name}
+                    </span>
+                  ))
+                ) : (
+                  <span className="font-mono text-[0.65rem] text-crisis">
+                    Gobernaste sin coalición. El presidente quedó solo contigo.
                   </span>
-                ))
-              ) : (
-                <span className="font-mono text-[0.65rem] text-crisis">
-                  Gobernaste sin coalición. El presidente quedó solo contigo.
-                </span>
-              )}
-            </div>
+                )}
+              </div>
+            )}
 
             {/* ───────── Dashboard de métricas (animan desde 50) ───────── */}
             <div className="mt-6 rounded-md border border-edge bg-cell-2/50 p-4">

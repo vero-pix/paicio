@@ -109,6 +109,16 @@ export const concepts = {
     short: 'Reformas profundas exigidas por el FMI a cambio de financiamiento.',
     body: 'Recorte del gasto público, privatizaciones, apertura comercial. Estabiliza las cuentas externas pero el costo social es inmediato y concentrado en los más vulnerables.',
   },
+  ataqueEspeculativo: {
+    title: 'Ataque especulativo',
+    short: 'Los mercados apuestan contra una moneda que creen sobrevaluada.',
+    body: 'Si la paridad fija parece insostenible, los especuladores venden la moneda esperando la devaluación. Defenderla quema reservas (intervención) o empleo (tasas altas). Es una guerra de desgaste: tarde o temprano el banco central se queda sin munición.',
+  },
+  trinidadImposible: {
+    title: 'La trinidad imposible',
+    short: 'No puedes tener a la vez tipo de cambio fijo, libre movimiento de capitales y política monetaria propia.',
+    body: 'Solo se pueden elegir dos de los tres. Chile fijó el cambio y abrió los capitales, así que perdió el control monetario. Cuando el mundo subió las tasas, no pudo responder y la paridad se quebró.',
+  },
 
   // ── Episodio 5 — El Plan Real de Paicio (Brasil 1994) ─────────────────
   unidadCuenta: {
