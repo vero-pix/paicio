@@ -69,23 +69,25 @@ export default function Outcome({
     [episode],
   )
 
-  // Ep5 usa sequenceOutcomes; el resto usa policies.
+  // Las mecánicas no-PD (sequence, bankRun, etc.) usan `episode.outcomes`
+  // por niveles; el dilema del prisionero usa `episode.policies`.
+  const isCustomMechanic = episode.mechanic && episode.mechanic !== 'prisonersDilemma'
   const policy = useMemo(() => {
-    if (episode.sequenceMode) {
-      const so = episode.sequenceOutcomes[policyId]
-      // Adaptar sequenceOutcome al formato que espera el resto del componente.
+    if (isCustomMechanic) {
+      const so = episode.outcomes?.[policyId]
+      // Adaptar el outcome al formato que espera el resto del componente.
       return so
         ? {
             ...so,
             supportedBy: [],
             rejectedBy: [],
-            concept: 'reformaMonetaria',
+            concept: so.concept ?? 'reformaMonetaria',
             history: so.history ?? '',
           }
         : null
     }
     return episode.policies.find((p) => p.id === policyId)
-  }, [episode, policyId])
+  }, [episode, policyId, isCustomMechanic])
 
   const [revealed, setRevealed] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
@@ -98,7 +100,7 @@ export default function Outcome({
   const v = verdict(global)
   const support = allies.filter((id) => policy?.supportedBy?.includes(id)).length
   const strong = support >= 1 && allies.length >= 2
-  const headline = episode.sequenceMode ? policy?.headlineWin : (strong ? policy?.headlineWin : policy?.headlineWeak)
+  const headline = isCustomMechanic ? policy?.headlineWin : (strong ? policy?.headlineWin : policy?.headlineWeak)
 
   // Encuentra el siguiente episodio jugable.
   const currentIdx = episodes.findIndex((e) => e.id === episode.id)

@@ -11,8 +11,8 @@ import Cell from './components/Cell.jsx'
 import Prisoner from './components/Prisoner.jsx'
 import NegotiationMatrix from './components/NegotiationMatrix.jsx'
 import PolicyChoice from './components/PolicyChoice.jsx'
-import SequenceChoice from './components/SequenceChoice.jsx'
 import Outcome from './components/Outcome.jsx'
+import MechanicHost from './components/mechanics/MechanicHost.jsx'
 
 export default function App() {
   const {
@@ -87,7 +87,16 @@ export default function App() {
     )
   }
 
-  const showTicker = state.phase !== 'cell'
+  // Mecánica central del episodio. El dilema del prisionero (default) usa el
+  // flujo negociación → política; las demás mecánicas son autocontenidas.
+  const mechanic = episode.mechanic ?? 'prisonersDilemma'
+  const isPD = mechanic === 'prisonersDilemma'
+
+  // El ticker global de inflación solo aplica a las mecánicas que no traen su
+  // propio HUD (dilema y secuencia). Las mecánicas con medidores propios
+  // (corrida bancaria, paridad, expectativas) renderizan su HUD interno.
+  const showTicker =
+    state.phase !== 'cell' && (mechanic === 'prisonersDilemma' || mechanic === 'sequence')
 
   return (
     <div className="min-h-full">
@@ -104,8 +113,19 @@ export default function App() {
       {/* FASE 1 — Celda */}
       {state.phase === 'cell' && <Cell episode={episode} onStart={startGame} />}
 
-      {/* FASE 2 — Negociaciones */}
-      {state.phase === 'negotiation' && (
+      {/* FASE 2 (mecánicas no-PD) — la mecánica central, autocontenida.
+          Termina llamando choosePolicy(outcomeId, []) → desenlace. */}
+      {state.phase === 'negotiation' && !isPD && (
+        <MechanicHost
+          episode={episode}
+          allies={allies}
+          onComplete={(outcomeId) => choosePolicy(outcomeId, [])}
+          onConceptSeen={markConceptSeen}
+        />
+      )}
+
+      {/* FASE 2 (dilema del prisionero) — Negociaciones */}
+      {state.phase === 'negotiation' && isPD && (
         <div className="grain relative mx-auto max-w-md px-5 py-6">
           <div className="relative z-10">
             <div className="flex items-center justify-between gap-2">
@@ -221,23 +241,15 @@ export default function App() {
         </div>
       )}
 
-      {/* FASE 3 — Propuesta o Secuencia (Ep5) */}
+      {/* FASE 3 — Propuesta de política (solo dilema del prisionero).
+          Las mecánicas no-PD resuelven el desenlace dentro de MechanicHost. */}
       {state.phase === 'policy' && (
-        episode.sequenceMode ? (
-          <SequenceChoice
-            episode={episode}
-            allies={allies}
-            onChoose={choosePolicy}
-            onConceptSeen={markConceptSeen}
-          />
-        ) : (
-          <PolicyChoice
-            episode={episode}
-            allies={allies}
-            onChoose={choosePolicy}
-            onConceptSeen={markConceptSeen}
-          />
-        )
+        <PolicyChoice
+          episode={episode}
+          allies={allies}
+          onChoose={choosePolicy}
+          onConceptSeen={markConceptSeen}
+        />
       )}
 
       {/* FASE 4 — Desenlace */}

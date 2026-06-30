@@ -25,8 +25,9 @@ export default {
     'Una última oportunidad. El truco no es congelar precios: es la secuencia correcta.',
   bloqueado: false,
 
-  // Flag: este episodio usa SequenceChoice en vez de PolicyChoice.
-  sequenceMode: true,
+  // Mecánica central de este episodio: la secuencia (URV → Real).
+  // El jugador va directo cell → secuencia → desenlace (sin negociación).
+  mechanic: 'sequence',
 
   // Periódico de la pantalla de celda.
   newspaper: {
@@ -239,7 +240,9 @@ export default {
   },
 
   // Resultados según la secuencia elegida. Se evalúan por grado de acierto.
-  sequenceOutcomes: {
+  // Mapa `outcomes` por niveles (perfect/partial/wrong) — formato común a todas
+  // las mecánicas no-PD que lee Outcome.jsx.
+  outcomes: {
     // Victoria total: secuencia perfecta.
     perfect: {
       id: 'perfect',

@@ -6,10 +6,10 @@ import { portraits } from '../assets/portraits.js'
 // El jugador arrastra/reordena 4 acciones en la secuencia correcta.
 // No hay "elección entre opciones" — hay un orden correcto que descubrir.
 //
-// Props:
+// Props (contrato común de mecánicas):
 //   episode      — objeto del episodio (contiene episode.sequence)
-//   allies       — ids de aliados actuales
-//   onChoose     — callback(sequenceResultId, []) al confirmar
+//   allies       — ids de aliados actuales (vacío en Ep5 tras la migración)
+//   onComplete   — callback(outcomeId) al confirmar la secuencia
 //   onConceptSeen — callback para marcar conceptos vistos
 // ─────────────────────────────────────────────────────────────────────────
 
@@ -18,8 +18,8 @@ function scoreSequence(chosen, correct) {
   return chosen.filter((id, i) => id === correct[i]).length
 }
 
-export default function SequenceChoice({ episode, allies, onChoose, onConceptSeen }) {
-  const { sequence, sequenceOutcomes, prisoners } = episode
+export default function SequenceChoice({ episode, allies = [], onComplete, onConceptSeen }) {
+  const { sequence, outcomes, prisoners } = episode
   const prisonersById = Object.fromEntries(prisoners.map((p) => [p.id, p]))
 
   // Estado del orden actual: empieza mezclado (no en el orden correcto).
@@ -50,14 +50,14 @@ export default function SequenceChoice({ episode, allies, onChoose, onConceptSee
       ordered.map((a) => a.id),
       sequence.correctOrder,
     )
-    if (correct === 4) return sequenceOutcomes.perfect
-    if (correct >= 2) return sequenceOutcomes.partial
-    return sequenceOutcomes.wrong
+    if (correct === 4) return outcomes.perfect
+    if (correct >= 2) return outcomes.partial
+    return outcomes.wrong
   }
 
   function handleConfirm() {
     const outcome = getOutcome()
-    onChoose(outcome.id, [])
+    onComplete(outcome.id)
   }
 
   return (
