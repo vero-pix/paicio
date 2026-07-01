@@ -14,7 +14,8 @@ export const NOVEDADES = [
       'Cada crisis parte con un briefing luminoso: el dato clave del momento, tu misión y la provocación de quien te deja el cargo.',
       'La pantalla de decisión estrena look: medidores tipo barra de vida, el precio del pan como cifra protagonista y botones táctiles con relieve.',
       'El desenlace se rediseñó como veredicto compartible: estrellas, tus puntajes y la comparación entre lo que pasó de verdad y tu partida.',
-      'Es un adelanto por etapas: por ahora el mapa, la intro, la decisión y el desenlace; el resto migra en las próximas versiones.',
+      'Nueva bienvenida y onboarding con la moneda-$ de marca, y toda la navegación al mismo estilo claro.',
+      'Es un adelanto por etapas: falta migrar las pantallas de decisión de los otros cuatro episodios; llegan en las próximas versiones.',
     ],
   },
   {
