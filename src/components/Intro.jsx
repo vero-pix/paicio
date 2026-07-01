@@ -62,10 +62,10 @@ export default function Intro({ onEnter }) {
 
   return (
     <div
-      className="on-cream relative mx-auto min-h-screen max-w-md overflow-hidden"
+      className="on-cream relative mx-auto min-h-[100dvh] max-w-md overflow-hidden"
       style={{ background: 'linear-gradient(180deg,#FFF3D8,#FCE7C0)' }}
     >
-      <div className="flex min-h-screen flex-col px-6 pb-8 pt-6">
+      <div className="flex min-h-[100dvh] flex-col px-6 pb-8 pt-6">
         {/* Status bar simulada */}
         <div className="flex items-center justify-between">
           <span className="font-round text-[0.8rem] font-semibold text-ink-soft">9:41</span>

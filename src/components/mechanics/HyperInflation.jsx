@@ -76,7 +76,7 @@ function LifeBar({ icon, iconColor, label, value, fill, valueColor, tint }) {
   return (
     <div className="flex items-center gap-2.5">
       <span
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px]"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px]"
         style={{ background: tint, color: iconColor }}
       >
         {icon}
@@ -168,7 +168,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
         />
       )}
 
-      <div className="mx-auto max-w-md px-5 pb-10 pt-1">
+      <div className="mx-auto max-w-md px-5 pb-6 pt-1">
         {/* Top bar */}
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
@@ -191,7 +191,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
         </div>
 
         {/* Medidores */}
-        <div className="mt-5 space-y-3">
+        <div className="mt-4 space-y-2.5">
           <LifeBar
             icon={<FlameIcon />}
             iconColor="#E8604F"
@@ -214,7 +214,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
 
         {/* Cifra protagonista — el precio del pan */}
         <div
-          className="shadow-card-dark relative mt-5 overflow-hidden rounded-[24px] p-4"
+          className="shadow-card-dark relative mt-4 overflow-hidden rounded-[22px] p-3.5"
           style={{ background: 'linear-gradient(160deg,#3B2A17,#26190B)' }}
         >
           <div
@@ -222,8 +222,8 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
             className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full"
             style={{ background: 'radial-gradient(circle, rgba(245,179,49,.25), transparent 70%)' }}
           />
-          <div className="relative flex items-center gap-4">
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[14px] bg-[#F3E2C2] text-[1.9rem]">
+          <div className="relative flex items-center gap-3.5">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px] bg-[#F3E2C2] text-[1.6rem]">
               🍞
             </span>
             <div className="min-w-0 flex-1">
@@ -233,7 +233,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
               <div className="flex items-baseline gap-1.5">
                 <span
                   key={Math.round(precio)}
-                  className="animate-pop font-round text-[2.6rem] font-bold leading-none tabular-nums text-[#FFE9A8]"
+                  className="animate-pop font-round text-[2.1rem] font-bold leading-none tabular-nums text-[#FFE9A8]"
                 >
                   {fmt(precio)}
                 </span>
@@ -252,7 +252,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
               </span>
             )}
           </div>
-          <div className="relative mt-2">
+          <div className="relative mt-1.5">
             <EducationalTooltip
               conceptId="senoreaje"
               label="¿Por qué imprimir es una trampa?"
@@ -263,16 +263,16 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
 
         {/* Asesor */}
         {report && advisor && (
-          <div className="animate-fade-up mt-4 flex items-start gap-3">
+          <div className="animate-fade-up mt-3 flex items-start gap-3">
             <span className="coin shrink-0 rounded-full p-[3px]">
               <img
                 src={portraits[advisor.id]}
                 alt=""
-                className="h-12 w-12 rounded-full border-2 border-white object-cover"
+                className="h-10 w-10 rounded-full border-2 border-white object-cover"
               />
             </span>
             <div
-              className="shadow-card min-w-0 flex-1 rounded-[18px] rounded-tl-[5px] bg-surface p-3"
+              className="shadow-card min-w-0 flex-1 rounded-[16px] rounded-tl-[5px] bg-surface p-2.5"
             >
               <p
                 className="font-round text-[0.78rem] font-bold"
@@ -289,11 +289,11 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
 
         {/* Acciones */}
         {!over && (
-          <div className="mt-5">
+          <div className="mt-4">
             <p className="font-nunito text-[0.72rem] font-extrabold uppercase tracking-wide text-ink-mute">
               ¿Qué haces este mes?
             </p>
-            <div className="mt-2.5 grid grid-cols-2 gap-2.5">
+            <div className="mt-2 grid grid-cols-2 gap-2">
               {cfg.acciones.map((a) => {
                 const disp = accionDisponible(state, a)
                 const restantes = a.usos != null ? a.usos - (state.usos[a.id] ?? 0) : null
@@ -304,7 +304,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
                     type="button"
                     disabled={!disp}
                     onClick={() => elegir(a)}
-                    className={`candy p-3 text-left ${picked === a.id ? 'translate-y-1' : ''}`}
+                    className={`candy p-2.5 text-left ${picked === a.id ? 'translate-y-1' : ''}`}
                     style={{ '--face': ac.face, '--edge': ac.edge }}
                   >
                     <span className="flex items-center gap-2">

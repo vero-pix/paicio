@@ -94,7 +94,7 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
         )}
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div className="mt-4 space-y-2.5">
         <LifeBar variant="vault" label="Reservas internacionales" value={state.reservas} />
         <LifeBar variant="crowd" label="Empleo" value={state.empleo} />
       </div>
@@ -110,11 +110,11 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
       )}
 
       {!over && (
-        <div className="mt-5">
+        <div className="mt-4">
           <p className="font-nunito text-[0.72rem] font-extrabold uppercase tracking-wide text-ink-mute">
             ¿Cómo respondes hoy?
           </p>
-          <div className="mt-2.5 space-y-2.5">
+          <div className="mt-2 space-y-2">
             {defensivas.map((a, i) => {
               const disp = accionDisponible(state, a)
               const restantes = a.usos != null ? a.usos - (state.usos[a.id] ?? 0) : null

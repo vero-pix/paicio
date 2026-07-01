@@ -30,7 +30,7 @@ export default function EpisodeSelect({ onSelect, onShowIntro }) {
 
   return (
     <div
-      className="on-cream relative mx-auto min-h-screen max-w-md overflow-hidden"
+      className="on-cream relative mx-auto min-h-[100dvh] max-w-md overflow-hidden"
       style={{
         background:
           'linear-gradient(180deg, #EAF6EC 0%, #FBEFD2 55%, #FCE3C4 100%)',
