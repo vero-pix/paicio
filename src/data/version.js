@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.7.0'
+export const APP_VERSION = '0.8.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.8.0',
+    fecha: '1 jul 2026',
+    cambios: [
+      'Música de época real por episodio: cabaret 1920s en Weimar, tango en Argentina, aires andinos en Chile, bossa en Brasil.',
+    ],
+  },
   {
     version: '0.7.0',
     fecha: '30 jun 2026',
