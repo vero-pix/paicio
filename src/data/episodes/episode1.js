@@ -30,6 +30,9 @@ export default {
   resumen: 'El dinero se quema en tus manos. El pan cuesta más al mediodía que en la mañana.',
   bloqueado: false,
 
+  // Mecánica central del episodio (ver src/utils/hyperinflation.js).
+  mechanic: 'hyperinflation',
+
   // Periódico de la pantalla de celda.
   newspaper: {
     name: 'EL HERALDO DE PAICIO',
@@ -55,9 +58,9 @@ export default {
 
   // Narración en la celda (al evaluar la situación).
   cellNarration: [
-    'El presidente imprimió dinero para pagar la deuda de guerra. Los precios suben hora a hora.',
-    'Te culparon a ti. Pero te necesita, y no puede admitirlo.',
-    'Desde esta celda vas a negociar tu salida. Cuatro prisioneros, cuatro intereses. Necesitas al menos dos de tu lado.',
+    'El presidente imprimió dinero para pagar la deuda de guerra. Los precios suben hora a hora. Te culparon a ti, pero ahora la máquina de imprimir es tuya.',
+    'Cada mes hay cuentas del Estado que pagar y la recaudación no alcanza. La salida fácil es imprimir más — y así fue como empezó todo.',
+    'Tu misión: frenar la hiperinflación antes de que el Marco se vuelva papel… o de que el pueblo te derroque.',
   ],
 
   negotiationIntro:
@@ -84,7 +87,7 @@ export default {
   // Config del gráfico de tendencia del desenlace (cifras + comparación real).
   trendChart: {
     titulo: 'Inflación en Paicio',
-    unidad: 'índice (pico = 100)',
+    unidad: 'índice (inicio = 100)',
     ejeX: ['Mes 0', '3', '6', '9', '12', '18'],
     real: {
       cifra: '×1.000.000',
@@ -196,76 +199,105 @@ export default {
     },
   ],
 
-  policies: [
-    {
-      id: 'ancla',
-      letter: 'A',
-      name: 'Ancla monetaria dura',
-      summary: 'Detener la emisión por completo y fijar el tipo de cambio al oro.',
-      effect: 'Frena la inflación rápido.',
-      cost: 'Recesión severa y desempleo alto durante 18 meses.',
-      impact: {
-        inflacion: { fill: 4, label: 'Frena en seco', good: true },
-        empleo: { fill: 1, label: 'Se desploma', good: false },
+  // ── MECÁNICA DE HIPERINFLACIÓN ("La Imprenta") ─────────────────────────
+  // Config leída por HyperInflation.jsx / hyperinflation.js.
+  hyperinflation: {
+    intro:
+      'La hiperinflación se alimenta sola: imprimes para pagar las cuentas del Estado, los precios suben, y necesitas imprimir aún más para pagar lo mismo. Cada mes eliges cómo cubrir el gasto. Imprimir es fácil y acelera el desastre; frenarlo cuesta apoyo. La única salida real: cortar la imprenta y lanzar una moneda creíble a tiempo.',
+    meses: 8,
+    inflacionInicial: 28,
+    apoyoInicial: 55,
+    umbralReforma: 65, // por encima, la reforma ya no convence a nadie
+    golpeImprimir: 9, // inflación que suma la primera impresión
+    escaladaImprimir: 6, // cada impresión suma esto extra sobre la anterior
+    acciones: [
+      {
+        id: 'imprimir',
+        name: 'Imprimir dinero',
+        icon: '🖨️',
+        desc: 'Enciende la imprenta y paga las cuentas de hoy. Fácil… pero cada vez dispara más la inflación.',
+        advisor: 'marcos',
+        reaccion:
+          '"La imprenta ya está caliente, ministro. Un cero más al billete y las cuentas de hoy están pagadas. Mañana vemos."',
       },
-      inflationCurve: [100, 70, 40, 22, 14, 10],
+      {
+        id: 'ajuste',
+        name: 'Ajuste fiscal',
+        icon: '✂️',
+        desc: 'Subes impuestos y recortas gasto para pagar con plata real. Frena algo la inflación, pero el pueblo lo sufre.',
+        inflacion: -5,
+        apoyo: -14,
+        advisor: 'rosa',
+        reaccion:
+          '"¿Más impuestos y recortes? Mi gente ya no llega a fin de día. Esto se paga con hambre, ministro."',
+      },
+      {
+        id: 'renegociar',
+        name: 'Renegociar la deuda de guerra',
+        icon: '🤝',
+        desc: 'Alivias las reparaciones que ahogan al Estado. Menos presión para imprimir de aquí en adelante.',
+        inflacion: -3,
+        apoyo: -4,
+        usos: 2,
+        advisor: 'fondo',
+        reaccion:
+          '"Podemos aliviar la deuda de guerra… a cambio de supervisión. Nada es gratis, ministro."',
+      },
+      {
+        id: 'reforma',
+        name: 'Reforma monetaria (el Rentenmark)',
+        icon: '⚓',
+        desc: 'Cortas la imprenta y lanzas una moneda nueva, respaldada y limitada. Si la inflación aún es manejable, la frena en seco. Si esperaste demasiado, nadie le cree.',
+        advisor: 'comerciante',
+        reaccion:
+          '"Una moneda nueva y de verdad respaldada… si la gente la cree, mañana vuelvo a poner precios. Eso necesito: certeza."',
+      },
+    ],
+  },
+
+  // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
+  outcomes: {
+    // Reforma exitosa a tiempo: el Rentenmark frena la hiperinflación.
+    perfect: {
+      id: 'perfect',
       concept: 'ancla',
-      supportedBy: ['fondo', 'marcos'],
-      rejectedBy: ['rosa'],
-      scores: { estabilidad: 88, empleo: 38, confianza: 72, crecimiento: 45 },
-      headlineWin: 'EL MARCO SE DETIENE: PAICIO ATA SU MONEDA AL ORO',
-      headlineWeak: 'AJUSTE A MEDIAS: EL ANCLA NO CONVENCE A LOS MERCADOS',
+      headlineWin:
+        'EL RENTENMARK NACE: PAICIO FRENA LA HIPERINFLACIÓN EN SEMANAS',
       resultText:
-        'La inflación se frena en seco, pero las fábricas cierran y las filas de desempleados crecen. Paicio compra estabilidad al precio de un año y medio de dolor.',
+        'Cortaste la imprenta y lanzaste una moneda nueva, respaldada y creíble, justo a tiempo. Cuando la gente confió en que ya no habría emisión sin límite, los precios se congelaron casi de un día para otro. La pesadilla del pan que cambiaba de precio a mediodía terminó.',
+      scores: { estabilidad: 92, empleo: 55, confianza: 88, crecimiento: 60 },
+      inflationCurve: [100, 62, 30, 16, 10, 8],
       history:
-        'En Alemania, el Rentenmark (noviembre 1923), respaldado en la tierra y luego en oro, detuvo la hiperinflación casi de inmediato. Funcionó porque vino con disciplina fiscal y respaldo creíble. El costo: recesión y desempleo. Tu ancla sigue esa misma lógica: dolor a cambio de credibilidad.',
+        'En noviembre de 1923 Alemania frenó la hiperinflación casi de un día para otro con el Rentenmark: una moneda nueva, respaldada en la tierra y luego en oro, emitida en cantidad limitada. Funcionó porque vino con disciplina fiscal —el gobierno dejó de imprimir para tapar el déficit— y con credibilidad. Eso hiciste tú: apagar la imprenta y anclar la moneda antes de que fuera tarde.',
     },
-    {
-      id: 'reforma',
-      letter: 'B',
-      name: 'Reforma monetaria gradual',
-      summary:
-        'Crear una moneda nueva —el Nuevo Marco de Paicio— con conversión controlada.',
-      effect: 'Transición más lenta, pero menos trauma social.',
-      cost: 'Requiere una credibilidad institucional que Paicio aún no tiene.',
-      impact: {
-        inflacion: { fill: 3, label: 'Baja de a poco', good: true },
-        empleo: { fill: 3, label: 'Aguanta', good: true },
-      },
-      inflationCurve: [100, 86, 64, 44, 32, 26],
-      concept: 'credibilidad',
-      supportedBy: ['comerciante'],
-      rejectedBy: ['fondo'],
-      scores: { estabilidad: 70, empleo: 62, crecimiento: 64, confianza: 58 },
-      headlineWin: 'NACE EL NUEVO MARCO: PAICIO APUESTA A LA CONFIANZA',
-      headlineWeak: 'LA NUEVA MONEDA TAMBALEA: FALTA RESPALDO INSTITUCIONAL',
+    // Contuvo lo peor, pero tarde y con daño.
+    partial: {
+      id: 'partial',
+      concept: 'senoreaje',
+      headlineWin:
+        'LA INFLACIÓN CEDE A MEDIAS: EL FRENO LLEGÓ TARDE Y CON DOLOR',
       resultText:
-        'El Nuevo Marco convive un tiempo con el viejo. Si la gente cree, se estabiliza sin destruir el empleo. Si no cree, la nueva moneda se quema igual que la anterior.',
+        'Al final contuviste lo peor, pero recién cuando el daño ya estaba hecho. Los ahorros de la gente se evaporaron por el camino y la recuperación arranca desde muy abajo. Frenaste la sangría, pero pagaste de más por haber demorado.',
+      scores: { estabilidad: 48, empleo: 40, confianza: 42, crecimiento: 44 },
+      inflationCurve: [100, 90, 78, 66, 58, 52],
       history:
-        'Una reforma monetaria gradual puede funcionar —como en parte hizo el Rentenmark al ganar confianza—, pero depende por completo de la credibilidad. Sin instituciones sólidas detrás, una moneda nueva no es más que papel con otro nombre. Tu apuesta vive o muere por la confianza.',
+        'Imprimir dinero para pagar las cuentas del Estado es un impuesto invisible: financia hoy destruyendo el ahorro de todos mañana. Cuanto más se demora la reforma, más caro y doloroso es el ajuste. Alemania tardó años en cortar la imprenta; el costo social fue enorme.',
     },
-    {
-      id: 'control',
-      letter: 'C',
-      name: 'Control de precios + emisión controlada',
-      summary: 'Fijar precios por decreto y limitar —sin detener— la emisión.',
-      effect: 'Alivio inmediato.',
-      cost: 'Colapso garantizado en 6 meses: mercado negro, escasez, crisis peor.',
-      impact: {
-        inflacion: { fill: 1, label: 'Sigue desbocada', good: false },
-        empleo: { fill: 3, label: 'Estable (por ahora)', good: null },
-      },
-      inflationCurve: [100, 62, 40, 55, 82, 98],
-      concept: 'indexacion',
-      supportedBy: ['rosa'],
-      rejectedBy: ['marcos', 'fondo', 'comerciante'],
-      scores: { estabilidad: 30, empleo: 55, crecimiento: 28, confianza: 25 },
-      headlineWin: 'PRECIOS CONGELADOS: ALIVIO HOY EN LAS CALLES DE PAICIO',
-      headlineWeak: 'GÓNDOLAS VACÍAS: EL CONTROL DE PRECIOS YA HACE AGUA',
+    // La imprenta no se detuvo: colapso hiperinflacionario.
+    wrong: {
+      id: 'wrong',
+      concept: 'hiperinflacion',
+      headlineWin:
+        'LA GRAN QUEMA: EL MARCO SE CONVIERTE EN PAPEL SIN VALOR',
       resultText:
-        'Por unas semanas, el pan vuelve a tener un precio. Luego desaparece de las góndolas: nadie vende a pérdida. El mercado negro florece y la crisis vuelve, peor.',
+        'La imprenta no se detuvo a tiempo. Los precios se dispararon hasta que el Marco dejó de servir: la gente empapeló paredes con billetes y llevó el sueldo en carretillas. La moneda murió y con ella el ahorro de una generación.',
+      scores: { estabilidad: 15, empleo: 25, confianza: 10, crecimiento: 20 },
+      inflationCurve: [100, 145, 200, 260, 320, 380],
       history:
-        'Los controles de precios sin frenar la emisión han fracasado una y otra vez —de Weimar a tantas economías después—. Atacan el síntoma (el precio) y no la causa (la emisión). El resultado típico: escasez, mercado negro y una crisis aún mayor cuando el dique cede.',
+        'En 1923 el marco alemán perdió tanto valor que la gente empapelaba paredes con billetes y llevaba el sueldo en carretillas. Un pan llegó a costar 200.000 millones de marcos. El gobierno siguió imprimiendo para pagar sus cuentas hasta que la moneda simplemente dejó de aceptarse. La hiperinflación no se detiene sola: hay que apagar la imprenta.',
     },
-  ],
+  },
+
+  // Vacío: en modo mecánica no se usan políticas, pero Outcome lo referencia.
+  policies: [],
 }

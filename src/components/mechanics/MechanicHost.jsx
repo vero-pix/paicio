@@ -1,4 +1,5 @@
 import SequenceChoice from '../SequenceChoice.jsx'
+import HyperInflation from './HyperInflation.jsx'
 import BankRun from './BankRun.jsx'
 import SpeculativeAttack from './SpeculativeAttack.jsx'
 import Expectations from './Expectations.jsx'
@@ -17,6 +18,7 @@ import Expectations from './Expectations.jsx'
 // ─────────────────────────────────────────────────────────────────────────
 
 const MECHANICS = {
+  hyperinflation: HyperInflation,
   sequence: SequenceChoice,
   bankRun: BankRun,
   speculativeAttack: SpeculativeAttack,
