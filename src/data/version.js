@@ -2,9 +2,19 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.8.0'
+export const APP_VERSION = '0.9.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.9.0',
+    fecha: '1 jul 2026',
+    cambios: [
+      'Rediseño visual: cada crisis tiene su escena protagonista — el pan que arde en Weimar, la fila y el corralito en Argentina, la paridad bajo ataque en Chile, la espiral de la inflación en Brasil y el puente de la URV en el Plan Real.',
+      'Medidores con vida: la inflación como llama, el pueblo como multitud, las reservas como bóveda.',
+      'El mundo se enrarece cuando la crisis empeora, y cada episodio estrena su viñeta en el menú.',
+      'Música nueva: tensión para la Década Perdida de Brasil y ambiente de época en el menú de inicio.',
+    ],
+  },
   {
     version: '0.8.0',
     fecha: '1 jul 2026',

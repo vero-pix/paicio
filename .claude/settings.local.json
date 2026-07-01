@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(pkill -f vite)",
+      "Bash(git ls-remote *)",
+      "Bash(gh auth *)",
+      "Bash(gh api *)",
+      "Bash(gh repo *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(gh run *)",
+      "Bash(npx --yes gh-pages@6 -d dist -b gh-pages -m \"deploy: PAICIO build estático \\(bypass Actions\\)\")",
+      "Bash(curl -s https://vero-pix.github.io/paicio/)",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'chore: base '\\\\''/'\\\\'' para deploy en Vercel *)",
+      "Bash(vercel link *)",
+      "Bash(vercel --prod --yes)",
+      "Bash(vercel inspect *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" https://paicio-a1omt8lto-librixtuslibroscls-projects.vercel.app)",
+      "Bash(curl -s https://paicio-a1omt8lto-librixtuslibroscls-projects.vercel.app)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" -L https://paicio.vercel.app)",
+      "Bash(curl -s -L https://paicio.vercel.app)",
+      "Bash(curl -s -o /dev/null -w \"%{redirect_url}\\\\n\" https://paicio.vercel.app)",
+      "Bash(vercel ls *)",
+      "Bash(curl *)",
+      "Bash(pkill -f \"vite preview\")",
+      "Bash(pkill -f \"4317\")",
+      "Bash(git commit -m 'feat: pantalla de introducción explicando de qué se trata PAICIO *)",
+      "WebSearch",
+      "Bash(git commit -m 'feat: gráficos de tendencia educativos con cifras históricas reales *)",
+      "Bash(git commit -m 'feat: botón home global + optimización de imágenes \\(PNG→WebP\\) *)",
+      "Bash(xargs basename)",
+      "Bash(git commit -m 'feat: mensajero de feedback para testers + buzón privado *)",
+      "Bash(git commit -m 'feat: intro nueva \\(misión/curiosidad\\) + badge de versión y novedades *)"
+    ]
+  }
+}
