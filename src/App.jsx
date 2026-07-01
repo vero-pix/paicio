@@ -6,6 +6,7 @@ import { episodesById } from './data/episodes/index.js'
 import { portraits } from './assets/portraits.js'
 
 import Intro from './components/Intro.jsx'
+import WelcomeOverlay from './components/WelcomeOverlay.jsx'
 import EpisodeSelect from './components/EpisodeSelect.jsx'
 import InflationTicker from './components/InflationTicker.jsx'
 import Cell from './components/Cell.jsx'
@@ -69,6 +70,26 @@ export default function App() {
     setShowIntro(false)
   }
 
+  // Capa de bienvenida para testers: se muestra una vez por navegador. Al
+  // entrar, marca también la intro como vista para no encimar dos portones.
+  const [showWelcome, setShowWelcome] = useState(() => {
+    try {
+      return localStorage.getItem('paicio.welcome.v1') !== '1'
+    } catch {
+      return true
+    }
+  })
+  function dismissWelcome() {
+    try {
+      localStorage.setItem('paicio.welcome.v1', '1')
+      localStorage.setItem('paicio.introSeen', '1')
+    } catch {
+      /* localStorage no disponible: no es crítico */
+    }
+    setShowWelcome(false)
+    setShowIntro(false)
+  }
+
   // El ticker corre durante negociación y propuesta; se congela en celda y desenlace.
   const tickerActive = state.phase === 'negotiation' || state.phase === 'policy'
   const ticker = episode?.ticker
@@ -91,6 +112,7 @@ export default function App() {
   if (state.phase === 'select' || !episode) {
     return (
       <div className="min-h-full">
+        {showWelcome && <WelcomeOverlay onEnter={dismissWelcome} />}
         {showIntro ? (
           <Intro onEnter={dismissIntro} />
         ) : (
@@ -113,6 +135,7 @@ export default function App() {
 
   return (
     <div className="min-h-full">
+      {showWelcome && <WelcomeOverlay onEnter={dismissWelcome} />}
       {/* Barra de navegación: volver al menú de episodios desde cualquier fase. */}
       <div className="mx-auto flex max-w-md items-center px-3 pt-3 pb-1">
         <button
