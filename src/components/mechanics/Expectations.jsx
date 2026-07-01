@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { portraits } from '../../assets/portraits.js'
 import EducationalTooltip from '../EducationalTooltip.jsx'
 import { sfx } from '../../lib/sound.js'
+import { useScreenFx } from '../../lib/animations.js'
+import Meter from './Meter.jsx'
 import {
   initExpectations,
   playRound,
@@ -17,31 +19,6 @@ import {
 // expectativas solo funciona con credibilidad; los congelamientos rebotan.
 // ─────────────────────────────────────────────────────────────────────────
 
-// Medidor. `goodWhenLow` invierte la escala de color (para Expectativas).
-function Meter({ label, value, hint, goodWhenLow = false }) {
-  const good = goodWhenLow ? value <= 35 : value >= 55
-  const mid = goodWhenLow ? value <= 60 : value >= 28
-  const tone = good ? 'bg-positive' : mid ? 'bg-paper-dim' : 'bg-crisis'
-  const num = good ? 'text-positive' : mid ? 'text-paper' : 'text-crisis'
-  return (
-    <div>
-      <div className="flex items-baseline justify-between">
-        <span className="font-mono text-[0.62rem] uppercase tracking-wide text-paper-dim">
-          {label}
-        </span>
-        <span className={`font-mono text-sm tabular-nums ${num}`}>{Math.round(value)}</span>
-      </div>
-      <div className="mt-1 h-2.5 overflow-hidden rounded-full bg-ink">
-        <div
-          className={`h-full rounded-full ${tone}`}
-          style={{ width: `${Math.max(0, Math.min(100, value))}%`, transition: 'width 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        />
-      </div>
-      {hint && <p className="mt-1 font-mono text-[0.54rem] text-paper-dim/70">{hint}</p>}
-    </div>
-  )
-}
-
 export default function Expectations({ episode, onComplete, onConceptSeen }) {
   const cfg = episode.expectations
   const prisonersById = useMemo(
@@ -51,24 +28,36 @@ export default function Expectations({ episode, onComplete, onConceptSeen }) {
 
   const [state, setState] = useState(() => initExpectations(cfg))
   const [report, setReport] = useState(null)
+  const [picked, setPicked] = useState(null)
+  const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
 
   function elegir(accion) {
     if (over || !accionDisponible(state, accion)) return
     sfx('click')
+    setPicked(accion.id)
+    setTimeout(() => setPicked(null), 260)
     const { state: next, report: rep } = playRound(state, cfg, accion)
     setState(next)
     setReport(rep)
     const bad = (s) => s.expectativas >= 70 || s.credibilidad <= 30
-    if (bad(next) && !bad(state)) sfx('alert')
-    else if (!bad(next) && !isOver(next, cfg)) sfx('advance')
+    if (bad(next) && !bad(state)) {
+      sfx('alert')
+      trigger('shake')
+    } else if (!bad(next) && !isOver(next, cfg)) {
+      sfx('advance')
+      trigger('flash')
+    }
   }
 
   const tier = over ? outcomeTier(state, cfg) : null
   const advisor = report ? prisonersById[report.advisor] : null
 
   return (
-    <div className="grain relative mx-auto max-w-md px-5 py-6">
+    <div className={`grain relative mx-auto max-w-md px-5 py-6 ${fx === 'shake' ? 'animate-shake' : ''}`}>
+      {fx === 'flash' && (
+        <div className="animate-flash-green pointer-events-none fixed inset-0 z-40 bg-positive" aria-hidden />
+      )}
       <div className="relative z-10">
         <h2 className="font-display text-2xl font-black text-paper">La Inercia</h2>
         <p className="mt-2 font-body text-[0.88rem] leading-snug text-paper-dim">{cfg.intro}</p>
@@ -132,7 +121,7 @@ export default function Expectations({ episode, onComplete, onConceptSeen }) {
             <p className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim">
               ¿Qué haces este mes?
             </p>
-            {cfg.acciones.map((a) => {
+            {cfg.acciones.map((a, i) => {
               const disp = accionDisponible(state, a)
               return (
                 <button
@@ -140,10 +129,13 @@ export default function Expectations({ episode, onComplete, onConceptSeen }) {
                   type="button"
                   disabled={!disp}
                   onClick={() => elegir(a)}
-                  className={`block w-full rounded-md border p-3 text-left transition-all ${
-                    disp
-                      ? 'border-edge bg-cell/80 hover:border-paper-dim active:scale-[0.99]'
-                      : 'cursor-not-allowed border-edge/50 bg-cell/30 opacity-45'
+                  style={{ animationDelay: `${i * 0.09}s` }}
+                  className={`animate-fade-up block w-full rounded-md border p-3 text-left transition-all ${
+                    picked === a.id
+                      ? 'border-paper bg-cell'
+                      : disp
+                        ? 'border-edge bg-cell/80 hover:border-paper-dim active:scale-[0.99]'
+                        : 'cursor-not-allowed border-edge/50 bg-cell/30 opacity-45'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">

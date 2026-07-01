@@ -105,7 +105,8 @@ export default function SequenceChoice({ episode, allies = [], onComplete, onCon
           {ordered.map((action, idx) => (
             <div
               key={action.id}
-              className={`flex items-center gap-3 rounded-md border px-4 py-3 transition-all ${
+              style={{ animationDelay: `${idx * 0.09}s` }}
+              className={`animate-fade-up flex items-center gap-3 rounded-md border px-4 py-3 transition-all ${
                 dragging === idx
                   ? 'border-crisis/70 bg-crisis/15'
                   : 'border-edge bg-cell/80 hover:border-paper-dim'

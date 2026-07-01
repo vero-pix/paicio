@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { sfx } from '../lib/sound.js'
+import { useTypewriter } from '../lib/animations.js'
 
 // Fase 1: la celda. Periódico en el suelo con el titular de la crisis,
 // narración en primera persona, y el botón para comenzar a negociar.
@@ -16,6 +17,9 @@ export default function Cell({ episode, onStart }) {
     sfx('newspaper')
   }, [])
 
+  // El titular aparece letra a letra (máquina de escribir).
+  const head = useTypewriter(newspaper.headline, 28)
+
   // Ep3: el titular muestra éxito pero la narración revela el colapso.
   // El botón inicial dice "Revisar los números" en vez de "Evaluar situación".
   const evalLabel = startsAtTop ? 'Revisar los números →' : 'Evaluar situación'
@@ -24,32 +28,35 @@ export default function Cell({ episode, onStart }) {
   return (
     <div className="grain vignette relative mx-auto min-h-[70vh] max-w-md px-5 py-8">
       <div className="relative z-10">
-        {/* Periódico en el suelo */}
-        <div
-          className={`animate-fade-up rounded-sm border border-edge bg-paper px-4 py-4 text-ink shadow-2xl shadow-black/60 ${
-            startsAtTop ? 'rotate-[1deg]' : 'rotate-[-1.5deg]'
-          }`}
-        >
-          <div className="flex items-center justify-between border-b-2 border-ink pb-1">
-            <span className="font-display text-[0.7rem] font-bold uppercase tracking-[0.2em]">
-              {newspaper.name}
-            </span>
-            <span className="font-mono text-[0.6rem]">{newspaper.number}</span>
-          </div>
-          <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-wider text-ink/70">
-            {newspaper.dateline}
-          </p>
-          {/* Ep3: titular de éxito en verde positivo; resto en rojo crisis */}
-          <h1
-            className={`mt-2 font-display text-xl font-black leading-tight ${
-              startsAtTop && !evaluating ? 'text-positive' : 'text-crisis'
+        {/* Periódico en el suelo — cae desde arriba al entrar */}
+        <div className="animate-drop-in">
+          <div
+            className={`rounded-sm border border-edge bg-paper px-4 py-4 text-ink shadow-2xl shadow-black/60 ${
+              startsAtTop ? 'rotate-[1deg]' : 'rotate-[-1.5deg]'
             }`}
           >
-            {newspaper.headline}
-          </h1>
-          <p className="mt-2 border-t border-ink/30 pt-2 font-body text-[0.8rem] italic leading-snug text-ink/80">
-            {newspaper.subhead}
-          </p>
+            <div className="flex items-center justify-between border-b-2 border-ink pb-1">
+              <span className="font-display text-[0.7rem] font-bold uppercase tracking-[0.2em]">
+                {newspaper.name}
+              </span>
+              <span className="font-mono text-[0.6rem]">{newspaper.number}</span>
+            </div>
+            <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-wider text-ink/70">
+              {newspaper.dateline}
+            </p>
+            {/* Ep3: titular de éxito en verde positivo; resto en rojo crisis */}
+            <h1
+              className={`mt-2 font-display text-xl font-black leading-tight ${
+                startsAtTop && !evaluating ? 'text-positive' : 'text-crisis'
+              }`}
+            >
+              {head.shown}
+              {!head.done && <span className="animate-blink">▍</span>}
+            </h1>
+            <p className="mt-2 border-t border-ink/30 pt-2 font-body text-[0.8rem] italic leading-snug text-ink/80">
+              {newspaper.subhead}
+            </p>
+          </div>
         </div>
 
         {/* Narración */}
