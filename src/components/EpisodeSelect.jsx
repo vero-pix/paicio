@@ -1,4 +1,5 @@
 import { episodes } from '../data/episodes/index.js'
+import VersionBadge from './VersionBadge.jsx'
 
 // Pantalla inicial: selector de episodios. El 1 es jugable; 2-5 están bloqueados
 // ("Próximamente") y funcionan como gancho de serie.
@@ -71,6 +72,8 @@ export default function EpisodeSelect({ onSelect, onShowIntro }) {
         <p className="mt-8 text-center font-mono text-[0.56rem] uppercase tracking-[0.2em] text-paper-dim/50">
           Teoría de juegos · Historia económica · Toma de decisiones
         </p>
+
+        <VersionBadge />
       </div>
     </div>
   )

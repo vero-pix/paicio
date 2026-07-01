@@ -4,20 +4,16 @@
 export default function Intro({ onEnter }) {
   const beats = [
     {
-      label: 'La situación',
-      text: 'Eres el Ministro de Economía de Paicio, un país que no existe. Sus crisis, en cambio, sí existieron.',
-    },
-    {
-      label: 'Estás preso',
-      text: 'El presidente te culpó del desastre y te encerró. Desde la celda tienes que negociar tu salida y elegir la política que salvará —o hundirá— al país.',
+      label: 'El desafío',
+      text: 'Una economía se derrumba y todos te miran a ti. ¿Puedes sacar a Paicio adelante?',
     },
     {
       label: 'Cinco crisis reales',
-      text: 'La hiperinflación de Weimar, el corralito argentino, el milagro chileno, la década perdida de Brasil y el Plan Real. Cada episodio recrea una crisis que de verdad pasó.',
+      text: 'Hiperinflación, corralito, burbujas, inflación que no para. Un país ficticio; crisis que sí pasaron.',
     },
     {
-      label: 'Cada decisión enseña',
-      text: 'Teoría de juegos, inflación, deuda, el dilema del prisionero. No hay respuestas fáciles: vas a ver las consecuencias de lo que elijas.',
+      label: 'Tú decides',
+      text: 'Heredas el desastre y tomas las decisiones que tomaron ministros de verdad — y entiendes por qué salió como salió.',
     },
   ]
 
@@ -59,7 +55,7 @@ export default function Intro({ onEnter }) {
           className="animate-fade-up mt-11 w-full rounded-sm border border-crisis bg-crisis/15 px-5 py-3.5 font-display text-base font-semibold tracking-wide text-paper transition-all hover:bg-crisis/25 active:scale-[0.99]"
           style={{ animationDelay: `${0.15 + beats.length * 0.12}s` }}
         >
-          Entrar a la celda →
+          Empezar →
         </button>
 
         <p
