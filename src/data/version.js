@@ -15,7 +15,7 @@ export const NOVEDADES = [
       'La pantalla de decisión estrena look: medidores tipo barra de vida, el precio del pan como cifra protagonista y botones táctiles con relieve.',
       'El desenlace se rediseñó como veredicto compartible: estrellas, tus puntajes y la comparación entre lo que pasó de verdad y tu partida.',
       'Nueva bienvenida y onboarding con la moneda-$ de marca, y toda la navegación al mismo estilo claro.',
-      'Es un adelanto por etapas: falta migrar las pantallas de decisión de los otros cuatro episodios; llegan en las próximas versiones.',
+      'Las cinco crisis ya se juegan en el estilo nuevo: la corrida bancaria, la defensa de la paridad, la inercia y el puzzle del Plan Real estrenan medidores, botones táctiles y tarjetas claras.',
     ],
   },
   {
