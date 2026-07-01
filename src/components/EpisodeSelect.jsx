@@ -1,8 +1,9 @@
 import { episodes } from '../data/episodes/index.js'
 import VersionBadge from './VersionBadge.jsx'
+import EpisodeMotif from './EpisodeMotif.jsx'
 
-// Pantalla inicial: selector de episodios. El 1 es jugable; 2-5 están bloqueados
-// ("Próximamente") y funcionan como gancho de serie.
+// Pantalla inicial: selector de episodios. Todos jugables; cada tarjeta lleva su
+// viñeta grabada (EpisodeMotif) como firma visual de la crisis.
 export default function EpisodeSelect({ onSelect, onShowIntro }) {
   return (
     <div className="grain vignette relative mx-auto min-h-[80vh] max-w-md px-5 py-10">
@@ -44,16 +45,24 @@ export default function EpisodeSelect({ onSelect, onShowIntro }) {
               style={{ animationDelay: `${i * 0.07}s` }}
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-paper-dim">
-                    Episodio {ep.numero} · {ep.año} · {ep.paisReferencia}
-                  </p>
-                  <h2 className="mt-1 font-display text-lg font-bold leading-tight text-paper">
-                    {ep.titulo}
-                  </h2>
-                  <p className="mt-1 font-body text-[0.8rem] leading-snug text-paper/80">
-                    {ep.resumen}
-                  </p>
+                <div className="flex min-w-0 items-start gap-3">
+                  <EpisodeMotif
+                    id={ep.id}
+                    className={`mt-0.5 h-11 w-11 shrink-0 ${
+                      ep.bloqueado ? 'text-paper-dim/60' : 'text-crisis/85'
+                    }`}
+                  />
+                  <div className="min-w-0">
+                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-paper-dim">
+                      Episodio {ep.numero} · {ep.año} · {ep.paisReferencia}
+                    </p>
+                    <h2 className="mt-1 font-display text-lg font-bold leading-tight text-paper">
+                      {ep.titulo}
+                    </h2>
+                    <p className="mt-1 font-body text-[0.8rem] leading-snug text-paper/80">
+                      {ep.resumen}
+                    </p>
+                  </div>
                 </div>
                 <span
                   className={`shrink-0 rounded-sm border px-2 py-1 font-mono text-[0.58rem] uppercase tracking-wide ${

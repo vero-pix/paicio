@@ -100,11 +100,13 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
               label="Inflación"
               value={state.inflacion}
               goodWhenLow
+              variant="flame"
               hint="Imprimir la sube, y cada vez más rápido. Si llega al máximo, el Marco es papel."
             />
             <Meter
               label="Apoyo del pueblo"
               value={state.apoyo}
+              variant="crowd"
               hint="Baja con la inflación y con la austeridad. Si llega a 0, te derrocan."
             />
           </div>
