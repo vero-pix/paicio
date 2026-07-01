@@ -54,6 +54,8 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
     }
   }
 
+  // Escalada ambiental: 0 (calma) → 1 (colapso). El mundo se enrarece con la inflación.
+  const decay = Math.max(0, Math.min(1, (state.inflacion - 25) / 70))
   const tier = over ? outcomeTier(state, cfg) : null
   const advisor = report ? prisonersById[report.advisor] : null
   const normales = cfg.acciones.filter((a) => a.id !== 'reforma')
@@ -61,6 +63,27 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
 
   return (
     <div className={`grain relative mx-auto max-w-md px-5 py-6 ${fx === 'shake' ? 'animate-shake' : ''}`}>
+      {/* Escalada ambiental — halo rojizo que oscurece los bordes con la inflación */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          background: `radial-gradient(ellipse at 50% 30%, transparent ${(54 - 14 * decay).toFixed(0)}%, rgba(72,10,6,${(0.6 * decay).toFixed(3)}) 100%)`,
+          transition: 'background 0.9s ease-out',
+        }}
+      />
+      {/* Grano que se intensifica al enrarecerse el aire */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          opacity: Number((0.55 * decay).toFixed(3)),
+          mixBlendMode: 'overlay',
+          transition: 'opacity 0.9s ease-out',
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
       {fx === 'flash' && (
         <div className="animate-flash-green pointer-events-none fixed inset-0 z-40 bg-positive" aria-hidden />
       )}
