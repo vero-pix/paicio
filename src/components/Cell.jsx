@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { sfx } from '../lib/sound.js'
 
 // Fase 1: la celda. Periódico en el suelo con el titular de la crisis,
 // narración en primera persona, y el botón para comenzar a negociar.
@@ -9,6 +10,11 @@ import { useState } from 'react'
 export default function Cell({ episode, onStart }) {
   const [evaluating, setEvaluating] = useState(false)
   const { newspaper, startsAtTop } = episode
+
+  // Impacto de "periódico" al cargar la pantalla del Heraldo.
+  useEffect(() => {
+    sfx('newspaper')
+  }, [])
 
   // Ep3: el titular muestra éxito pero la narración revela el colapso.
   // El botón inicial dice "Revisar los números" en vez de "Evaluar situación".

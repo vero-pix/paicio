@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useGameState } from './hooks/useGameState.js'
+import { playMusic, stopMusic } from './lib/sound.js'
 import { useInflation } from './hooks/useInflation.js'
 import { episodesById } from './data/episodes/index.js'
 import { portraits } from './assets/portraits.js'
@@ -34,6 +35,18 @@ export default function App() {
     () => Object.fromEntries(prisoners.map((p) => [p.id, p])),
     [prisoners],
   )
+
+  // Música: una pista por episodio (fade in al entrar, fade out al menú).
+  // Se apoya en el motor de sonido; nunca toca el estado del juego.
+  useEffect(() => {
+    if (state.phase === 'select' || !state.episodeId) {
+      playMusic('menu')
+    } else {
+      playMusic(state.episodeId)
+    }
+    return undefined
+  }, [state.phase, state.episodeId])
+  useEffect(() => () => stopMusic(), [])
 
   // Id del prisionero con el que se está negociando (modal abierto).
   const [negotiating, setNegotiating] = useState(null)

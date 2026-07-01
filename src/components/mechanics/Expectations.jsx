@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { portraits } from '../../assets/portraits.js'
 import EducationalTooltip from '../EducationalTooltip.jsx'
+import { sfx } from '../../lib/sound.js'
 import {
   initExpectations,
   playRound,
@@ -54,9 +55,13 @@ export default function Expectations({ episode, onComplete, onConceptSeen }) {
 
   function elegir(accion) {
     if (over || !accionDisponible(state, accion)) return
+    sfx('click')
     const { state: next, report: rep } = playRound(state, cfg, accion)
     setState(next)
     setReport(rep)
+    const bad = (s) => s.expectativas >= 70 || s.credibilidad <= 30
+    if (bad(next) && !bad(state)) sfx('alert')
+    else if (!bad(next) && !isOver(next, cfg)) sfx('advance')
   }
 
   const tier = over ? outcomeTier(state, cfg) : null
