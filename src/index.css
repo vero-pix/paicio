@@ -182,3 +182,37 @@ body {
   outline: 2px solid var(--color-paper);
   outline-offset: 2px;
 }
+
+/* ── Héroe de hiperinflación (BreadCounter) ─────────────────────────── */
+
+/* Brasa que sube desde los billetes ardiendo. */
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-52px) translateX(var(--ember-dx, 0)) scale(0.3);
+  }
+}
+
+/* Salto del precio del pan al encender la imprenta. */
+@keyframes price-surge {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.13);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-price-surge {
+  animation: price-surge 0.45s ease-out;
+  display: inline-block;
+}

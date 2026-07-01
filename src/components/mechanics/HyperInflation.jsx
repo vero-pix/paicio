@@ -4,13 +4,14 @@ import EducationalTooltip from '../EducationalTooltip.jsx'
 import { sfx } from '../../lib/sound.js'
 import { useScreenFx } from '../../lib/animations.js'
 import Meter from './Meter.jsx'
+import BreadCounter from './BreadCounter.jsx'
+import ActionIcon from '../icons/ActionIcon.jsx'
 import {
   initHyperinflation,
   playMonth,
   isOver,
   outcomeTier,
   accionDisponible,
-  precioPan,
 } from '../../utils/hyperinflation.js'
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -19,8 +20,6 @@ import {
 // Dos medidores (inflación invertida + apoyo). Imprimir dinero paga las cuentas
 // pero acelera la espiral; la salida es la reforma monetaria a tiempo.
 // ─────────────────────────────────────────────────────────────────────────
-
-const fmtPrecio = (n) => n.toLocaleString('es-CL')
 
 export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
   const cfg = episode.hyperinflation
@@ -32,6 +31,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
   const [state, setState] = useState(() => initHyperinflation(cfg))
   const [report, setReport] = useState(null)
   const [picked, setPicked] = useState(null)
+  const [surge, setSurge] = useState(0) // dispara el salto del precio en el héroe
   const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
 
@@ -40,6 +40,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
     sfx('click')
     setPicked(accion.id)
     setTimeout(() => setPicked(null), 260)
+    if (accion.id === 'imprimir') setSurge((s) => s + 1)
     const { state: next, report: rep } = playMonth(state, cfg, accion)
     setState(next)
     setReport(rep)
@@ -74,14 +75,24 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
           />
         </div>
 
+        {/* Héroe: el precio del pan como centro dramático */}
+        <div className="mt-4">
+          <BreadCounter
+            inflacion={state.inflacion}
+            surgeKey={surge}
+            reformed={state.reformaExitosa}
+            collapsed={state.colapso}
+          />
+        </div>
+
         {/* Tablero */}
-        <div className="mt-5 rounded-md border border-edge bg-cell-2/60 p-4">
+        <div className="mt-4 rounded-md border border-edge bg-cell-2/60 p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim">
               {over ? 'Fin de la crisis' : `Mes ${state.mes} de ${cfg.meses}`}
             </span>
-            <span className="font-mono text-[0.6rem] text-ticker">
-              🍞 {fmtPrecio(precioPan(state.inflacion))} Marcos
+            <span className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim/70">
+              Impresiones: {state.vecesImpreso}
             </span>
           </div>
           <div className="space-y-3">
@@ -142,8 +153,9 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="font-display text-[0.95rem] font-semibold text-paper">
-                      {a.icon} {a.name}
+                    <p className="flex items-center gap-2 font-display text-[0.95rem] font-semibold text-paper">
+                      <ActionIcon id={a.id} className="h-[18px] w-[18px] shrink-0 text-[#c9a24b]" />
+                      {a.name}
                     </p>
                     <span className="shrink-0 font-mono text-[0.54rem] uppercase tracking-wide text-paper-dim">
                       {a.usos != null ? (disp ? `${a.usos - (state.usos[a.id] ?? 0)} uso` : 'usado') : ''}
@@ -161,10 +173,13 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
                 onClick={() => elegir(reforma)}
                 className="block w-full rounded-md border border-crisis bg-crisis/15 p-3 text-left transition-all hover:bg-crisis/25 active:scale-[0.99]"
               >
-                <p className="font-display text-[0.95rem] font-semibold text-paper">
-                  {reforma.icon} {reforma.name}{' '}
-                  <span className="font-mono text-[0.54rem] uppercase tracking-wide text-crisis">
-                    · termina la crisis
+                <p className="flex items-center gap-2 font-display text-[0.95rem] font-semibold text-paper">
+                  <ActionIcon id={reforma.id} className="h-[18px] w-[18px] shrink-0 text-crisis" />
+                  <span>
+                    {reforma.name}{' '}
+                    <span className="font-mono text-[0.54rem] uppercase tracking-wide text-crisis">
+                      · termina la crisis
+                    </span>
                   </span>
                 </p>
                 <p className="mt-1 font-body text-[0.78rem] leading-snug text-paper-dim">
