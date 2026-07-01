@@ -11,8 +11,9 @@ export const NOVEDADES = [
     cambios: [
       'Nueva dirección visual (rediseño LatAm): más luminosa, cálida y táctil, tipo juego casual.',
       'El selector ahora es un "Mapa de crisis": un camino de niveles con cada episodio como su propia moneda de color.',
+      'Cada crisis parte con un briefing luminoso: el dato clave del momento, tu misión y la provocación de quien te deja el cargo.',
       'La pantalla de decisión estrena look: medidores tipo barra de vida, el precio del pan como cifra protagonista y botones táctiles con relieve.',
-      'Es un adelanto por etapas: por ahora el mapa y la decisión de la hiperinflación; las demás pantallas migran en las próximas versiones.',
+      'Es un adelanto por etapas: por ahora el mapa, la intro y la decisión; las demás pantallas migran en las próximas versiones.',
     ],
   },
   {
