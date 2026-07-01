@@ -13,7 +13,8 @@ export const NOVEDADES = [
       'El selector ahora es un "Mapa de crisis": un camino de niveles con cada episodio como su propia moneda de color.',
       'Cada crisis parte con un briefing luminoso: el dato clave del momento, tu misión y la provocación de quien te deja el cargo.',
       'La pantalla de decisión estrena look: medidores tipo barra de vida, el precio del pan como cifra protagonista y botones táctiles con relieve.',
-      'Es un adelanto por etapas: por ahora el mapa, la intro y la decisión; las demás pantallas migran en las próximas versiones.',
+      'El desenlace se rediseñó como veredicto compartible: estrellas, tus puntajes y la comparación entre lo que pasó de verdad y tu partida.',
+      'Es un adelanto por etapas: por ahora el mapa, la intro, la decisión y el desenlace; el resto migra en las próximas versiones.',
     ],
   },
   {

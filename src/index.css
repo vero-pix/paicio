@@ -24,7 +24,10 @@
   --animate-slow-pulse: slow-pulse 2.4s ease-in-out infinite;
   --animate-pulse-red: pulse-red 0.7s ease-out;
   --animate-shake: shake 0.3s ease-in-out;
-  --animate-flash-green: flash-green 0.5s ease-out;
+  /* `forwards`: al terminar queda en su último keyframe (opacity:0), así el
+     overlay nunca se queda verde si el fx tarda en limpiarse (p. ej. la pestaña
+     en segundo plano posterga el rAF que activa el flash). */
+  --animate-flash-green: flash-green 0.5s ease-out forwards;
   --animate-drop-in: drop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   /* ── Rediseño LatAm (casual · cálido · táctil) ────────────────────────
