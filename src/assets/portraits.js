@@ -1,12 +1,14 @@
-// Retratos de los personajes (grabados estilo vintage generados con IA).
-// Mapeados por id de prisionero para usarlos en toda la interfaz.
+// Retratos de los personajes. Mapeados por id de prisionero para usarlos en
+// toda la interfaz. Los episodios 2-5 usan los grabados vintage; el Episodio 1
+// (Bolivia) estrena retratos ilustrados nuevos (estilo mascota, con disco de
+// color de fondo que el marco-moneda dorado recorta en círculo).
 
-// ── Episodio 1 ──────────────────────────────────────────────────────────
-import marcos from './don-marcos.webp'
-import rosa from './gladys.webp'
-import fondo from './senor-fondo.webp'
-import comerciante from './comerciante.webp'
-import presidente from './presidente.webp'
+// ── Episodio 1 (Bolivia) ────────────────────────────────────────────────
+import marcos from './don-marcos.png'
+import rosa from './gladys.png'
+import fondo from './senor-fondo.png'
+import comerciante from './comerciante.png'
+import presidente from './el-presidente.png'
 
 // ── Episodio 2 ──────────────────────────────────────────────────────────
 import banquero2 from './banquero-ep2.webp'
