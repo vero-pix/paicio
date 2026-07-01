@@ -23,7 +23,7 @@ export default function Cell({ episode, onStart }) {
   // Ep3: el titular muestra éxito pero la narración revela el colapso.
   // El botón inicial dice "Revisar los números" en vez de "Evaluar situación".
   const evalLabel = startsAtTop ? 'Revisar los números →' : 'Evaluar situación'
-  const startLabel = startsAtTop ? 'Empezar a negociar →' : 'Empezar a negociar →'
+  const startLabel = 'Enfrentar la crisis →'
 
   return (
     <div className="grain vignette relative mx-auto min-h-[70vh] max-w-md px-5 py-8">
