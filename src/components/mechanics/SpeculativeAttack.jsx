@@ -4,6 +4,8 @@ import EducationalTooltip from '../EducationalTooltip.jsx'
 import { sfx } from '../../lib/sound.js'
 import { useScreenFx } from '../../lib/animations.js'
 import Meter from './Meter.jsx'
+import SpeculativeHero from './SpeculativeHero.jsx'
+import ActionIcon from '../icons/ActionIcon.jsx'
 import {
   initSpecAttack,
   playRound,
@@ -55,8 +57,34 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
   const defensivas = cfg.acciones.filter((a) => a.id !== 'devaluar')
   const devaluar = cfg.acciones.find((a) => a.id === 'devaluar')
 
+  // Escalada ambiental: reservas o empleo bajos → el aire se enrarece.
+  const decay = Math.max(
+    0,
+    Math.min(1, Math.max((45 - state.reservas) / 45, (40 - state.empleo) / 40)),
+  )
+
   return (
     <div className={`grain relative mx-auto max-w-md px-5 py-6 ${fx === 'shake' ? 'animate-shake' : ''}`}>
+      {/* Escalada ambiental — halo rojizo que crece con la sangría */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          background: `radial-gradient(ellipse at 50% 30%, transparent ${(54 - 14 * decay).toFixed(0)}%, rgba(72,10,6,${(0.6 * decay).toFixed(3)}) 100%)`,
+          transition: 'background 0.9s ease-out',
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          opacity: Number((0.55 * decay).toFixed(3)),
+          mixBlendMode: 'overlay',
+          transition: 'opacity 0.9s ease-out',
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
       {fx === 'flash' && (
         <div className="animate-flash-green pointer-events-none fixed inset-0 z-40 bg-positive" aria-hidden />
       )}
@@ -71,15 +99,27 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
           />
         </div>
 
+        {/* Héroe: la paridad bajo asedio */}
+        <div className="mt-4">
+          <SpeculativeHero
+            reservas={state.reservas}
+            dia={state.dia}
+            dias={cfg.dias}
+            devaluado={state.devaluado}
+            collapsed={state.colapso}
+            ordered={over && tier === 'perfect'}
+          />
+        </div>
+
         {/* Tablero */}
-        <div className="mt-5 rounded-md border border-edge bg-cell-2/60 p-4">
+        <div className="mt-4 rounded-md border border-edge bg-cell-2/60 p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim">
               {over ? 'Fin de la batalla cambiaria' : `Ronda ${state.dia} de ${cfg.dias}`}
             </span>
             {!over && (
               <span className="rounded-sm border border-paper-dim/50 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-paper-dim">
-                ⚔️ Paridad bajo ataque
+                Paridad bajo ataque
               </span>
             )}
           </div>
@@ -87,11 +127,13 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
             <Meter
               label="Reservas internacionales"
               value={state.reservas}
+              variant="vault"
               hint="La munición para defender la paridad. Si llegan a 0, devaluación caótica."
             />
             <Meter
               label="Empleo"
               value={state.empleo}
+              variant="crowd"
               hint="Subir las tasas defiende la moneda pero destruye empleo."
             />
           </div>
@@ -141,8 +183,9 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="font-display text-[0.95rem] font-semibold text-paper">
-                      {a.icon} {a.name}
+                    <p className="flex items-center gap-2 font-display text-[0.95rem] font-semibold text-paper">
+                      <ActionIcon id={a.id} className="h-[18px] w-[18px] shrink-0 text-[#c9a24b]" />
+                      {a.name}
                     </p>
                     <span className="shrink-0 font-mono text-[0.54rem] uppercase tracking-wide text-paper-dim">
                       {a.usos != null ? (disp ? `${a.usos - (state.usos[a.id] ?? 0)} uso` : 'usado') : ''}
@@ -160,10 +203,13 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
                 onClick={() => elegir(devaluar)}
                 className="block w-full rounded-md border border-crisis bg-crisis/15 p-3 text-left transition-all hover:bg-crisis/25 active:scale-[0.99]"
               >
-                <p className="font-display text-[0.95rem] font-semibold text-paper">
-                  {devaluar.icon} {devaluar.name}{' '}
-                  <span className="font-mono text-[0.54rem] uppercase tracking-wide text-crisis">
-                    · termina la crisis
+                <p className="flex items-center gap-2 font-display text-[0.95rem] font-semibold text-paper">
+                  <ActionIcon id={devaluar.id} className="h-[18px] w-[18px] shrink-0 text-crisis" />
+                  <span>
+                    {devaluar.name}{' '}
+                    <span className="font-mono text-[0.54rem] uppercase tracking-wide text-crisis">
+                      · termina la crisis
+                    </span>
                   </span>
                 </p>
                 <p className="mt-1 font-body text-[0.78rem] leading-snug text-paper-dim">

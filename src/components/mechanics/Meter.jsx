@@ -30,6 +30,15 @@ function VariantIcon({ variant }) {
         <path d="M15 17c0-2 1.5-3 3-3s3 1 3 3" />
       </svg>
     )
+  if (variant === 'vault')
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
+        strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 shrink-0" aria-hidden>
+        <ellipse cx="12" cy="6" rx="7" ry="2.6" />
+        <path d="M5 6v5c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V6" />
+        <path d="M5 11v5c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6v-5" />
+      </svg>
+    )
   return null
 }
 
@@ -37,6 +46,13 @@ const FILLS = {
   flame: 'linear-gradient(90deg, #e8a13a, var(--color-crisis))',
   crowd:
     'linear-gradient(90deg, var(--color-crisis), #c9a24b 55%, var(--color-positive))',
+  vault: 'linear-gradient(90deg, #6e4b12, #c9a24b 55%, #e8d5a3)',
+}
+
+const ICON_COLOR = {
+  flame: 'text-ticker',
+  crowd: 'text-paper-dim',
+  vault: 'text-[#c9a24b]',
 }
 
 export default function Meter({ label, value, hint, goodWhenLow = false, variant }) {
@@ -77,7 +93,7 @@ export default function Meter({ label, value, hint, goodWhenLow = false, variant
       <div className="flex items-baseline justify-between">
         <span className="flex items-center gap-1.5 font-mono text-[0.62rem] uppercase tracking-wide text-paper-dim">
           {variant && (
-            <span className={variant === 'flame' ? 'text-ticker' : 'text-paper-dim'}>
+            <span className={ICON_COLOR[variant] || 'text-paper-dim'}>
               <VariantIcon variant={variant} />
             </span>
           )}

@@ -216,3 +216,34 @@ body {
   animation: price-surge 0.45s ease-out;
   display: inline-block;
 }
+
+/* ── Escena de la corrida bancaria (BankRunHero) ─────────────────────── */
+
+/* Balanceo sutil de los ahorristas en la fila. */
+@keyframes queue-sway {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.2px);
+  }
+}
+
+/* Ep3 — golpe del ataque especulativo contra la paridad. */
+@keyframes attack-jab {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+}
+
+/* Ep4 — giro de la espiral de expectativas (velocidad vía inline duration). */
+@keyframes inertia-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

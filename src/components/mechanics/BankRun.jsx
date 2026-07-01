@@ -4,6 +4,8 @@ import EducationalTooltip from '../EducationalTooltip.jsx'
 import { sfx } from '../../lib/sound.js'
 import { useScreenFx } from '../../lib/animations.js'
 import Meter from './Meter.jsx'
+import BankRunHero from './BankRunHero.jsx'
+import ActionIcon from '../icons/ActionIcon.jsx'
 import {
   initBankRun,
   playDay,
@@ -54,8 +56,35 @@ export default function BankRun({ episode, onComplete, onConceptSeen }) {
   const tier = over ? outcomeTier(state, cfg) : null
   const advisor = report ? prisonersById[report.advisor] : null
 
+  // Escalada ambiental: peor confianza o reservas bajas → el aire se enrarece.
+  const decay = Math.max(
+    0,
+    Math.min(1, Math.max((55 - state.confianza) / 55, (45 - state.reservas) / 45)),
+  )
+  const calmed = state.confianza >= cfg.umbralCalma
+
   return (
     <div className={`grain relative mx-auto max-w-md px-5 py-6 ${fx === 'shake' ? 'animate-shake' : ''}`}>
+      {/* Escalada ambiental — halo rojizo que crece con el pánico */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          background: `radial-gradient(ellipse at 50% 30%, transparent ${(54 - 14 * decay).toFixed(0)}%, rgba(72,10,6,${(0.6 * decay).toFixed(3)}) 100%)`,
+          transition: 'background 0.9s ease-out',
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          opacity: Number((0.55 * decay).toFixed(3)),
+          mixBlendMode: 'overlay',
+          transition: 'opacity 0.9s ease-out',
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
       {fx === 'flash' && (
         <div className="animate-flash-green pointer-events-none fixed inset-0 z-40 bg-positive" aria-hidden />
       )}
@@ -72,15 +101,26 @@ export default function BankRun({ episode, onComplete, onConceptSeen }) {
           />
         </div>
 
+        {/* Héroe: la escena de la corrida */}
+        <div className="mt-4">
+          <BankRunHero
+            confianza={state.confianza}
+            corralito={state.corralito}
+            collapsed={state.colapso}
+            calmed={calmed}
+          />
+        </div>
+
         {/* Tablero: medidores + día */}
-        <div className="mt-5 rounded-md border border-edge bg-cell-2/60 p-4">
+        <div className="mt-4 rounded-md border border-edge bg-cell-2/60 p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim">
               {over ? 'Fin de la crisis' : `Día ${state.dia} de ${cfg.dias}`}
             </span>
             {state.corralito && (
-              <span className="rounded-sm border border-crisis/60 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-crisis">
-                🔒 Corralito activo
+              <span className="flex items-center gap-1 rounded-sm border border-crisis/60 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-crisis">
+                <ActionIcon id="corralito" className="h-3 w-3 shrink-0" />
+                Corralito activo
               </span>
             )}
           </div>
@@ -88,11 +128,13 @@ export default function BankRun({ episode, onComplete, onConceptSeen }) {
             <Meter
               label="Reservas del sistema"
               value={state.reservas}
+              variant="vault"
               hint="Si llegan a 0, los bancos quiebran."
             />
             <Meter
               label="Confianza del público"
               value={state.confianza}
+              variant="crowd"
               hint="Más confianza = menos gente corre a sacar su plata."
             />
           </div>
@@ -141,8 +183,9 @@ export default function BankRun({ episode, onComplete, onConceptSeen }) {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <p className="font-display text-[0.95rem] font-semibold text-paper">
-                      {a.icon} {a.name}
+                    <p className="flex items-center gap-2 font-display text-[0.95rem] font-semibold text-paper">
+                      <ActionIcon id={a.id} className="h-[18px] w-[18px] shrink-0 text-[#c9a24b]" />
+                      {a.name}
                     </p>
                     <span className="shrink-0 font-mono text-[0.54rem] uppercase tracking-wide text-paper-dim">
                       {a.usos != null

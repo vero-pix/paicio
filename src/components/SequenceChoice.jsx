@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { portraits } from '../assets/portraits.js'
 import { sfx } from '../lib/sound.js'
+import SequenceHero from './SequenceHero.jsx'
+import ActionIcon from './icons/ActionIcon.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // SequenceChoice — Fase 3 exclusiva del Episodio 5.
@@ -71,6 +73,11 @@ export default function SequenceChoice({ episode, allies = [], onComplete, onCon
           {sequence.intro}
         </p>
 
+        {/* Héroe: el puente de la URV */}
+        <div className="mt-4">
+          <SequenceHero />
+        </div>
+
         {/* Coalición actual */}
         <div className="mt-4 flex flex-wrap items-center gap-2">
           {allies.map((id) => {
@@ -119,8 +126,9 @@ export default function SequenceChoice({ episode, allies = [], onComplete, onCon
 
               {/* Icono y texto */}
               <div className="min-w-0 flex-1">
-                <p className="font-display text-sm font-semibold leading-tight text-paper">
-                  {action.icon} {action.name}
+                <p className="flex items-center gap-2 font-display text-sm font-semibold leading-tight text-paper">
+                  <ActionIcon id={action.id} className="h-4 w-4 shrink-0 text-[#c9a24b]" />
+                  {action.name}
                 </p>
                 <p className="mt-0.5 font-body text-[0.74rem] leading-snug text-paper-dim">
                   {action.description}
@@ -193,7 +201,8 @@ function ConfirmSequence({ ordered, onCancel, onConfirm }) {
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-paper-dim text-[0.6rem] font-bold text-paper-dim">
                 {idx + 1}
               </span>
-              {action.icon} {action.name}
+              <ActionIcon id={action.id} className="h-3.5 w-3.5 shrink-0 text-[#c9a24b]" />
+              {action.name}
             </li>
           ))}
         </ol>
