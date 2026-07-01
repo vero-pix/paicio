@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import FeedbackButton from './components/FeedbackButton.jsx'
+import SoundToggle from './components/SoundToggle.jsx'
 import Buzon from './components/Buzon.jsx'
 import './index.css'
 
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <>
         <App />
         <FeedbackButton />
+        <SoundToggle />
       </>
     )}
   </React.StrictMode>,

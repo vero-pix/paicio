@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { portraits } from '../assets/portraits.js'
+import { sfx } from '../lib/sound.js'
 
 // ─────────────────────────────────────────────────────────────────────────
 // SequenceChoice — Fase 3 exclusiva del Episodio 5.
@@ -40,6 +41,7 @@ export default function SequenceChoice({ episode, allies = [], onComplete, onCon
     const next = [...ordered]
     const target = idx + dir
     if (target < 0 || target >= next.length) return
+    sfx('click')
     ;[next[idx], next[target]] = [next[target], next[idx]]
     setOrdered(next)
   }
@@ -56,6 +58,7 @@ export default function SequenceChoice({ episode, allies = [], onComplete, onCon
   }
 
   function handleConfirm() {
+    sfx('advance')
     const outcome = getOutcome()
     onComplete(outcome.id)
   }
