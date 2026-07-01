@@ -261,23 +261,29 @@ export function playMusic(id) {
   stopMusic()
   currentId = id
 
-  // Intento 1: archivo real vía Howler. Si no existe, ambiente procedural.
+  // Intento 1: archivo real vía Howler (modo Web Audio: carga por XHR y
+  // dispara 'load' de forma fiable; los archivos son chicos). Si no existe o
+  // falla, cae al ambiente procedural.
   try {
     const howl = new Howl({
-      src: [`/audio/music/${id}.mp3`, `/audio/music/${id}.ogg`],
+      src: [`/audio/music/${id}.mp3`],
       loop: true,
-      html5: true,
+      html5: false,
       volume: 0,
       mute: prefs.muted,
     })
+    currentHowl = howl
     howl.once('load', () => {
-      if (currentId !== id) { howl.unload(); return }
-      currentHowl = howl
+      if (currentId !== id || currentHowl !== howl) {
+        howl.unload()
+        return
+      }
       howl.play()
       howl.fade(0, musicVol(), 1500)
     })
     howl.once('loaderror', () => {
-      // Sin archivo: usar el ambiente procedural.
+      // Sin archivo (o no carga): usar el ambiente procedural.
+      if (currentHowl === howl) currentHowl = null
       if (currentId === id) startAmbient(id)
     })
   } catch {
