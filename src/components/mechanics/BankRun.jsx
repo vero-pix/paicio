@@ -96,13 +96,13 @@ export default function BankRun({ episode, onComplete, onConceptSeen }) {
         <LifeBar variant="crowd" label="Confianza del público" value={state.confianza} />
       </div>
 
-      {report && advisor && (
+      {report && advisor && report.reaccion && (
         <AdvisorBubble
           portrait={portraits[advisor.id]}
           name={advisor.name}
           nameColor={acc.edge}
           subtitle={`retiro del día: −${report.retiro}`}
-          text={advisor.reaccion}
+          text={report.reaccion}
         />
       )}
 

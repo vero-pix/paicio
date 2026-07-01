@@ -97,12 +97,12 @@ export default function Expectations({ episode, onComplete, onConceptSeen }) {
         <LifeBar variant="crowd" label="Tu credibilidad" value={state.credibilidad} />
       </div>
 
-      {report && advisor && (
+      {report && advisor && report.reaccion && (
         <AdvisorBubble
           portrait={portraits[advisor.id]}
           name={advisor.name}
           nameColor={acc.edge}
-          text={advisor.reaccion}
+          text={report.reaccion}
         />
       )}
 

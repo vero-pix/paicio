@@ -26,7 +26,7 @@ export const concepts = {
   ancla: {
     title: 'Ancla monetaria',
     short: 'Atar la moneda a algo fijo (oro, otra divisa) para frenar la inflación.',
-    body: 'Si cada Marco está respaldado por oro, el gobierno ya no puede imprimir sin límite. Frena la inflación rápido, pero el ajuste suele traer recesión.',
+    body: 'Cuando la moneda tiene un ancla creíble —un tipo de cambio fijo, un respaldo o una regla firme—, el gobierno ya no puede imprimir sin límite. Frena la inflación rápido, pero el ajuste suele traer recesión.',
   },
   indexacion: {
     title: 'Indexación salarial',

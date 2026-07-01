@@ -99,13 +99,13 @@ export default function SpeculativeAttack({ episode, onComplete, onConceptSeen }
         <LifeBar variant="crowd" label="Empleo" value={state.empleo} />
       </div>
 
-      {report && advisor && (
+      {report && advisor && report.reaccion && (
         <AdvisorBubble
           portrait={portraits[advisor.id]}
           name={advisor.name}
           nameColor={acc.edge}
           subtitle={report.drenaje > 0 ? `reservas perdidas: −${report.drenaje}` : undefined}
-          text={advisor.reaccion}
+          text={report.reaccion}
         />
       )}
 

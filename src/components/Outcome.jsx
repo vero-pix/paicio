@@ -29,7 +29,7 @@ const CHIPS = [
 ]
 
 // Guiño de bandera por episodio (presentación).
-const FLAGS = { ep1: '🇩🇪', ep2: '🇦🇷', ep3: '🇨🇱', ep4: '🇧🇷', ep5: '🇧🇷' }
+const FLAGS = { ep1: '🇧🇴', ep2: '🇦🇷', ep3: '🇨🇱', ep4: '🇧🇷', ep5: '🇧🇷' }
 
 // Color de un score según su nivel.
 function scoreColor(v) {

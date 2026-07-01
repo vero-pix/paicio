@@ -330,9 +330,9 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
               {state.derrocado
                 ? 'El pueblo, harto de que el pan no alcance, te sacó del Ministerio.'
                 : state.colapso
-                  ? 'El Marco dejó de servir: la gente ya no lo acepta ni para empapelar.'
+                  ? 'El peso dejó de servir: la gente ya no lo acepta ni regalado.'
                   : state.reformo
-                    ? 'Lanzaste la moneda nueva. Veamos si el pueblo le creyó.'
+                    ? 'Aplicaste el plan de estabilización. Veamos si el pueblo le creyó.'
                     : 'Pasaron los meses. Es hora de ver qué quedó de Paicio.'}
             </p>
             <button
