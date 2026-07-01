@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.5.0'
+export const APP_VERSION = '0.6.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.6.0',
+    fecha: '30 jun 2026',
+    cambios: [
+      '¡PAICIO ahora suena! Música ambiente por episodio y efectos de sonido en las decisiones.',
+      'Botón 🔊 arriba a la derecha para silenciar/activar cuando quieras.',
+    ],
+  },
   {
     version: '0.5.0',
     fecha: '30 jun 2026',
