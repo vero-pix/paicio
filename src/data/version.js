@@ -2,9 +2,18 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.4.0'
+export const APP_VERSION = '0.5.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.5.0',
+    fecha: '30 jun 2026',
+    cambios: [
+      'El Episodio 1 (hiperinflación de Weimar) tiene mecánica nueva: manejas "La Imprenta" mes a mes. Imprimir paga hoy pero dispara los precios; la salida es el Rentenmark a tiempo.',
+      'Intro renovada y más clara sobre el objetivo del juego.',
+      'Botón "Actualizar" para traer siempre la última versión sin caché.',
+    ],
+  },
   {
     version: '0.4.0',
     fecha: '30 jun 2026',
