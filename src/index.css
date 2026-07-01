@@ -19,6 +19,10 @@
   --animate-fade-up: fade-up 0.5s ease-out both;
   --animate-fade-in: fade-in 0.6s ease-out both;
   --animate-slow-pulse: slow-pulse 2.4s ease-in-out infinite;
+  --animate-pulse-red: pulse-red 0.7s ease-out;
+  --animate-shake: shake 0.3s ease-in-out;
+  --animate-flash-green: flash-green 0.5s ease-out;
+  --animate-drop-in: drop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes blink {
@@ -54,6 +58,78 @@
   }
   50% {
     opacity: 0.6;
+  }
+}
+
+/* Pulso rojo de un KPI que cae fuerte (una sola vez). */
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(192, 57, 43, 0);
+  }
+  25% {
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(192, 57, 43, 0);
+  }
+}
+
+/* Sacudida sutil de pantalla ante un resultado negativo. */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+/* Flash verde muy sutil ante un resultado positivo. */
+@keyframes flash-green {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.16;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Caída del periódico al entrar a la pantalla del Heraldo. */
+@keyframes drop-in {
+  0% {
+    transform: translateY(-115%);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Respeta a quienes prefieren menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }
 

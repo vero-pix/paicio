@@ -62,6 +62,11 @@ function master() {
   return prefs.muted ? 0 : prefs.volume
 }
 
+// Volumen efectivo de la música: base por episodio escalada por el volumen global.
+function musicVol() {
+  return MUSIC_VOL * prefs.volume
+}
+
 function tone(freq, { type = 'sine', dur = 0.15, gain = 0.2, attack = 0.005, glideTo = null } = {}) {
   const c = ensureCtx()
   if (!c) return
@@ -136,6 +141,47 @@ export function sfx(name) {
   }
 }
 
+// Motivo musical del desenlace según el resultado ('perfect' | 'partial' | 'wrong').
+// Triunfal si salvaste al país; sombrío si colapsó.
+export function sting(tier) {
+  if (prefs.muted) return
+  const c = ensureCtx()
+  if (!c) return
+  const now = c.currentTime
+  const note = (freq, start, dur, gain = 0.14, type = 'triangle') => {
+    const osc = c.createOscillator()
+    const g = c.createGain()
+    osc.type = type
+    osc.frequency.setValueAtTime(freq, now + start)
+    const peak = gain * master()
+    g.gain.setValueAtTime(0.0001, now + start)
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0001, peak), now + start + 0.05)
+    g.gain.exponentialRampToValueAtTime(0.0001, now + start + dur)
+    osc.connect(g).connect(c.destination)
+    osc.start(now + start)
+    osc.stop(now + start + dur + 0.05)
+  }
+  try {
+    if (tier === 'perfect') {
+      // Triada mayor ascendente, cálida (do–mi–sol–do).
+      ;[[523, 0], [659, 0.14], [784, 0.28], [1046, 0.44]].forEach(([f, t]) =>
+        note(f, t, 1.0, 0.14, 'triangle'),
+      )
+    } else if (tier === 'wrong') {
+      // Acorde menor grave y sostenido + bajo que cae (sombrío).
+      ;[220, 262, 330].forEach((f) => note(f, 0, 1.6, 0.1, 'sawtooth'))
+      note(147, 0.6, 1.4, 0.12, 'sine')
+      note(110, 1.0, 1.4, 0.12, 'sine')
+    } else {
+      // Cadencia neutra, sin resolución clara.
+      note(392, 0, 0.8, 0.12, 'triangle')
+      note(523, 0.16, 0.9, 0.1, 'triangle')
+    }
+  } catch {
+    /* audio no disponible */
+  }
+}
+
 // ── Música ────────────────────────────────────────────────────────────────────
 // Ambiente procedural por episodio (fallback si no hay archivo). `root` en Hz,
 // `cutoff` del filtro, `q` de la resonancia — definen el "humor" de cada crisis.
@@ -177,7 +223,7 @@ function startAmbient(id) {
   const now = c.currentTime
   const gain = c.createGain()
   gain.gain.setValueAtTime(0.0001, now)
-  gain.gain.exponentialRampToValueAtTime(prefs.muted ? 0.0001 : MUSIC_VOL, now + 2.5)
+  gain.gain.exponentialRampToValueAtTime(prefs.muted ? 0.0001 : musicVol(), now + 2.5)
 
   const filter = c.createBiquadFilter()
   filter.type = 'lowpass'
@@ -228,7 +274,7 @@ export function playMusic(id) {
       if (currentId !== id) { howl.unload(); return }
       currentHowl = howl
       howl.play()
-      howl.fade(0, MUSIC_VOL, 1500)
+      howl.fade(0, musicVol(), 1500)
     })
     howl.once('loaderror', () => {
       // Sin archivo: usar el ambiente procedural.
@@ -257,13 +303,13 @@ export function stopMusic() {
 // ── Mute / volumen ────────────────────────────────────────────────────────────
 function applyVolumeToMusic() {
   const c = ctx
-  if (currentHowl) currentHowl.volume(prefs.muted ? 0 : MUSIC_VOL)
+  if (currentHowl) currentHowl.volume(prefs.muted ? 0 : musicVol())
   if (ambient && c) {
     const now = c.currentTime
     ambient.gain.gain.cancelScheduledValues(now)
     ambient.gain.gain.setValueAtTime(Math.max(0.0001, ambient.gain.gain.value), now)
     ambient.gain.gain.exponentialRampToValueAtTime(
-      prefs.muted ? 0.0001 : MUSIC_VOL,
+      prefs.muted ? 0.0001 : musicVol(),
       now + 0.4,
     )
   }
@@ -287,6 +333,7 @@ export function getVolume() {
 export function setVolume(v) {
   prefs.volume = Math.max(0, Math.min(1, v))
   savePrefs()
+  applyVolumeToMusic()
 }
 
 // ── Pausa al perder el foco de la pestaña ─────────────────────────────────────
@@ -302,7 +349,7 @@ if (typeof document !== 'undefined') {
       ambient.gain.gain.cancelScheduledValues(now)
       ambient.gain.gain.setValueAtTime(Math.max(0.0001, ambient.gain.gain.value), now)
       ambient.gain.gain.exponentialRampToValueAtTime(
-        hidden || prefs.muted ? 0.0001 : MUSIC_VOL,
+        hidden || prefs.muted ? 0.0001 : musicVol(),
         now + 0.5,
       )
     }

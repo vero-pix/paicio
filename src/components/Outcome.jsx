@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { portraits } from '../assets/portraits.js'
 import { episodes } from '../data/episodes/index.js'
 import TrendChart from './TrendChart.jsx'
+import { sting } from '../lib/sound.js'
+import { useScreenFx } from '../lib/animations.js'
 
 const DIMENSIONS = [
   { key: 'estabilidad', label: 'Estabilidad monetaria' },
@@ -117,13 +119,25 @@ export default function Outcome({
   const nextEpisode = episodes.slice(currentIdx + 1).find((e) => !e.bloqueado)
 
 
+  // Resultado global → tono del desenlace (audio + animación).
+  const resultKind = global >= 55 ? 'perfect' : global >= 42 ? 'partial' : 'wrong'
+  const { fx, trigger } = useScreenFx()
+
   useEffect(() => {
-    const t = setTimeout(() => setRevealed(true), 2800)
+    const t = setTimeout(() => {
+      setRevealed(true)
+      sting(resultKind)
+      if (resultKind === 'perfect') trigger('flash')
+      else if (resultKind === 'wrong') trigger('shake')
+    }, 2800)
     return () => clearTimeout(t)
-  }, [])
+  }, [resultKind])
 
   return (
-    <div className="grain relative mx-auto max-w-md px-5 py-6">
+    <div className={`grain relative mx-auto max-w-md px-5 py-6 ${fx === 'shake' ? 'animate-shake' : ''}`}>
+      {fx === 'flash' && (
+        <div className="animate-flash-green pointer-events-none fixed inset-0 z-40 bg-positive" aria-hidden />
+      )}
       <div className="relative z-10">
         {/* Gráfico de tendencia educativo (se dibuja durante el suspenso) */}
         <TrendChart curve={curve} config={episode.trendChart} />

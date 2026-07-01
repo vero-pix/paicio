@@ -38,11 +38,13 @@ export default function MechanicHost({ episode, allies, onComplete, onConceptSee
   }
 
   return (
-    <Mechanic
-      episode={episode}
-      allies={allies}
-      onComplete={onComplete}
-      onConceptSeen={onConceptSeen}
-    />
+    <div className="animate-fade-in">
+      <Mechanic
+        episode={episode}
+        allies={allies}
+        onComplete={onComplete}
+        onConceptSeen={onConceptSeen}
+      />
+    </div>
   )
 }
