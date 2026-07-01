@@ -2,9 +2,19 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.9.0'
+export const APP_VERSION = '0.10.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.10.0',
+    fecha: '1 jul 2026',
+    cambios: [
+      'Nueva dirección visual (rediseño LatAm): más luminosa, cálida y táctil, tipo juego casual.',
+      'El selector ahora es un "Mapa de crisis": un camino de niveles con cada episodio como su propia moneda de color.',
+      'La pantalla de decisión estrena look: medidores tipo barra de vida, el precio del pan como cifra protagonista y botones táctiles con relieve.',
+      'Es un adelanto por etapas: por ahora el mapa y la decisión de la hiperinflación; las demás pantallas migran en las próximas versiones.',
+    ],
+  },
   {
     version: '0.9.0',
     fecha: '1 jul 2026',

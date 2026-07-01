@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 
 @theme {
+  /* ── Paleta original (sepia / editorial) ──────────────────────────────
+     La usan aún las pantallas no migradas (celda, negociación, desenlace,
+     intro…). NO se elimina hasta terminar el rediseño de las 5 pantallas. */
   --color-ink: #1a1208;
   --color-cell: #2c1f10;
   --color-cell-2: #221809;
@@ -23,6 +26,50 @@
   --animate-shake: shake 0.3s ease-in-out;
   --animate-flash-green: flash-green 0.5s ease-out;
   --animate-drop-in: drop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  /* ── Rediseño LatAm (casual · cálido · táctil) ────────────────────────
+     Se agrega de forma aditiva mientras migramos pantalla por pantalla.
+     Los nombres que chocaban con la paleta sepia (ink/crisis) llevan sufijo
+     -warm / -hot para convivir sin romper lo antiguo. */
+  --color-cream: #f3e2c2; /* fondo de tablero / app */
+  --color-cream-hi: #fff3d8; /* degradado superior de pantalla */
+  --color-cream-lo: #fce7c0; /* degradado inferior de pantalla */
+  --color-panel: #fffbf3; /* tarjetas / paneles claros */
+  --color-surface: #ffffff; /* chips, tarjetas sobre pantalla */
+  --color-ink-warm: #3b2a17; /* texto principal (marrón, NO negro) */
+  --color-ink-soft: #8a7357; /* texto secundario */
+  --color-ink-mute: #b79a63; /* labels / captions */
+
+  /* Oro de marca (la moneda-$) */
+  --color-gold: #f5b331;
+  --color-gold-deep: #e0912a;
+  --color-gold-edge: #c77c1b;
+
+  /* Acento por episodio (face + edge = borde inferior 3D del botón candy) */
+  --color-bolivia: #f5a524;
+  --color-bolivia-edge: #d6871a;
+  --color-argentina: #4fa3e3;
+  --color-argentina-edge: #2f82c4;
+  --color-chile: #f06a54;
+  --color-chile-edge: #d24c39;
+  --color-brasilInercia: #a579e0;
+  --color-brasilInercia-edge: #8657c4;
+  --color-brasilReal: #35b98a;
+  --color-brasilReal-edge: #1f9a6e;
+
+  /* Semánticos del rediseño */
+  --color-good: #2fb37e;
+  --color-warn: #f5a524;
+  --color-crisis-hot: #e8604f;
+
+  --font-round: 'Fredoka', ui-rounded, system-ui, sans-serif;
+  --font-nunito: 'Nunito', system-ui, sans-serif;
+
+  --animate-bob: bob 3.4s ease-in-out infinite;
+  --animate-ring: ring 1.8s ease-out infinite;
+  --animate-pop: pop 0.5s ease-out;
+  --animate-rise: rise 0.9s ease-out forwards;
+  --animate-shake2: shake2 0.3s ease-in-out;
 }
 
 @keyframes blink {
@@ -246,4 +293,136 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   REDISEÑO LATAM — micro-interacciones y primitivas táctiles
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Flotación de la moneda-$ de bienvenida. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* Anillo pulsante del nodo actual en el mapa. */
+@keyframes ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Contador arcade: rebote al cambiar la cifra protagonista. */
+@keyframes pop {
+  0% {
+    transform: scale(0.9);
+  }
+  55% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* +N / −N que sube y se desvanece sobre un medidor tras una decisión. */
+@keyframes rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-26px);
+    opacity: 0;
+  }
+}
+
+/* Micro-sacudida del medidor afectado por una decisión. */
+@keyframes shake2 {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+/* Botón táctil "candy": labio inferior sólido (3D) que se hunde al presionar.
+   El color se inyecta por CSS var (--face / --edge) desde cada componente. */
+.candy {
+  border-radius: 16px;
+  font-family: var(--font-round);
+  font-weight: 700;
+  color: #fff;
+  background: var(--face, var(--color-gold));
+  box-shadow: 0 5px 0 var(--edge, var(--color-gold-edge));
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+.candy:not(:disabled):active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--edge, var(--color-gold-edge));
+}
+.candy:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+/* Variante suave (crema) para acciones secundarias. */
+.candy-soft {
+  --face: #f0dfb8;
+  --edge: #d9c08a;
+  color: #5a4327;
+}
+
+/* Moneda-$ de marca: reutilizable como sello y como marco de retratos. */
+.coin {
+  background: radial-gradient(
+    circle at 34% 28%,
+    #ffe9a8 0%,
+    #f7c24a 42%,
+    #e29a24 78%,
+    #c77c1b 100%
+  );
+  border: 3px solid #edae3e;
+  box-shadow:
+    inset 0 -4px 7px rgba(140, 80, 10, 0.45),
+    inset 0 3px 5px rgba(255, 255, 255, 0.6),
+    0 8px 16px rgba(199, 124, 27, 0.35);
+}
+
+/* Sombras del sistema. */
+.shadow-panel {
+  box-shadow:
+    0 10px 30px -14px rgba(150, 100, 30, 0.35),
+    inset 0 0 0 1px rgba(200, 160, 80, 0.18);
+}
+.shadow-card {
+  box-shadow: 0 6px 14px -8px rgba(150, 100, 30, 0.4);
+}
+.shadow-card-dark {
+  box-shadow: 0 12px 22px -12px rgba(40, 25, 5, 0.7);
+}
+
+/* Foco accesible sobre fondos claros del rediseño. */
+.on-cream *:focus-visible {
+  outline: 2px solid var(--color-gold-deep);
+  outline-offset: 2px;
 }
