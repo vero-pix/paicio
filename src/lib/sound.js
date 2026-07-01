@@ -115,15 +115,27 @@ const SFX = {
     noiseBurst({ dur: 0.03, gain: 0.35, freq: 2400, q: 0.8 })
     tone(180, { type: 'square', dur: 0.04, gain: 0.12 })
   },
-  // Alerta / tensión: dos tonos graves disonantes que suben apenas.
+  // Fracaso / crisis: golpe grave (thud) + acorde disonante que cae. Se siente mal.
   alert() {
-    tone(233, { type: 'triangle', dur: 0.5, gain: 0.18, attack: 0.03 })
-    tone(311, { type: 'sine', dur: 0.5, gain: 0.14, attack: 0.03, glideTo: 300 })
+    // Sub-golpe que baja: el "piso que se hunde".
+    tone(90, { type: 'sine', dur: 0.45, gain: 0.32, attack: 0.004, glideTo: 44 })
+    // Impacto sordo.
+    noiseBurst({ dur: 0.18, gain: 0.22, type: 'lowpass', freq: 380, q: 0.7 })
+    // Disonancia grave: dos tonos casi juntos (baten) que caen.
+    tone(220, { type: 'sawtooth', dur: 0.55, gain: 0.16, attack: 0.02, glideTo: 175 })
+    tone(233, { type: 'sawtooth', dur: 0.55, gain: 0.14, attack: 0.02, glideTo: 185 })
   },
-  // Avance sin crisis: dos notas suaves ascendentes.
+  // Éxito / avance: arpegio mayor ascendente + brillo de campana. Se siente bien.
   advance() {
-    tone(523, { type: 'sine', dur: 0.12, gain: 0.14 })
-    setTimeout(() => tone(784, { type: 'sine', dur: 0.16, gain: 0.13 }), 90)
+    // Do–Mi–Sol–Do ascendente.
+    ;[523, 659, 784, 1046].forEach((f, i) =>
+      setTimeout(() => tone(f, { type: 'triangle', dur: 0.22, gain: 0.16 }), i * 70),
+    )
+    // Campana brillante al llegar arriba.
+    setTimeout(() => {
+      tone(1568, { type: 'sine', dur: 0.5, gain: 0.1 })
+      tone(2093, { type: 'sine', dur: 0.5, gain: 0.055 })
+    }, 220)
   },
   // Periódico / impacto: golpe grave + barrido de "papel".
   newspaper() {
@@ -198,19 +210,36 @@ let currentId = null
 let currentHowl = null
 let ambient = null // { nodes[], gain, lfo }
 
-function stopAmbient(fade = 0.8) {
-  if (!ambient) return
+// Desvanece y detiene un ambiente concreto (para poder cruzar dos a la vez).
+function fadeOutAmbient(a, fade = 0.8) {
+  if (!a) return
   const c = ensureCtx()
-  const a = ambient
-  ambient = null
   try {
     if (c) {
       const now = c.currentTime
       a.gain.gain.cancelScheduledValues(now)
-      a.gain.gain.setValueAtTime(a.gain.gain.value, now)
+      a.gain.gain.setValueAtTime(Math.max(0.0001, a.gain.gain.value), now)
       a.gain.gain.exponentialRampToValueAtTime(0.0001, now + fade)
     }
     setTimeout(() => a.nodes.forEach((n) => { try { n.stop() } catch { /* */ } }), fade * 1000 + 60)
+  } catch {
+    /* */
+  }
+}
+
+function stopAmbient(fade = 0.8) {
+  if (!ambient) return
+  const a = ambient
+  ambient = null
+  fadeOutAmbient(a, fade)
+}
+
+// Desvanece y descarga un Howl concreto (saliente de un crossfade).
+function fadeOutHowl(h, fade = 1200) {
+  if (!h) return
+  try {
+    h.fade(h.volume(), 0, fade)
+    setTimeout(() => { try { h.unload() } catch { /* */ } }, fade + 120)
   } catch {
     /* */
   }
@@ -256,14 +285,32 @@ function startAmbient(id) {
   ambient = { nodes, gain, lfo }
 }
 
-export function playMusic(id) {
+// Cambia de pista con crossfade: la nueva entra mientras la anterior sale, sin
+// corte brusco. `opts.fallbackToAmbient` (default true): si no existe el archivo,
+// usa el drone procedural. Si es false y el archivo falta, se MANTIENE lo que
+// suena (no corta) — pensado para pistas opcionales como 'decision'.
+export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
   if (id === currentId) return
-  stopMusic()
+  const prevId = currentId
   currentId = id
 
-  // Intento 1: archivo real vía Howler (modo Web Audio: carga por XHR y
-  // dispara 'load' de forma fiable; los archivos son chicos). Si no existe o
-  // falla, cae al ambiente procedural.
+  // Adoptamos lo que sonaba como "saliente"; se cruza al confirmar la entrada.
+  const prevHowl = currentHowl
+  const prevAmbient = ambient
+  currentHowl = null
+  ambient = null
+
+  const crossOut = () => {
+    fadeOutHowl(prevHowl, fade)
+    fadeOutAmbient(prevAmbient, fade / 1000)
+  }
+  // Restaura lo anterior cuando la pista nueva no llega (archivo ausente).
+  const keepPrevious = () => {
+    currentId = prevId
+    currentHowl = prevHowl
+    ambient = prevAmbient
+  }
+
   try {
     const howl = new Howl({
       src: [`/audio/music/${id}.mp3`],
@@ -279,15 +326,26 @@ export function playMusic(id) {
         return
       }
       howl.play()
-      howl.fade(0, musicVol(), 1500)
+      howl.fade(0, musicVol(), fade) // entra
+      crossOut() // sale lo anterior en paralelo
     })
     howl.once('loaderror', () => {
-      // Sin archivo (o no carga): usar el ambiente procedural.
       if (currentHowl === howl) currentHowl = null
-      if (currentId === id) startAmbient(id)
+      if (currentId !== id) return
+      if (fallbackToAmbient) {
+        startAmbient(id) // drone procedural (entra con su propio fade)
+        crossOut()
+      } else {
+        keepPrevious() // pista opcional ausente: seguimos con lo que sonaba
+      }
     })
   } catch {
-    startAmbient(id)
+    if (fallbackToAmbient) {
+      startAmbient(id)
+      crossOut()
+    } else {
+      keepPrevious()
+    }
   }
 }
 
