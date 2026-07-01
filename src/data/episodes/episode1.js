@@ -1,10 +1,18 @@
 // ─────────────────────────────────────────────────────────────────────────
 // EPISODIO 1 — LA GRAN QUEMA
-// Referencia: Weimar, Alemania 1923 · Crisis: Hiperinflación
+// Referencia: Bolivia, 1985 · Crisis: Hiperinflación
 //
 // Objeto de datos autocontenido. Los componentes (Cell, PrisonerList,
 // NegotiationMatrix, PolicyChoice, Outcome) leen de aquí. Cambiar de episodio
 // = cambiar este objeto, no el código.
+//
+// Nota de contenido: este episodio pasó de Weimar 1923 a Bolivia 1985. Es un
+// swap de CONTEXTO — la mecánica "La Imprenta" (utils/hyperinflation.js), sus
+// números y la estructura de datos NO cambian. La hiperinflación boliviana
+// (~11.750% en 1985) se frenó en semanas con el Decreto Supremo 21060 / Nueva
+// Política Económica (agosto 1985, gobierno de Víctor Paz Estenssoro, asesorado
+// por Jeffrey Sachs): cortó la emisión, unificó el tipo de cambio y ajustó el
+// déficit. En 1987 el peso boliviano fue reemplazado por el boliviano.
 //
 // Propiedades de cada prisionero:
 //  - utility: lo que quiere a cambio de su apoyo
@@ -24,9 +32,9 @@ export default {
   id: 'ep1',
   numero: 1,
   titulo: 'La Gran Quema',
-  año: 1923,
+  año: 1985,
   crisisHistorica: 'Hiperinflación',
-  paisReferencia: 'Weimar, Alemania',
+  paisReferencia: 'Bolivia',
   resumen: 'El dinero se quema en tus manos. El pan cuesta más al mediodía que en la mañana.',
   bloqueado: false,
 
@@ -36,16 +44,16 @@ export default {
   // Periódico de la pantalla de celda.
   newspaper: {
     name: 'EL HERALDO DE PAICIO',
-    dateline: 'PAICIO, 14 de noviembre de 1923',
+    dateline: 'PAICIO, 28 de agosto de 1985',
     number: '№ 4.812',
-    headline: 'EL PAN SUPERA LOS 4.800 MARCOS: LA MONEDA SE DERRUMBA',
+    headline: 'EL PAN SUPERA LOS 4.800 PESOS: LA MONEDA SE DERRUMBA',
     subhead:
-      'El Gobierno imprime para pagar la deuda de guerra. El Ministro de Economía, tras las rejas.',
+      'El Gobierno imprime para tapar el déficit mientras la deuda externa ahoga al país. El Ministro de Economía, tras las rejas.',
   },
 
   // Texto de apertura (animado línea a línea).
   opening: [
-    'El pan cuesta hoy 4.800 Marcos de Paicio.',
+    'El pan cuesta hoy 4.800 pesos de Paicio.',
     'Ayer costaba 1.200.',
     'La semana pasada, 80.',
     '',
@@ -58,9 +66,9 @@ export default {
 
   // Narración en la celda (al evaluar la situación).
   cellNarration: [
-    'El presidente imprimió dinero para pagar la deuda de guerra. Los precios suben hora a hora. Te culparon a ti, pero ahora la máquina de imprimir es tuya.',
+    'El gobierno imprimió pesos sin parar para tapar el déficit y sostener el gasto, mientras la deuda externa se volvía impagable. Los precios suben hora a hora. Te culparon a ti, pero ahora la máquina de imprimir es tuya.',
     'Cada mes hay cuentas del Estado que pagar y la recaudación no alcanza. La salida fácil es imprimir más — y así fue como empezó todo.',
-    'Tu misión: frenar la hiperinflación antes de que el Marco se vuelva papel… o de que el pueblo te derroque.',
+    'Tu misión: frenar la hiperinflación antes de que el peso se vuelva papel… o de que el pueblo te derroque.',
   ],
 
   negotiationIntro:
@@ -73,7 +81,7 @@ export default {
   // Configuración del ticker de inflación.
   ticker: {
     itemBase: 'Pan de Paicio',
-    currency: 'Marcos',
+    currency: 'Pesos',
     precioInicial: 4800,
     tasaInflacion: 1.018, // factor por segundo (≈ +1.8%)
     umbralCritico: 10000, // umbral de hiperinflación visible
@@ -81,7 +89,7 @@ export default {
 
   // Panel "¿qué pasó en la historia real?" (el detalle por política está en policy.history).
   contextoHistorico: {
-    titulo: 'Alemania, 1923',
+    titulo: 'Bolivia, 1985',
   },
 
   // Config del gráfico de tendencia del desenlace (cifras + comparación real).
@@ -90,9 +98,9 @@ export default {
     unidad: 'índice (inicio = 100)',
     ejeX: ['Mes 0', '3', '6', '9', '12', '18'],
     real: {
-      cifra: '×1.000.000',
-      cifraEtiqueta: 'subió el precio del pan en un año (real)',
-      nota: 'En la Alemania de 1923 los precios se duplicaban cada ~3 días. Un pan pasó de 250 marcos a 200.000 millones. El Rentenmark frenó la hiperinflación en pocas semanas al respaldar la moneda y cortar la emisión.',
+      cifra: '11.750%',
+      cifraEtiqueta: 'llegó la inflación anual de Bolivia en 1985 (real)',
+      nota: 'En 1985 Bolivia vivió una de las peores hiperinflaciones de la historia: cerca de 11.750% anual. El Decreto Supremo 21060 —la Nueva Política Económica del gobierno de Víctor Paz Estenssoro, asesorado por Jeffrey Sachs— la frenó en semanas: cortó la emisión, unificó el tipo de cambio y ajustó el déficit fiscal. En 1987 el peso boliviano fue reemplazado por el boliviano.',
     },
   },
 
@@ -117,7 +125,7 @@ export default {
       rejectsPolicy: ['control'],
       voice: {
         cooperate:
-          '“Bien. Tengo los registros de cada Marco emitido. Te conviene tenerme cerca.”',
+          '“Bien. Tengo los registros de cada peso emitido. Te conviene tenerme cerca.”',
         betrayed:
           '“Ya veo. Entonces los dos nos quemamos. Recuerda que yo tengo los números.”',
       },
@@ -125,7 +133,7 @@ export default {
     {
       id: 'rosa',
       name: 'Compañera Gladys',
-      role: 'Líder del Sindicato Nacional de Trabajadores',
+      role: 'Líder de la Central Obrera de Paicio',
       portrait: '✊',
       accent: '#C0392B',
       gender: 'f',
@@ -144,7 +152,7 @@ export default {
         cooperate:
           '“Confío, pero te estoy mirando. Mi gente no aguanta otra promesa rota.”',
         betrayed:
-          '“¿Así que de nuevo nosotros pagamos? Mañana no se mueve un solo tren en Paicio.”',
+          '“¿Así que de nuevo nosotros pagamos? Mañana no se mueve un solo camión en Paicio.”',
       },
     },
     {
@@ -202,8 +210,9 @@ export default {
   // ── MECÁNICA DE HIPERINFLACIÓN ("La Imprenta") ─────────────────────────
   // Config leída por HyperInflation.jsx / hyperinflation.js.
   hyperinflation: {
+    moneda: '$b',
     intro:
-      'La hiperinflación se alimenta sola: imprimes para pagar las cuentas del Estado, los precios suben, y necesitas imprimir aún más para pagar lo mismo. Cada mes eliges cómo cubrir el gasto. Imprimir es fácil y acelera el desastre; frenarlo cuesta apoyo. La única salida real: cortar la imprenta y lanzar una moneda creíble a tiempo.',
+      'La hiperinflación se alimenta sola: imprimes para pagar las cuentas del Estado, los precios suben, y necesitas imprimir aún más para pagar lo mismo. Cada mes eliges cómo cubrir el gasto. Imprimir es fácil y acelera el desastre; frenarlo cuesta apoyo. La única salida real: cortar la imprenta y aplicar una estabilización creíble a tiempo.',
     meses: 8,
     inflacionInicial: 28,
     apoyoInicial: 55,
@@ -233,42 +242,42 @@ export default {
       },
       {
         id: 'renegociar',
-        name: 'Renegociar la deuda de guerra',
+        name: 'Renegociar la deuda externa',
         icon: '🤝',
-        desc: 'Alivias las reparaciones que ahogan al Estado. Menos presión para imprimir de aquí en adelante.',
+        desc: 'Reprogramas los pagos de la deuda externa que ahogan al Estado. Menos presión para imprimir de aquí en adelante.',
         inflacion: -3,
         apoyo: -4,
         usos: 2,
         advisor: 'fondo',
         reaccion:
-          '"Podemos aliviar la deuda de guerra… a cambio de supervisión. Nada es gratis, ministro."',
+          '"Podemos reprogramar la deuda externa… a cambio de supervisión. Nada es gratis, ministro."',
       },
       {
         id: 'reforma',
-        name: 'Reforma monetaria (el Rentenmark)',
+        name: 'Estabilización (Decreto 21060)',
         icon: '⚓',
-        desc: 'Cortas la imprenta y lanzas una moneda nueva, respaldada y limitada. Si la inflación aún es manejable, la frena en seco. Si esperaste demasiado, nadie le cree.',
+        desc: 'Cortas la imprenta y aplicas un plan creíble: unificas el tipo de cambio y ajustas el déficit. Si la inflación aún es manejable, la frena en seco. Si esperaste demasiado, nadie le cree.',
         advisor: 'comerciante',
         reaccion:
-          '"Una moneda nueva y de verdad respaldada… si la gente la cree, mañana vuelvo a poner precios. Eso necesito: certeza."',
+          '"Un plan de verdad, con reglas estables y sin más emisión… si la gente lo cree, mañana vuelvo a poner precios. Eso necesito: certeza."',
       },
     ],
   },
 
   // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
   outcomes: {
-    // Reforma exitosa a tiempo: el Rentenmark frena la hiperinflación.
+    // Estabilización exitosa a tiempo: el Decreto 21060 frena la hiperinflación.
     perfect: {
       id: 'perfect',
       concept: 'ancla',
       headlineWin:
-        'EL RENTENMARK NACE: PAICIO FRENA LA HIPERINFLACIÓN EN SEMANAS',
+        'EL DECRETO 21060 FRENA LA HIPERINFLACIÓN DE PAICIO EN SEMANAS',
       resultText:
-        'Cortaste la imprenta y lanzaste una moneda nueva, respaldada y creíble, justo a tiempo. Cuando la gente confió en que ya no habría emisión sin límite, los precios se congelaron casi de un día para otro. La pesadilla del pan que cambiaba de precio a mediodía terminó.',
+        'Cortaste la imprenta y aplicaste un plan creíble justo a tiempo: unificaste el tipo de cambio, ajustaste el déficit y frenaste la emisión. Cuando la gente confió en que ya no habría dinero sin respaldo, los precios se congelaron casi de un día para otro. La pesadilla del pan que cambiaba de precio a mediodía terminó.',
       scores: { estabilidad: 92, empleo: 55, confianza: 88, crecimiento: 60 },
       inflationCurve: [100, 62, 30, 16, 10, 8],
       history:
-        'En noviembre de 1923 Alemania frenó la hiperinflación casi de un día para otro con el Rentenmark: una moneda nueva, respaldada en la tierra y luego en oro, emitida en cantidad limitada. Funcionó porque vino con disciplina fiscal —el gobierno dejó de imprimir para tapar el déficit— y con credibilidad. Eso hiciste tú: apagar la imprenta y anclar la moneda antes de que fuera tarde.',
+        'En agosto de 1985 Bolivia frenó una hiperinflación de ~11.750% anual en pocas semanas con el Decreto Supremo 21060: la Nueva Política Económica de Víctor Paz Estenssoro, asesorado por Jeffrey Sachs. Funcionó porque cortó la emisión, unificó el tipo de cambio y vino con disciplina fiscal —el Estado dejó de imprimir para tapar el déficit— y credibilidad. Eso hiciste tú: apagar la imprenta y estabilizar antes de que fuera tarde.',
     },
     // Contuvo lo peor, pero tarde y con daño.
     partial: {
@@ -281,20 +290,20 @@ export default {
       scores: { estabilidad: 48, empleo: 40, confianza: 42, crecimiento: 44 },
       inflationCurve: [100, 90, 78, 66, 58, 52],
       history:
-        'Imprimir dinero para pagar las cuentas del Estado es un impuesto invisible: financia hoy destruyendo el ahorro de todos mañana. Cuanto más se demora la reforma, más caro y doloroso es el ajuste. Alemania tardó años en cortar la imprenta; el costo social fue enorme.',
+        'Imprimir dinero para pagar las cuentas del Estado es un impuesto invisible: financia hoy destruyendo el ahorro de todos mañana. Cuanto más se demora la estabilización, más caro y doloroso es el ajuste. En Bolivia, cada mes de emisión sin freno se pagó con más inflación y más pobreza antes de que el 21060 cortara la espiral.',
     },
     // La imprenta no se detuvo: colapso hiperinflacionario.
     wrong: {
       id: 'wrong',
       concept: 'hiperinflacion',
       headlineWin:
-        'LA GRAN QUEMA: EL MARCO SE CONVIERTE EN PAPEL SIN VALOR',
+        'LA GRAN QUEMA: EL PESO SE CONVIERTE EN PAPEL SIN VALOR',
       resultText:
-        'La imprenta no se detuvo a tiempo. Los precios se dispararon hasta que el Marco dejó de servir: la gente empapeló paredes con billetes y llevó el sueldo en carretillas. La moneda murió y con ella el ahorro de una generación.',
+        'La imprenta no se detuvo a tiempo. Los precios se dispararon hasta que el peso dejó de servir: la gente cargaba fajos de billetes en bolsas para comprar comida y contaba la plata por peso, no por cifra. La moneda murió y con ella el ahorro de una generación.',
       scores: { estabilidad: 15, empleo: 25, confianza: 10, crecimiento: 20 },
       inflationCurve: [100, 145, 200, 260, 320, 380],
       history:
-        'En 1923 el marco alemán perdió tanto valor que la gente empapelaba paredes con billetes y llevaba el sueldo en carretillas. Un pan llegó a costar 200.000 millones de marcos. El gobierno siguió imprimiendo para pagar sus cuentas hasta que la moneda simplemente dejó de aceptarse. La hiperinflación no se detiene sola: hay que apagar la imprenta.',
+        'Antes del 21060, el peso boliviano perdió tanto valor que la gente llevaba el sueldo en fajos y pesaba los billetes en vez de contarlos. El gobierno siguió imprimiendo para pagar sus cuentas mientras la deuda externa se volvía impagable, hasta que la moneda simplemente dejó de aceptarse. La hiperinflación no se detiene sola: hay que apagar la imprenta.',
     },
   },
 
