@@ -1,8 +1,9 @@
 import { formatMarcos } from '../hooks/useInflation.js'
-import EducationalTooltip from './EducationalTooltip.jsx'
+import { EduChip } from './mechanics/candyKit.jsx'
 
-// Ticker global de inflación. Siempre visible durante el juego, parpadea en rojo.
-// Muestra el precio del pan subiendo y marca el umbral de hiperinflación.
+// Ticker de inflación (rediseño LatAm). Barra superior clara con el precio
+// subiendo en rojo; marca el umbral de hiperinflación. Hoy solo lo usa la
+// secuencia del Plan Real (Ep5).
 export default function InflationTicker({
   price,
   hyperinflation,
@@ -11,33 +12,43 @@ export default function InflationTicker({
   onConceptSeen,
 }) {
   return (
-    <div className="sticky top-0 z-20 border-b border-edge bg-ink/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-md items-center justify-between gap-2 px-3 py-2">
+    <div className="on-cream sticky top-0 z-20 border-b border-[#EBD9B0] bg-panel/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-md items-center justify-between gap-2 px-4 py-2">
         <div className="flex items-center gap-2">
           <span
-            className="inline-block h-2 w-2 animate-blink rounded-full bg-ticker"
+            className="inline-block h-2 w-2 animate-blink rounded-full"
+            style={{ background: '#E8604F' }}
             aria-hidden
           />
-          <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-paper-dim">
+          <span className="font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.12em] text-ink-mute">
             {itemBase}
           </span>
         </div>
 
         <div className="flex items-baseline gap-1">
-          <span className="animate-slow-pulse font-mono text-base font-semibold tabular-nums text-ticker">
+          <span
+            className="font-round text-[1.05rem] font-bold tabular-nums"
+            style={{ color: '#E8604F' }}
+          >
             {formatMarcos(price)}
           </span>
-          <span className="font-mono text-[0.62rem] uppercase tracking-wider text-ticker/80">
+          <span
+            className="font-nunito text-[0.6rem] font-extrabold uppercase tracking-wide"
+            style={{ color: '#E8604F' }}
+          >
             {currency}
           </span>
         </div>
       </div>
 
       {hyperinflation && (
-        <div className="border-t border-crisis/40 bg-crisis/10 px-3 py-1 text-center">
-          <span className="font-mono text-[0.62rem] uppercase tracking-[0.15em] text-crisis">
+        <div className="px-4 py-1 text-center" style={{ background: '#FBDAD3' }}>
+          <span
+            className="font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.1em]"
+            style={{ color: '#D24C39' }}
+          >
             ⚠ Hiperinflación —{' '}
-            <EducationalTooltip
+            <EduChip
               conceptId="hiperinflacion"
               label="¿qué es esto?"
               onSeen={onConceptSeen}

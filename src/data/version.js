@@ -2,9 +2,22 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.9.0'
+export const APP_VERSION = '0.10.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.10.0',
+    fecha: '1 jul 2026',
+    cambios: [
+      'Nueva dirección visual (rediseño LatAm): más luminosa, cálida y táctil, tipo juego casual.',
+      'El selector ahora es un "Mapa de crisis": un camino de niveles con cada episodio como su propia moneda de color.',
+      'Cada crisis parte con un briefing luminoso: el dato clave del momento, tu misión y la provocación de quien te deja el cargo.',
+      'La pantalla de decisión estrena look: medidores tipo barra de vida, el precio del pan como cifra protagonista y botones táctiles con relieve.',
+      'El desenlace se rediseñó como veredicto compartible: estrellas, tus puntajes y la comparación entre lo que pasó de verdad y tu partida.',
+      'Nueva bienvenida y onboarding con la moneda-$ de marca, y toda la navegación al mismo estilo claro.',
+      'Las cinco crisis ya se juegan en el estilo nuevo: la corrida bancaria, la defensa de la paridad, la inercia y el puzzle del Plan Real estrenan medidores, botones táctiles y tarjetas claras.',
+    ],
+  },
   {
     version: '0.9.0',
     fecha: '1 jul 2026',

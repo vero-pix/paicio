@@ -1,9 +1,18 @@
 import { useEffect, useMemo, useState } from 'react'
-import { portraits } from '../assets/portraits.js'
 import { episodes } from '../data/episodes/index.js'
-import TrendChart from './TrendChart.jsx'
+import { accentFor } from '../theme/accents.js'
 import { sting } from '../lib/sound.js'
 import { useScreenFx } from '../lib/animations.js'
+
+// ─────────────────────────────────────────────────────────────────────────
+// Outcome — "Desenlace / Veredicto" (rediseño LatAm).
+//
+// Pantalla de resultado, pensada para compartir: kicker + estrellas + título,
+// tres chips de score, y la card oscura "Lo que pasó de verdad" que compara la
+// cifra histórica real con tu partida. Reutiliza la lógica de scores y veredicto
+// existente; solo cambia la presentación. Guarda contra `policy` nula para no
+// caer si el estado llega con un outcome que no resuelve.
+// ─────────────────────────────────────────────────────────────────────────
 
 const DIMENSIONS = [
   { key: 'estabilidad', label: 'Estabilidad monetaria' },
@@ -12,50 +21,69 @@ const DIMENSIONS = [
   { key: 'crecimiento', label: 'Crecimiento' },
 ]
 
-// Calcula los scores finales ajustando la base de la política según la coalición:
-// cada aliado leal suma, cada traición resta credibilidad.
+// Chips visibles en el veredicto (3, con etiqueta corta).
+const CHIPS = [
+  { key: 'estabilidad', label: 'Estabilidad' },
+  { key: 'empleo', label: 'Empleo' },
+  { key: 'confianza', label: 'Confianza' },
+]
+
+// Guiño de bandera por episodio (presentación).
+const FLAGS = { ep1: '🇩🇪', ep2: '🇦🇷', ep3: '🇨🇱', ep4: '🇧🇷', ep5: '🇧🇷' }
+
+// Color de un score según su nivel.
+function scoreColor(v) {
+  return v >= 60 ? '#2FB37E' : v >= 40 ? '#F5A524' : '#E8604F'
+}
+
+// Cómo quedó la crisis en tu partida (columna derecha de la card real).
+function partidaFor(kind) {
+  if (kind === 'perfect') return { word: 'bajo control', color: '#35B98A' }
+  if (kind === 'partial') return { word: 'a medias', color: '#F5A524' }
+  return { word: 'sin control', color: '#E8604F' }
+}
+
+// Ajusta los scores base de la política según la coalición (solo dilema del
+// prisionero; las mecánicas propias usan los scores del outcome directo).
 function computeScores(policy, allies) {
   const support = allies.filter((id) => policy.supportedBy.includes(id)).length
   const out = {}
   for (const d of DIMENSIONS) {
     let v = policy.scores[d.key]
-    v += support * 5 // respaldo de aliados afines da credibilidad
-    v += (allies.length - 2) * 2 // bonus/penalización por tamaño de coalición
+    v += support * 5
+    v += (allies.length - 2) * 2
     out[d.key] = Math.max(0, Math.min(100, Math.round(v)))
   }
   return out
 }
 
-// Veredicto final: traduce el promedio de las 4 métricas en la suerte del ministro.
-// Es el corazón de la pantalla — está diseñado para la captura de pantalla.
+// Veredicto final: traduce el promedio de las métricas en la suerte del ministro.
 function verdict(globalScore) {
   if (globalScore >= 72)
-    return {
-      title: 'PAICIO SALVADO',
-      stamp: 'MINISTRO ABSUELTO',
-      fate: 'Sales de la Prisión Central reivindicado. La historia te dará la razón.',
-      color: 'var(--color-positive)',
-    }
+    return { title: '¡Paicio a salvo!', color: '#2FB37E' }
   if (globalScore >= 55)
-    return {
-      title: 'PAICIO RESISTE',
-      stamp: 'EN LIBERTAD',
-      fate: 'El país sobrevive, magullado. Te sueltan, pero nadie te aplaude.',
-      color: '#C9A24B',
-    }
+    return { title: 'Paicio resiste', color: '#35B98A' }
   if (globalScore >= 42)
-    return {
-      title: 'PAICIO EN VILO',
-      stamp: 'BAJO VIGILANCIA',
-      fate: 'El presidente te deja salir, pero el país sigue al borde del abismo.',
-      color: '#D68438',
-    }
-  return {
-    title: 'PAICIO EN RUINAS',
-    stamp: 'MINISTRO CULPABLE',
-    fate: 'Vuelves a tu celda. Tu nombre será sinónimo de catástrofe.',
-    color: 'var(--color-crisis)',
-  }
+    return { title: 'Paicio en vilo', color: '#F5A524' }
+  return { title: 'Paicio en ruinas', color: '#E8604F' }
+}
+
+// Estrella (rellena o vacía), con pop opcional en la central.
+function Star({ filled, size, pop }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={pop ? 'animate-pop' : ''}
+      style={{ width: size, height: size }}
+      fill={filled ? '#F5B331' : 'none'}
+      stroke={filled ? '#E0912A' : '#D8C39A'}
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 3l2.6 5.3 5.9.9-4.3 4.2 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.2 5.9-.9z" />
+    </svg>
+  )
 }
 
 export default function Outcome({
@@ -66,38 +94,21 @@ export default function Outcome({
   onRestart,
   onNextEpisode,
 }) {
-  const prisonersById = useMemo(
-    () => Object.fromEntries(episode.prisoners.map((p) => [p.id, p])),
-    [episode],
-  )
+  const acc = accentFor(episode.id)
 
-  // Las mecánicas no-PD (sequence, bankRun, etc.) usan `episode.outcomes`
-  // por niveles; el dilema del prisionero usa `episode.policies`.
   const isCustomMechanic = episode.mechanic && episode.mechanic !== 'prisonersDilemma'
   const policy = useMemo(() => {
     if (isCustomMechanic) {
       const so = episode.outcomes?.[policyId]
-      // Adaptar el outcome al formato que espera el resto del componente.
       return so
-        ? {
-            ...so,
-            supportedBy: [],
-            rejectedBy: [],
-            concept: so.concept ?? 'reformaMonetaria',
-            history: so.history ?? '',
-          }
+        ? { ...so, supportedBy: [], rejectedBy: [], concept: so.concept ?? 'reformaMonetaria', history: so.history ?? '' }
         : null
     }
-    return episode.policies.find((p) => p.id === policyId)
+    return episode.policies.find((p) => p.id === policyId) ?? null
   }, [episode, policyId, isCustomMechanic])
 
-  const [revealed, setRevealed] = useState(false)
-  const [showHistory, setShowHistory] = useState(false)
-
-  // En mecánicas no-PD no hay coalición: los scores del outcome se usan directo.
-  // En el dilema, se ajustan según aliados afines (computeScores).
   const scores = useMemo(() => {
-    if (isCustomMechanic) {
+    if (isCustomMechanic || !policy) {
       const out = {}
       for (const d of DIMENSIONS)
         out[d.key] = Math.max(0, Math.min(100, Math.round(policy?.scores?.[d.key] ?? 0)))
@@ -105,22 +116,22 @@ export default function Outcome({
     }
     return computeScores(policy, allies)
   }, [policy, allies, isCustomMechanic])
-  const curve = policy?.inflationCurve ?? [100, 80, 60, 40, 30, 20]
+
   const global = Math.round(
     DIMENSIONS.reduce((s, d) => s + scores[d.key], 0) / DIMENSIONS.length,
   )
   const v = verdict(global)
-  const support = allies.filter((id) => policy?.supportedBy?.includes(id)).length
-  const strong = support >= 1 && allies.length >= 2
-  const headline = isCustomMechanic ? policy?.headlineWin : (strong ? policy?.headlineWin : policy?.headlineWeak)
+  const resultKind = global >= 55 ? 'perfect' : global >= 42 ? 'partial' : 'wrong'
+  const stars = resultKind === 'perfect' ? 3 : resultKind === 'partial' ? 2 : 1
+  const partida = partidaFor(resultKind)
 
-  // Encuentra el siguiente episodio jugable.
+  const real = episode.trendChart?.real ?? {}
+  const historyText = policy?.history || real.nota || ''
+
   const currentIdx = episodes.findIndex((e) => e.id === episode.id)
   const nextEpisode = episodes.slice(currentIdx + 1).find((e) => !e.bloqueado)
 
-
-  // Resultado global → tono del desenlace (audio + animación).
-  const resultKind = global >= 55 ? 'perfect' : global >= 42 ? 'partial' : 'wrong'
+  const [revealed, setRevealed] = useState(false)
   const { fx, trigger } = useScreenFx()
 
   useEffect(() => {
@@ -129,213 +140,162 @@ export default function Outcome({
       sting(resultKind)
       if (resultKind === 'perfect') trigger('flash')
       else if (resultKind === 'wrong') trigger('shake')
-    }, 2800)
+    }, 1700)
     return () => clearTimeout(t)
   }, [resultKind])
 
+  // El concepto educativo queda "visto" cuando se revela el desenlace.
+  useEffect(() => {
+    if (revealed && policy?.concept) onConceptSeen?.(policy.concept)
+  }, [revealed, policy, onConceptSeen])
+
   return (
-    <div className={`grain relative mx-auto max-w-md px-5 py-6 ${fx === 'shake' ? 'animate-shake' : ''}`}>
+    <div className={`on-cream relative ${fx === 'shake' ? 'animate-shake' : ''}`}>
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-10"
+        style={{ background: 'linear-gradient(180deg,#E9F7EE 0%,#FBEFD4 60%,#FCE7C6 100%)' }}
+      />
       {fx === 'flash' && (
-        <div className="animate-flash-green pointer-events-none fixed inset-0 z-40 bg-positive" aria-hidden />
+        <div
+          className="animate-flash-green pointer-events-none fixed inset-0 z-40"
+          style={{ background: 'var(--color-good)' }}
+          aria-hidden
+        />
       )}
-      <div className="relative z-10">
-        {/* Gráfico de tendencia educativo (se dibuja durante el suspenso) */}
-        <TrendChart curve={curve} config={episode.trendChart} />
 
+      <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 pb-8 pt-2">
         {!revealed ? (
-          <p className="animate-slow-pulse mt-6 text-center font-mono text-[0.7rem] uppercase tracking-[0.2em] text-paper-dim">
-            Paicio reacciona…
-          </p>
+          <div className="flex flex-1 items-center justify-center">
+            <p className="animate-slow-pulse font-nunito text-[0.8rem] font-extrabold uppercase tracking-[0.2em] text-ink-mute">
+              Paicio reacciona…
+            </p>
+          </div>
         ) : (
-          <div className="animate-fade-up mt-6">
-            {/* ───────── VEREDICTO (héroe, pensado para captura) ───────── */}
-            <div className="relative overflow-hidden rounded-md border border-paper-dim bg-paper px-5 py-5 text-ink shadow-2xl shadow-black/60">
-              <p className="font-mono text-[0.55rem] uppercase tracking-[0.18em] text-ink/55">
-                El Heraldo de Paicio · Edición extraordinaria
-              </p>
-
-              <h2
-                className="mt-2 font-display text-[2rem] font-black uppercase leading-[0.95] tracking-tight"
-                style={{ color: v.color }}
-              >
-                {v.title}
-              </h2>
-
-              <p className="mt-2 font-display text-base font-bold italic leading-tight text-ink/80">
-                {headline}
-              </p>
-
-              {/* Sello tipo timbre */}
-              <div
-                className="pointer-events-none absolute right-3 top-4 flex h-20 w-20 rotate-[-12deg] items-center justify-center rounded-full border-2 text-center"
-                style={{ borderColor: v.color, opacity: 0.85 }}
-              >
-                <span
-                  className="font-mono text-[0.5rem] font-bold uppercase leading-tight tracking-wide"
-                  style={{ color: v.color }}
-                >
-                  {v.stamp}
-                </span>
-              </div>
-
-              {/* Score global grande */}
-              <div className="mt-4 flex items-end gap-2 border-t border-ink/15 pt-3">
-                <span
-                  className="font-display text-5xl font-black leading-none tabular-nums"
-                  style={{ color: v.color }}
-                >
-                  {global}
-                </span>
-                <span className="mb-1 font-mono text-[0.6rem] uppercase tracking-wide text-ink/55">
-                  / 100
-                  <br />
-                  índice país
-                </span>
-              </div>
+          <div className="animate-fade-up flex flex-1 flex-col">
+            {/* Kicker + estrellas + título */}
+            <p
+              className="text-center font-nunito text-[0.68rem] font-extrabold uppercase tracking-[0.15em]"
+              style={{ color: v.color }}
+            >
+              Veredicto · {episode.paisReferencia.split(',')[0]} {episode.año}
+            </p>
+            <div className="mt-3 flex items-center justify-center gap-1.5">
+              <Star filled={stars >= 1} size={34} />
+              <Star filled={stars >= 2} size={46} pop />
+              <Star filled={stars >= 3} size={34} />
             </div>
-
-            {/* Suerte del ministro */}
-            <p className="mt-4 font-body text-[0.95rem] italic leading-relaxed text-paper">
-              {v.fate}
-            </p>
-
-            {/* Qué pasó con la economía */}
-            <p className="mt-3 font-body text-[0.88rem] leading-relaxed text-paper/85">
-              {policy.resultText}
-            </p>
-
-            {/* Coalición final (solo en el dilema del prisionero) */}
-            {!isCustomMechanic && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {allies.length > 0 ? (
-                  allies.map((id) => (
-                    <span
-                      key={id}
-                      className="flex items-center gap-1.5 rounded-sm border border-positive/50 bg-positive/10 py-1 pl-1 pr-2 font-mono text-[0.6rem] text-positive"
-                    >
-                      <img
-                        src={portraits[id]}
-                        alt=""
-                        className="h-4 w-4 rounded-full object-cover"
-                      />
-                      {prisonersById[id].name}
-                    </span>
-                  ))
-                ) : (
-                  <span className="font-mono text-[0.65rem] text-crisis">
-                    Gobernaste sin coalición. El presidente quedó solo contigo.
-                  </span>
-                )}
-              </div>
+            <h1 className="mt-3 text-balance text-center font-round text-[1.9rem] font-bold leading-[1.05] text-ink-warm">
+              {v.title}
+            </h1>
+            {policy?.resultText && (
+              <p className="mx-auto mt-2 max-w-[19rem] text-center font-nunito text-[0.86rem] leading-snug text-ink-soft">
+                {policy.resultText}
+              </p>
             )}
 
-            {/* ───────── Dashboard de métricas (animan desde 50) ───────── */}
-            <div className="mt-6 rounded-md border border-edge bg-cell-2/50 p-4">
-              <p className="mb-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-paper-dim">
-                Estado de la nación
-              </p>
-              <div className="space-y-3">
-                {DIMENSIONS.map((d, i) => (
-                  <ScoreBar
-                    key={d.key}
-                    label={d.label}
-                    value={scores[d.key]}
-                    delay={i * 0.15}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Historia real (desplegable) */}
-            <div className="mt-6">
-              {!showHistory ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowHistory(true)
-                    onConceptSeen?.(policy.concept)
-                  }}
-                  className="w-full rounded-sm border border-paper-dim bg-cell px-4 py-3 font-display font-semibold text-paper transition-all hover:border-paper active:scale-[0.99]"
+            {/* Chips de score */}
+            <div className="mt-5 grid grid-cols-3 gap-2.5">
+              {CHIPS.map((c) => (
+                <div
+                  key={c.key}
+                  className="shadow-card rounded-[16px] bg-surface px-2 py-3 text-center"
                 >
-                  ¿Qué pasó en la historia real?
-                </button>
-              ) : (
-                <div className="animate-fade-up rounded-md border border-edge bg-cell/80 p-4">
-                  <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-crisis">
-                    {episode.contextoHistorico.titulo}
-                  </h3>
-                  <p className="mt-2 font-body text-[0.86rem] leading-relaxed text-paper/90">
-                    {policy.history}
+                  <p
+                    className="font-round text-[1.6rem] font-bold leading-none tabular-nums"
+                    style={{ color: scoreColor(scores[c.key]) }}
+                  >
+                    {scores[c.key]}
+                  </p>
+                  <p className="mt-1 font-nunito text-[0.58rem] font-extrabold uppercase tracking-wide text-ink-mute">
+                    {c.label}
                   </p>
                 </div>
+              ))}
+            </div>
+
+            {/* Lo que pasó de verdad */}
+            <div
+              className="shadow-card-dark relative mt-4 overflow-hidden rounded-[20px] p-4"
+              style={{ background: 'linear-gradient(160deg,#3B2A17,#26190B)' }}
+            >
+              <p className="font-nunito text-[0.6rem] font-extrabold uppercase tracking-[0.1em] text-[#E8C67F]">
+                Lo que pasó de verdad {FLAGS[episode.id] ?? ''}
+              </p>
+              <div className="mt-2.5 flex items-stretch gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-nunito text-[0.52rem] font-extrabold uppercase tracking-wide text-[#B79A63]">
+                    En la realidad
+                  </p>
+                  <p className="font-round text-[1.5rem] font-bold leading-none text-[#E8604F]">
+                    {real.cifra ?? '—'}
+                  </p>
+                </div>
+                <div className="w-px shrink-0 bg-white/10" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-nunito text-[0.52rem] font-extrabold uppercase tracking-wide text-[#B79A63]">
+                    Tu partida
+                  </p>
+                  <p
+                    className="font-round text-[1.5rem] font-bold leading-none"
+                    style={{ color: partida.color }}
+                  >
+                    {partida.word}
+                  </p>
+                </div>
+              </div>
+              {real.cifraEtiqueta && (
+                <p className="mt-2 font-nunito text-[0.6rem] italic text-[#B79A63]">
+                  {real.cifraEtiqueta}
+                </p>
+              )}
+              {historyText && (
+                <p className="mt-2 border-t border-white/10 pt-2 font-nunito text-[0.72rem] leading-relaxed text-[#D9C7A2]">
+                  {historyText}
+                </p>
               )}
             </div>
 
-            {/* Botones finales */}
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            {/* Empuja la barra inferior hacia abajo */}
+            <div className="flex-1" />
+
+            {/* Barra inferior */}
+            <div className="mt-6 flex items-center gap-3">
               <button
                 type="button"
                 onClick={onRestart}
-                className="rounded-sm border border-paper-dim bg-cell-2 px-4 py-2.5 font-display font-semibold text-paper transition-all hover:border-paper active:scale-[0.99]"
+                title="Intentar de nuevo"
+                aria-label="Intentar de nuevo"
+                className="candy candy-soft flex h-[52px] w-[52px] shrink-0 items-center justify-center text-[1.2rem]"
               >
-                Intentar de nuevo
+                ↻
               </button>
               {nextEpisode ? (
                 <button
                   type="button"
                   onClick={() => onNextEpisode?.(nextEpisode)}
-                  className="rounded-sm border border-crisis bg-crisis/20 px-4 py-2.5 font-display font-semibold text-paper transition-all hover:bg-crisis/30 active:scale-[0.99]"
+                  className="candy flex-1 px-5 py-3.5 text-[1rem]"
+                  style={{ '--face': '#35B98A', '--edge': '#1F9A6E' }}
                 >
-                  Episodio {nextEpisode.numero} →
+                  Siguiente crisis →
                 </button>
               ) : (
                 <button
                   type="button"
-                  disabled
-                  title="Próximamente"
-                  className="cursor-not-allowed rounded-sm border border-edge bg-cell/40 px-4 py-2.5 font-display font-semibold text-paper-dim/50"
+                  onClick={onRestart}
+                  className="candy flex-1 px-5 py-3.5 text-[1rem]"
+                  style={{ '--face': acc.face, '--edge': acc.edge }}
                 >
-                  Próximo episodio →
+                  Completaste PAICIO · Jugar de nuevo
                 </button>
               )}
             </div>
 
-            {/* Pie de marca (para la captura de pantalla) */}
-            <p className="mt-6 text-center font-mono text-[0.58rem] uppercase tracking-[0.18em] text-paper-dim/60">
-              PAICIO · El Ministro Encarcelado · ¿Lo harías mejor?
+            <p className="mt-5 text-center font-nunito text-[0.58rem] font-extrabold uppercase tracking-[0.18em] text-ink-mute/70">
+              PAICIO · ¿Lo harías mejor?
             </p>
           </div>
         )}
-      </div>
-    </div>
-  )
-}
-
-// Barra de métrica que anima desde el estado inicial (50) hacia el valor final.
-function ScoreBar({ label, value, delay }) {
-  const tone = value >= 60 ? 'bg-positive' : value >= 40 ? 'bg-paper-dim' : 'bg-crisis'
-  const [w, setW] = useState(50)
-  useEffect(() => {
-    const t = setTimeout(() => setW(value), 80)
-    return () => clearTimeout(t)
-  }, [value])
-  return (
-    <div>
-      <div className="flex items-baseline justify-between">
-        <span className="font-mono text-[0.66rem] uppercase tracking-wide text-paper-dim">
-          {label}
-        </span>
-        <span className="font-mono text-sm tabular-nums text-paper">{value}</span>
-      </div>
-      <div className="mt-1 h-2 overflow-hidden rounded-full bg-ink">
-        <div
-          className={`h-full rounded-full ${tone}`}
-          style={{
-            width: `${w}%`,
-            transition: 'width 1.4s cubic-bezier(0.22, 1, 0.36, 1)',
-            transitionDelay: `${delay}s`,
-          }}
-        />
       </div>
     </div>
   )

@@ -141,7 +141,7 @@ export default function App() {
         <button
           type="button"
           onClick={backToSelect}
-          className="flex items-center gap-1.5 rounded-sm border border-edge bg-cell/60 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-wide text-paper-dim transition-colors hover:border-paper-dim hover:text-paper"
+          className="shadow-card flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 font-nunito text-[0.66rem] font-extrabold uppercase tracking-wide text-ink-soft transition-colors hover:text-ink-warm"
         >
           ⌂ Episodios
         </button>
@@ -303,7 +303,7 @@ export default function App() {
       )}
 
       <footer className="mx-auto max-w-md px-5 pb-8 pt-4 text-center">
-        <p className="font-mono text-[0.58rem] uppercase tracking-[0.2em] text-paper-dim/50">
+        <p className="font-nunito text-[0.58rem] font-extrabold uppercase tracking-[0.2em] text-ink-mute/60">
           PAICIO · Episodio {episode.numero} · {episode.titulo}
         </p>
       </footer>
