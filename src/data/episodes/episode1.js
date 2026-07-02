@@ -344,6 +344,14 @@ export default {
       icon: '📦',
       efecto: { inflacion: 6 },
     },
+    {
+      id: 'corrida',
+      iconKey: 'banco-corrida',
+      titulo: 'Rumor de corrida bancaria',
+      texto: 'Corre el rumor de que los bancos no devuelven la plata. Se forman filas para sacar todo.',
+      icon: '🏛️',
+      efecto: { inflacion: 4, apoyo: -6 },
+    },
   ],
 
   // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
