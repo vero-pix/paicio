@@ -37,11 +37,22 @@ export default function App() {
     [prisoners],
   )
 
-  // Música: una pista por episodio (fade in al entrar, fade out al menú).
-  // Se apoya en el motor de sonido; nunca toca el estado del juego.
+  // Música por fase (crossfade entre pistas; nunca toca el estado del juego).
+  //  · menú/selector → 'menu'
+  //  · pantalla de decisión (mecánica, fase que renderiza MechanicHost) →
+  //    'decision' (más tensa). Si decision.mp3 no existe, se mantiene la del
+  //    episodio (fallback, no rompe).
+  //  · resto (briefing/celda, desenlace) → música del episodio.
   useEffect(() => {
     if (state.phase === 'select' || !state.episodeId) {
       playMusic('menu')
+      return undefined
+    }
+    const ep = episodesById[state.episodeId]
+    const mech = ep?.mechanic ?? 'prisonersDilemma'
+    const inMechanic = state.phase === 'negotiation' && mech !== 'prisonersDilemma'
+    if (inMechanic) {
+      playMusic('decision', { fallbackToAmbient: false })
     } else {
       playMusic(state.episodeId)
     }
