@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<defs>
+  <radialGradient id="d" cx="42%" cy="34%" r="76%"><stop offset="0%" stop-color="#F2937C"></stop><stop offset="100%" stop-color="#E4573F"></stop></radialGradient>
+  <linearGradient id="stone" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FDF7EA"></stop><stop offset="100%" stop-color="#E7D6B8"></stop></linearGradient>
+  <linearGradient id="col" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FCF5E6"></stop><stop offset="60%" stop-color="#EEDFC2"></stop><stop offset="100%" stop-color="#D6C39F"></stop></linearGradient>
+  <linearGradient id="ppl" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#7E6A4F"></stop><stop offset="100%" stop-color="#5A4A34"></stop></linearGradient>
+</defs>
+<path d="M170 224 L256 166 L342 224 Z" fill="url(#stone)"></path>
+<path d="M256 178 L330 220 L182 220 Z" fill="#E8D7B9"></path>
+<rect x="180" y="222" width="152" height="22" rx="4" fill="url(#stone)"></rect>
+<rect x="188" y="246" width="24" height="86" rx="5" fill="url(#col)"></rect>
+<rect x="228" y="246" width="24" height="86" rx="5" fill="url(#col)"></rect>
+<rect x="260" y="246" width="24" height="86" rx="5" fill="url(#col)"></rect>
+<rect x="300" y="246" width="24" height="86" rx="5" fill="url(#col)"></rect>
+<rect x="172" y="332" width="168" height="16" rx="4" fill="url(#stone)"></rect>
+<rect x="158" y="348" width="196" height="18" rx="5" fill="#E3D2B2"></rect>
+<g>
+  <circle cx="206" cy="356" r="10" fill="url(#ppl)"></circle><path d="M192 402 Q192 372 206 372 Q220 372 220 402 Z" fill="url(#ppl)"></path>
+  <circle cx="244" cy="360" r="10" fill="url(#ppl)"></circle><path d="M230 404 Q230 374 244 374 Q258 374 258 404 Z" fill="url(#ppl)"></path>
+  <circle cx="282" cy="360" r="10" fill="url(#ppl)"></circle><path d="M268 404 Q268 374 282 374 Q296 374 296 404 Z" fill="url(#ppl)"></path>
+  <circle cx="320" cy="356" r="10" fill="url(#ppl)"></circle><path d="M306 402 Q306 372 320 372 Q334 372 334 402 Z" fill="url(#ppl)"></path>
+</g>
+<path d="M176 224 L256 170" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".45"></path>
+</svg>

@@ -12,7 +12,11 @@ import {
   outcomeTier,
   accionDisponible,
   precioPan,
+  eventoDelMes,
+  applyEvent,
+  previewAction,
 } from '../../utils/hyperinflation.js'
+import EventCard from './EventCard.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // HyperInflation — mecánica del Episodio 1 (hiperinflación de Weimar).
@@ -25,6 +29,12 @@ import {
 // ─────────────────────────────────────────────────────────────────────────
 
 const fmt = (n) => Math.round(n).toLocaleString('es-CL')
+
+// Etiqueta corta de un delta telegrafiado ("Inflación +9"). null si no cambia.
+function deltaLabel(label, n) {
+  if (!n) return null
+  return `${label} ${n > 0 ? '+' : '−'}${Math.abs(Math.round(n))}`
+}
 
 // Acento táctil por acción (face + labio 3D).
 const ACTION_ACCENT = {
@@ -108,7 +118,12 @@ function LifeBar({ icon, iconColor, label, value, fill, valueColor, tint }) {
 }
 
 export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
-  const cfg = episode.hyperinflation
+  // El mazo de eventos vive en episode.eventos (dato del episodio); lo sumamos a
+  // la config de la mecánica para que la capa de game loop lo lea desde cfg.
+  const cfg = useMemo(
+    () => ({ ...episode.hyperinflation, eventos: episode.eventos ?? [] }),
+    [episode],
+  )
   const acc = accentFor(episode.id)
   const prisonersById = useMemo(
     () => Object.fromEntries(episode.prisoners.map((p) => [p.id, p])),
@@ -118,8 +133,14 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
   const [state, setState] = useState(() => initHyperinflation(cfg))
   const [report, setReport] = useState(null)
   const [picked, setPicked] = useState(null)
+  const [combo, setCombo] = useState(0) // momentum a mostrar como badge (0 = oculto)
+  const [eventNote, setEventNote] = useState(null) // réplica de la última carta resuelta
   const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
+
+  // Carta de evento pendiente para este mes (deriva del estado; se “consume” al
+  // resolverla porque queda en eventosVistos). Bloquea las acciones hasta cerrarla.
+  const pendingEvent = over ? null : eventoDelMes(state, cfg)
 
   // Precio del pan (dato del juego) y su salto respecto al mes anterior. El ref
   // se fija dentro de elegir() (una vez por decisión), así el delta no se borra
@@ -130,20 +151,45 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
     ? Math.round((precio / prevMonthPrice.current - 1) * 100)
     : 0
 
+  const bad = (s) => s.inflacion >= 70 || s.apoyo <= 30
+
   function elegir(accion) {
-    if (over || !accionDisponible(state, accion)) return
+    if (over || pendingEvent || !accionDisponible(state, accion)) return
     sfx('click')
+    setEventNote(null)
     prevMonthPrice.current = precioPan(state.inflacion) // precio del mes que se deja
     setPicked(accion.id)
     setTimeout(() => setPicked(null), 260)
     const { state: next, report: rep } = playMonth(state, cfg, accion)
     setState(next)
     setReport(rep)
-    const bad = (s) => s.inflacion >= 70 || s.apoyo <= 30
     if (bad(next) && !bad(state)) {
       sfx('alert')
       trigger('shake')
     } else if (!bad(next) && !isOver(next, cfg)) {
+      sfx('advance')
+      trigger('flash')
+    }
+    // Combo: a partir de 2 meses buenos encadenados, badge + brillo creciente.
+    if (rep.momentum >= 2) {
+      setCombo(rep.momentum)
+      setTimeout(() => setCombo(0), 1200)
+    } else {
+      setCombo(0)
+    }
+  }
+
+  // Resuelve una carta de evento (pasiva o rama de decisión): aplica su efecto
+  // por el mismo clamp y da feedback. No avanza el mes (eso lo hace la acción).
+  function resolverEvento(efecto, opcion) {
+    sfx('newspaper')
+    const next = applyEvent(state, pendingEvent, efecto)
+    setState(next)
+    setEventNote(opcion?.replica ?? null)
+    if (bad(next) && !bad(state)) {
+      sfx('alert')
+      trigger('shake')
+    } else if ((efecto.inflacion ?? 0) < 0 || (efecto.apoyo ?? 0) > 0) {
       sfx('advance')
       trigger('flash')
     }
@@ -211,6 +257,22 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
             valueColor="#2FB37E"
           />
         </div>
+
+        {/* Combo: racha de meses buenos (premio visual creciente) */}
+        {combo >= 2 && (
+          <div className="mt-2.5 flex justify-center" aria-live="polite">
+            <span
+              className="candy animate-pop px-3 py-1.5 text-[0.78rem]"
+              style={{
+                '--face': '#F5B331',
+                '--edge': '#E0912A',
+                filter: `drop-shadow(0 0 ${combo * 3}px rgba(245,179,49,${0.35 + combo * 0.12}))`,
+              }}
+            >
+              🔥 ¡Racha ×{combo}!
+            </span>
+          </div>
+        )}
 
         {/* Cifra protagonista — el precio del pan */}
         <div
@@ -287,8 +349,25 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
           </div>
         )}
 
+        {/* Carta de evento del mes (gate antes de las acciones) */}
+        {!over && pendingEvent && (
+          <EventCard
+            evento={pendingEvent}
+            mes={state.mes}
+            accent={acc}
+            onResolve={resolverEvento}
+          />
+        )}
+
+        {/* Réplica breve tras resolver una carta de decisión */}
+        {!over && eventNote && (
+          <p className="animate-fade-up mt-3 rounded-[14px] bg-panel/80 px-3 py-2 font-nunito text-[0.8rem] italic leading-snug text-ink-soft">
+            {eventNote}
+          </p>
+        )}
+
         {/* Acciones */}
-        {!over && (
+        {!over && !pendingEvent && (
           <div className="mt-4">
             <p className="font-nunito text-[0.72rem] font-extrabold uppercase tracking-wide text-ink-mute">
               ¿Qué haces este mes?
@@ -298,6 +377,9 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
                 const disp = accionDisponible(state, a)
                 const restantes = a.usos != null ? a.usos - (state.usos[a.id] ?? 0) : null
                 const ac = ACTION_ACCENT[a.id] ?? { face: acc.face, edge: acc.edge }
+                const prev = previewAction(state, cfg, a) // telegrafiado
+                const infl = deltaLabel('Inflación', prev.inflacion)
+                const apy = deltaLabel('Apoyo', prev.apoyo)
                 return (
                   <button
                     key={a.id}
@@ -316,6 +398,20 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
                     <span className="mt-1 block font-nunito text-[0.66rem] font-extrabold leading-tight text-white/85">
                       {actionHint(a, restantes)}
                     </span>
+                    {(infl || apy) && (
+                      <span className="mt-1.5 flex flex-wrap gap-1">
+                        {infl && (
+                          <span className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white">
+                            {infl}
+                          </span>
+                        )}
+                        {apy && (
+                          <span className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white">
+                            {apy}
+                          </span>
+                        )}
+                      </span>
+                    )}
                   </button>
                 )
               })}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<defs>
+  <radialGradient id="d" cx="42%" cy="34%" r="76%"><stop offset="0%" stop-color="#86B7E6"></stop><stop offset="100%" stop-color="#3F92DA"></stop></radialGradient>
+  <linearGradient id="water" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#3E88CC"></stop><stop offset="100%" stop-color="#2A69A6"></stop></linearGradient>
+  <linearGradient id="hull" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#D65B3F"></stop><stop offset="100%" stop-color="#9A3421"></stop></linearGradient>
+  <linearGradient id="cabin" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FCF6EA"></stop><stop offset="100%" stop-color="#E2D3B8"></stop></linearGradient>
+</defs>
+<rect width="512" height="512" fill="url(#d)"></rect>
+<circle cx="150" cy="120" r="132" fill="#ffffff" opacity=".08"></circle>
+<path d="M40 352 Q150 338 256 348 Q362 358 472 344 L472 470 L40 470 Z" fill="url(#water)"></path>
+<path d="M70 372 Q110 364 150 372" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".4"></path>
+<path d="M330 388 Q372 380 414 388" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".4"></path>
+<rect x="158" y="288" width="52" height="34" rx="4" fill="#EDB24A"></rect>
+<rect x="212" y="288" width="52" height="34" rx="4" fill="#E06A50"></rect>
+<rect x="266" y="288" width="52" height="34" rx="4" fill="#35B98A"></rect>
+<rect x="185" y="256" width="52" height="34" rx="4" fill="#4FA3E3"></rect>
+<rect x="239" y="256" width="52" height="34" rx="4" fill="#EDB24A"></rect>
+<g opacity=".18" fill="#000"><rect x="172" y="288" width="3" height="34"></rect><rect x="190" y="288" width="3" height="34"></rect><rect x="226" y="288" width="3" height="34"></rect><rect x="244" y="288" width="3" height="34"></rect><rect x="280" y="288" width="3" height="34"></rect><rect x="298" y="288" width="3" height="34"></rect><rect x="199" y="256" width="3" height="34"></rect><rect x="217" y="256" width="3" height="34"></rect><rect x="253" y="256" width="3" height="34"></rect><rect x="271" y="256" width="3" height="34"></rect></g>
+<rect x="326" y="262" width="40" height="60" rx="6" fill="url(#cabin)"></rect>
+<rect x="334" y="272" width="10" height="10" rx="2" fill="#3F6E96"></rect><rect x="350" y="272" width="10" height="10" rx="2" fill="#3F6E96"></rect><rect x="334" y="290" width="10" height="10" rx="2" fill="#3F6E96"></rect><rect x="350" y="290" width="10" height="10" rx="2" fill="#3F6E96"></rect>
+<rect x="340" y="234" width="16" height="30" rx="3" fill="#D65B3F"></rect><rect x="340" y="242" width="16" height="7" fill="#2E3646"></rect>
+<path d="M150 322 L376 322 L348 372 Q342 384 326 384 L200 384 Q184 384 178 372 Z" fill="url(#hull)"></path>
+<path d="M150 322 L376 322 L372 332 L154 332 Z" fill="#EFEFEF" opacity=".5"></path>
+<path d="M164 340 C176 356 200 366 230 368" fill="none" stroke="#F0A98F" stroke-width="4" stroke-linecap="round" opacity=".45"></path>
+</svg>

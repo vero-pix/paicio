@@ -125,6 +125,35 @@ export default function Outcome({
   const stars = resultKind === 'perfect' ? 3 : resultKind === 'partial' ? 2 : 1
   const partida = partidaFor(resultKind)
 
+  // Jugo de la pantalla final (prototipo Ep1): puntaje + "superaste al X%".
+  // Ambos deterministas a partir del score global — sin backend.
+  const juicy = episode.id === 'ep1'
+  const score = Math.round(global * 12.5)
+  const percentil = Math.max(3, Math.min(99, Math.round(global * 0.95 + 4)))
+  const [shared, setShared] = useState(false)
+
+  function compartir() {
+    const flag = FLAGS[episode.id] ?? ''
+    const texto = [
+      `PAICIO · ${episode.paisReferencia.split(',')[0]} ${episode.año} ${flag}`,
+      `${'⭐'.repeat(stars)}  ·  ${score} pts`,
+      v.title,
+      `Superé al ${percentil}% de los ministros`,
+      'https://paicio.vercel.app',
+    ].join('\n')
+    if (navigator.share) {
+      navigator.share({ text: texto }).catch(() => {})
+    } else {
+      navigator.clipboard?.writeText(texto).then(
+        () => {
+          setShared(true)
+          setTimeout(() => setShared(false), 1800)
+        },
+        () => {},
+      )
+    }
+  }
+
   const real = episode.trendChart?.real ?? {}
   const historyText = policy?.history || real.nota || ''
 
@@ -194,6 +223,32 @@ export default function Outcome({
               </p>
             )}
 
+            {/* Puntaje + percentil (prototipo Ep1) */}
+            {juicy && (
+              <div className="mt-4 flex items-stretch justify-center gap-2.5">
+                <div className="shadow-card rounded-[16px] bg-surface px-4 py-2.5 text-center">
+                  <p
+                    className="font-round text-[1.5rem] font-bold leading-none tabular-nums"
+                    style={{ color: v.color }}
+                  >
+                    {score.toLocaleString('es-CL')}
+                  </p>
+                  <p className="mt-1 font-nunito text-[0.56rem] font-extrabold uppercase tracking-wide text-ink-mute">
+                    Puntaje
+                  </p>
+                </div>
+                <div className="shadow-card flex items-center rounded-[16px] bg-surface px-4 py-2.5 text-center">
+                  <p className="font-nunito text-[0.78rem] font-bold leading-tight text-ink-soft">
+                    Superaste al{' '}
+                    <span className="font-round text-[1rem]" style={{ color: v.color }}>
+                      {percentil}%
+                    </span>{' '}
+                    de los ministros
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Chips de score */}
             <div className="mt-5 grid grid-cols-3 gap-2.5">
               {CHIPS.map((c) => (
@@ -259,8 +314,19 @@ export default function Outcome({
             {/* Empuja la barra inferior hacia abajo */}
             <div className="flex-1" />
 
+            {/* Compartir resultado (prototipo Ep1) */}
+            {juicy && (
+              <button
+                type="button"
+                onClick={compartir}
+                className="candy candy-soft mt-6 w-full px-5 py-3 text-[0.94rem]"
+              >
+                {shared ? '¡Copiado! ✓' : 'Compartir resultado ⤴'}
+              </button>
+            )}
+
             {/* Barra inferior */}
-            <div className="mt-6 flex items-center gap-3">
+            <div className={`${juicy ? 'mt-3' : 'mt-6'} flex items-center gap-3`}>
               <button
                 type="button"
                 onClick={onRestart}
