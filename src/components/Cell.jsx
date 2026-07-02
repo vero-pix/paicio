@@ -40,7 +40,7 @@ export default function Cell({ episode, onStart }) {
         style={{ background: 'linear-gradient(180deg,#FFEFD2,#FBE2BE)' }}
       />
 
-      <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 pb-8 pt-1">
+      <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col px-5 pb-8 pt-1">
         {/* Top bar: pill de país */}
         <div className="flex justify-end">
           <span

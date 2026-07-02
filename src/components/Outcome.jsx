@@ -164,7 +164,7 @@ export default function Outcome({
         />
       )}
 
-      <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 pb-8 pt-2">
+      <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col px-5 pb-8 pt-2">
         {!revealed ? (
           <div className="flex flex-1 items-center justify-center">
             <p className="animate-slow-pulse font-nunito text-[0.8rem] font-extrabold uppercase tracking-[0.2em] text-ink-mute">

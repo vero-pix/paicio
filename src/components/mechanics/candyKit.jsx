@@ -38,7 +38,7 @@ export function MechanicShell({ shake, flash, tint, children }) {
           aria-hidden
         />
       )}
-      <div className="mx-auto max-w-md px-5 pb-10 pt-1">{children}</div>
+      <div className="mx-auto max-w-md px-5 pb-6 pt-1">{children}</div>
     </div>
   )
 }
@@ -106,7 +106,7 @@ export function LifeBar({ variant, label, value }) {
   return (
     <div className="flex items-center gap-2.5">
       <span
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px]"
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px]"
         style={{ background: s.tint, color: s.color }}
       >
         <svg
@@ -151,15 +151,15 @@ export function LifeBar({ variant, label, value }) {
 // Asesor: retrato en marco-moneda + burbuja blanca con nombre y cita.
 export function AdvisorBubble({ portrait, name, nameColor, subtitle, text }) {
   return (
-    <div className="animate-fade-up mt-4 flex items-start gap-3">
+    <div className="animate-fade-up mt-3 flex items-start gap-3">
       <span className="coin shrink-0 rounded-full p-[3px]">
         <img
           src={portrait}
           alt=""
-          className="h-12 w-12 rounded-full border-2 border-white object-cover"
+          className="h-10 w-10 rounded-full border-2 border-white object-cover"
         />
       </span>
-      <div className="shadow-card min-w-0 flex-1 rounded-[18px] rounded-tl-[5px] bg-surface p-3">
+      <div className="shadow-card min-w-0 flex-1 rounded-[16px] rounded-tl-[5px] bg-surface p-2.5">
         <p className="font-round text-[0.78rem] font-bold" style={{ color: nameColor }}>
           {name}
           {subtitle && (
@@ -182,7 +182,7 @@ export function CandyAction({ id, face, edge, name, hint, meta, disabled, picked
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`candy w-full p-3 text-left ${picked ? 'translate-y-1' : ''}`}
+      className={`candy w-full p-2.5 text-left ${picked ? 'translate-y-1' : ''}`}
       style={{ '--face': face, '--edge': edge }}
     >
       <span className="flex items-center justify-between gap-2">

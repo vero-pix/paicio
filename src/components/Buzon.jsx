@@ -64,7 +64,7 @@ export default function Buzon() {
 
   if (!authed) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5">
+      <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-5">
         <h1 className="font-display text-3xl font-black text-paper">Buzón de PAICIO</h1>
         <p className="mt-2 font-body text-sm text-paper-dim">
           Vista privada. Ingresa la clave para leer y responder el feedback.
