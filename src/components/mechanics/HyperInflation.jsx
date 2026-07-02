@@ -17,6 +17,21 @@ import {
   previewAction,
 } from '../../utils/hyperinflation.js'
 import EventCard from './EventCard.jsx'
+import CoachMarks from '../CoachMarks.jsx'
+import { tutorialFor } from '../../theme/tutorials.js'
+
+// Tutorial visto (una sola vez). { main, event } se marcan por separado para
+// que el paso contextual del evento no dependa de haber visto los pasos base.
+const TUT_KEY = 'paicio.tutorial.v1'
+function loadTutorial() {
+  try {
+    const r = JSON.parse(localStorage.getItem(TUT_KEY))
+    if (r && typeof r === 'object') return { main: false, event: false, ...r }
+  } catch {
+    /* localStorage no disponible */
+  }
+  return { main: false, event: false }
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // HyperInflation — mecánica del Episodio 1 (hiperinflación de Weimar).
@@ -142,6 +157,40 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
   // resolverla porque queda en eventosVistos). Bloquea las acciones hasta cerrarla.
   const pendingEvent = over ? null : eventoDelMes(state, cfg)
 
+  // ── Onboarding (coach-marks) ────────────────────────────────────────────
+  const tut = tutorialFor(episode.id)
+  const [seenTut, setSeenTut] = useState(loadTutorial)
+  // Refs a los elementos REALES que resalta el tutorial.
+  const goalRef = useRef(null)
+  const metersRef = useRef(null)
+  const actionsRef = useRef(null)
+  const reformaRef = useRef(null)
+  const eventRef = useRef(null)
+  const refByTarget = { goal: goalRef, meters: metersRef, actions: actionsRef, reforma: reformaRef }
+
+  function persistTut(next) {
+    setSeenTut(next)
+    try {
+      localStorage.setItem(TUT_KEY, JSON.stringify(next))
+    } catch {
+      /* localStorage no disponible */
+    }
+  }
+  const skipAllTut = () => persistTut({ main: true, event: true })
+
+  // Pasos base (1-4): al entrar a la pantalla de decisión con acciones visibles.
+  // Paso evento (5): la 1ª vez que aparece una carta. Nunca coinciden (la carta
+  // oculta las acciones), así que se muestran en secuencia.
+  const showEventCoach = !!tut && !seenTut.event && !!pendingEvent
+  const showMainCoach = !!tut && !seenTut.main && !over && !pendingEvent
+  const mainSteps = tut ? tut.steps.map((s) => ({ ref: refByTarget[s.target], caption: s.caption })) : []
+
+  // Primer turno guiado: pulso en la acción sugerida durante el mes 1, hasta la
+  // primera decisión. No convive con el coach (para no saturar).
+  const hintAction = tut?.firstTurnHint?.action
+  const showFirstHint =
+    !!tut?.firstTurnHint && state.mes === 1 && !over && !pendingEvent && !showMainCoach && !showEventCoach
+
   // Precio del pan (dato del juego) y su salto respecto al mes anterior. El ref
   // se fija dentro de elegir() (una vez por decisión), así el delta no se borra
   // con los re-renders del count-up de los medidores.
@@ -236,8 +285,28 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
           </span>
         </div>
 
+        {/* Chip de META persistente: el jugador nunca pierde el hilo. */}
+        {!over && tut && (
+          <div className="mt-2.5 flex items-center gap-2 rounded-full bg-panel/70 px-3 py-1.5">
+            <span aria-hidden className="text-[0.9rem]">🎯</span>
+            <span className="min-w-0 flex-1 truncate font-nunito text-[0.72rem] font-bold text-ink-soft">
+              <span className="font-extrabold uppercase tracking-wide text-ink-mute">Meta · </span>
+              {tut.goalChip}
+            </span>
+            <span aria-hidden className="flex shrink-0 gap-1">
+              {Array.from({ length: cfg.meses }).map((_, m) => (
+                <span
+                  key={m}
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: m < state.mes ? acc.face : '#E6D6B8' }}
+                />
+              ))}
+            </span>
+          </div>
+        )}
+
         {/* Medidores */}
-        <div className="mt-4 space-y-2.5">
+        <div ref={metersRef} className="mt-4 space-y-2.5">
           <LifeBar
             icon={<FlameIcon />}
             iconColor="#E8604F"
@@ -276,6 +345,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
 
         {/* Cifra protagonista — el precio del pan */}
         <div
+          ref={goalRef}
           className="shadow-card-dark relative mt-4 overflow-hidden rounded-[22px] p-3.5"
           style={{ background: 'linear-gradient(160deg,#3B2A17,#26190B)' }}
         >
@@ -356,6 +426,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
             mes={state.mes}
             accent={acc}
             onResolve={resolverEvento}
+            spotlightRef={eventRef}
           />
         )}
 
@@ -372,7 +443,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
             <p className="font-nunito text-[0.72rem] font-extrabold uppercase tracking-wide text-ink-mute">
               ¿Qué haces este mes?
             </p>
-            <div className="mt-2 grid grid-cols-2 gap-2">
+            <div ref={actionsRef} className="mt-2 grid grid-cols-2 gap-2">
               {cfg.acciones.map((a) => {
                 const disp = accionDisponible(state, a)
                 const restantes = a.usos != null ? a.usos - (state.usos[a.id] ?? 0) : null
@@ -380,15 +451,32 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
                 const prev = previewAction(state, cfg, a) // telegrafiado
                 const infl = deltaLabel('Inflación', prev.inflacion)
                 const apy = deltaLabel('Apoyo', prev.apoyo)
+                const isHint = showFirstHint && a.id === hintAction && disp
                 return (
                   <button
                     key={a.id}
+                    ref={a.id === 'reforma' ? reformaRef : undefined}
                     type="button"
                     disabled={!disp}
                     onClick={() => elegir(a)}
-                    className={`candy p-2.5 text-left ${picked === a.id ? 'translate-y-1' : ''}`}
+                    className={`candy relative p-2.5 text-left ${picked === a.id ? 'translate-y-1' : ''}`}
                     style={{ '--face': ac.face, '--edge': ac.edge }}
                   >
+                    {isHint && (
+                      <>
+                        <span
+                          aria-hidden
+                          className="animate-ring pointer-events-none absolute -inset-0.5 rounded-[16px]"
+                          style={{ boxShadow: `0 0 0 3px ${ac.face}` }}
+                        />
+                        <span
+                          className="animate-bob pointer-events-none absolute -top-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-1 font-nunito text-[0.6rem] font-extrabold text-white shadow-card"
+                          style={{ background: ac.edge }}
+                        >
+                          👆 {tut.firstTurnHint.label}
+                        </span>
+                      </>
+                    )}
                     <span className="flex items-center gap-2">
                       <ActionIcon id={a.id} className="h-5 w-5 shrink-0 text-white" />
                       <span className="font-round text-[0.92rem] font-bold leading-tight">
@@ -442,6 +530,25 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
           </div>
         )}
       </div>
+
+      {/* Coach-marks de onboarding (una sola vez). El del evento tiene prioridad
+          si hay carta en pantalla; si no, los pasos base. */}
+      {showEventCoach && (
+        <CoachMarks
+          steps={[{ ref: eventRef, caption: tut.event.caption }]}
+          accent={acc}
+          onDone={() => persistTut({ ...seenTut, event: true })}
+          onSkip={skipAllTut}
+        />
+      )}
+      {showMainCoach && (
+        <CoachMarks
+          steps={mainSteps}
+          accent={acc}
+          onDone={() => persistTut({ ...seenTut, main: true })}
+          onSkip={skipAllTut}
+        />
+      )}
     </div>
   )
 }
