@@ -264,6 +264,81 @@ export default {
     ],
   },
 
+  // ── CARTAS DE EVENTO ("shocks" tipo Reigns) ────────────────────────────
+  // Capa de game loop: al inicio de algunos meses cae una carta que reacciona
+  // sobre los medidores (pasa por el mismo clamp). ~50% por mes, sin reemplazo.
+  //  - PASIVA: `efecto` { inflacion, apoyo } + botón "Seguir".
+  //  - DECISIÓN: `opciones` [{ label, efecto, replica, pills? }, …].
+  // `pills` opcional pinta etiquetas de flavor (p. ej. "Reservas ↑"); si falta,
+  // se derivan solas de `efecto`. `tono`: good | bad | neutral.
+  eventos: [
+    {
+      id: 'petroleo',
+      titulo: 'Sube el petróleo mundial',
+      texto: 'El barril se dispara y todo lo que se mueve en camión sube con él.',
+      icon: '🛢️',
+      efecto: { inflacion: 7 },
+    },
+    {
+      id: 'paro',
+      titulo: 'La COB llama a paro general',
+      texto: 'La Central Obrera para el país: nadie trabaja, todos exigen aumento.',
+      icon: '✊',
+      efecto: { inflacion: 3, apoyo: -10 },
+    },
+    {
+      id: 'deuda',
+      titulo: 'Vence un pago de deuda externa',
+      texto: 'Los acreedores cobran hoy. La caja no alcanza y la tentación de imprimir crece.',
+      icon: '📄',
+      efecto: { inflacion: 6 },
+    },
+    {
+      id: 'dolarizacion',
+      titulo: 'Rumor: el gobierno dolarizará',
+      texto: 'Corre el rumor de que se abandonará el peso. La gente corre a comprar dólares.',
+      icon: '💵',
+      efecto: { inflacion: 8, apoyo: -4 },
+    },
+    {
+      id: 'cosecha',
+      titulo: 'Cosecha récord en el altiplano',
+      texto: 'La papa y el grano abundan: los precios de la comida ceden y el ánimo mejora.',
+      icon: '🌾',
+      efecto: { inflacion: -4, apoyo: 5 },
+    },
+    {
+      id: 'fmi',
+      titulo: 'El FMI ofrece crédito',
+      texto: 'Dólares frescos ahora, a cambio de un ajuste que la calle detesta.',
+      icon: '🏦',
+      opciones: [
+        {
+          label: 'Aceptar el crédito',
+          efecto: { inflacion: -8, apoyo: -6 },
+          pills: [
+            { label: 'Reservas ↑', tono: 'good' },
+            { label: 'Apoyo −6', tono: 'bad' },
+          ],
+          replica: 'Las reservas respiran, pero la calle ya afila los cuchillos.',
+        },
+        {
+          label: 'Rechazar',
+          efecto: {},
+          pills: [{ label: 'sin cambios', tono: 'neutral' }],
+          replica: 'Sin ayuda de afuera. Lo resolvemos solos… o no.',
+        },
+      ],
+    },
+    {
+      id: 'especuladores',
+      titulo: 'Especuladores acaparan alimentos',
+      texto: 'Bodegas llenas y estantes vacíos: esconden la comida esperando que suba más.',
+      icon: '📦',
+      efecto: { inflacion: 6 },
+    },
+  ],
+
   // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
   outcomes: {
     // Estabilización exitosa a tiempo: el Decreto 21060 frena la hiperinflación.
