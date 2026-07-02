@@ -14,9 +14,33 @@
 // pueblo derroca, o reforma demasiado tarde; partial → a medias.
 // ─────────────────────────────────────────────────────────────────────────
 
+import { mulberry32, randomSeed, shuffle } from './rng.js'
+
 const clamp = (v, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, v))
 
-export function initHyperinflation(cfg) {
+// Probabilidad de que caiga una carta de evento al inicio de un mes.
+const EVENT_CHANCE = 0.5
+
+// Precomputa qué carta de evento (si alguna) cae en cada mes. Todo el azar se
+// resuelve acá, en el init: el resto de la partida son lookups puros. Roba SIN
+// reemplazo (baraja el mazo y va sacando en orden); ~50% por mes hasta agotarlo.
+// Con la misma `seed` sale el mismo calendario → base lista para el Reto diario.
+function buildEventSchedule(cfg, rng) {
+  const mazo = shuffle((cfg.eventos ?? []).map((e) => e.id), rng)
+  const porMes = {}
+  let next = 0
+  for (let mes = 1; mes <= cfg.meses; mes++) {
+    if (next >= mazo.length) break // mazo agotado: no más eventos
+    if (rng() < EVENT_CHANCE) {
+      porMes[mes] = mazo[next]
+      next += 1
+    }
+  }
+  return porMes
+}
+
+export function initHyperinflation(cfg, seed = randomSeed()) {
+  const rng = mulberry32(seed)
   return {
     inflacion: cfg.inflacionInicial, // más bajo = mejor
     apoyo: cfg.apoyoInicial, // más alto = mejor
@@ -28,8 +52,56 @@ export function initHyperinflation(cfg) {
     derrocado: false,
     colapso: false,
     usos: {},
+    // ── Capa de game loop ──────────────────────────────────────────────────
+    seed,
+    eventosPorMes: buildEventSchedule(cfg, rng), // { [mes]: eventId }
+    eventosVistos: [], // ids ya aplicados esta partida
+    momentum: 0, // racha de meses "buenos" en curso
+    momentumMax: 0, // mejor racha alcanzada (para el desenlace)
     log: [],
   }
+}
+
+// Carta de evento pendiente para el mes actual (o null). No la marca como vista:
+// eso ocurre al aplicarla con applyEvent.
+export function eventoDelMes(state, cfg) {
+  const id = state.eventosPorMes[state.mes]
+  if (!id || state.eventosVistos.includes(id)) return null
+  return (cfg.eventos ?? []).find((e) => e.id === id) ?? null
+}
+
+// Aplica el efecto de una carta (pasiva o rama de decisión) por el MISMO clamp
+// de la mecánica. Recalcula colapso/derrocado por si el shock cierra la partida.
+export function applyEvent(state, evento, efecto = {}) {
+  const inflacion = clamp(state.inflacion + (efecto.inflacion ?? 0))
+  const apoyo = clamp(state.apoyo + (efecto.apoyo ?? 0))
+  return {
+    ...state,
+    inflacion,
+    apoyo,
+    colapso: state.colapso || inflacion >= 100,
+    derrocado: state.derrocado || apoyo <= 0,
+    eventosVistos: [...state.eventosVistos, evento.id],
+    log: [...state.log, { evento: evento.titulo, efecto }],
+  }
+}
+
+// Efecto DIRECTO estimado de una acción, para telegrafiarlo antes de elegir
+// ("inflación +9"). No incluye la deriva emergente de fin de mes: muestra el
+// golpe inmediato de la acción para que se aprenda experimentando.
+export function previewAction(state, cfg, accion) {
+  if (accion.id === 'imprimir') {
+    const golpe = cfg.golpeImprimir + cfg.escaladaImprimir * state.vecesImpreso
+    return { inflacion: Math.round(clamp(state.inflacion + golpe) - state.inflacion), apoyo: 0 }
+  }
+  if (accion.id === 'reforma') {
+    // Condicional: si la inflación aún es manejable, la desploma; si no, apenas.
+    if (state.inflacion < cfg.umbralReforma) {
+      return { inflacion: 12 - state.inflacion, apoyo: clamp(state.apoyo + 20) - state.apoyo }
+    }
+    return { inflacion: clamp(state.inflacion - 12) - state.inflacion, apoyo: clamp(state.apoyo - 6) - state.apoyo }
+  }
+  return { inflacion: accion.inflacion ?? 0, apoyo: accion.apoyo ?? 0 }
 }
 
 export function accionDisponible(state, accion) {
@@ -63,9 +135,11 @@ export function playMonth(state, cfg, accion) {
       inflacion = clamp(inflacion - 12)
       apoyo = clamp(apoyo - 6)
     }
-    const report = { accionName: accion.name, advisor: accion.advisor, reaccion: accion.reaccion }
+    const momentum = reformaExitosa ? state.momentum + 1 : 0
+    const momentumMax = Math.max(state.momentumMax, momentum)
+    const report = { accionName: accion.name, advisor: accion.advisor, reaccion: accion.reaccion, buenMes: reformaExitosa, momentum }
     return {
-      state: { ...state, inflacion, apoyo, reformo, reformaExitosa, usos, log: [...state.log, report] },
+      state: { ...state, inflacion, apoyo, reformo, reformaExitosa, momentum, momentumMax, usos, log: [...state.log, report] },
       report,
     }
   }
@@ -97,11 +171,20 @@ export function playMonth(state, cfg, accion) {
   const colapso = inflacion >= 100
   const derrocado = apoyo <= 0
 
+  // Combo: un mes es "bueno" si FRENASTE la inflación (bajó respecto al mes
+  // anterior). Premia la disciplina; imprimir la corta. La tensión la pone el
+  // apoyo, que igual se desgasta. Encadenar meses buenos sube el momentum.
+  const buenMes = !colapso && !derrocado && inflacion < state.inflacion
+  const momentum = buenMes ? state.momentum + 1 : 0
+  const momentumMax = Math.max(state.momentumMax, momentum)
+
   const report = {
     accionName: accion.name,
     advisor: accion.advisor,
     reaccion: accion.reaccion,
     precio: precioPan(inflacion),
+    buenMes,
+    momentum,
   }
 
   return {
@@ -113,6 +196,8 @@ export function playMonth(state, cfg, accion) {
       alivioDeuda,
       colapso,
       derrocado,
+      momentum,
+      momentumMax,
       mes: state.mes + 1,
       usos,
       log: [...state.log, report],

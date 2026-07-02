@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<defs>
+  <radialGradient id="d" cx="42%" cy="34%" r="76%"><stop offset="0%" stop-color="#F8CE86"></stop><stop offset="100%" stop-color="#ED9E38"></stop></radialGradient>
+  <linearGradient id="body" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#33404F"></stop><stop offset="34%" stop-color="#5B6C80"></stop><stop offset="60%" stop-color="#41505F"></stop><stop offset="100%" stop-color="#28313D"></stop></linearGradient>
+  <linearGradient id="lid" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#8494A6"></stop><stop offset="100%" stop-color="#566476"></stop></linearGradient>
+  <linearGradient id="band" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#9DACBE"></stop><stop offset="55%" stop-color="#788698"></stop><stop offset="100%" stop-color="#5E6B7C"></stop></linearGradient>
+  <clipPath id="bc"><path d="M188 202 C174 216 166 258 166 286 C166 314 174 358 188 372 L324 372 C338 358 346 314 346 286 C346 258 338 216 324 202 Z"></path></clipPath>
+</defs>
+<rect width="512" height="512" fill="url(#d)"></rect>
+<circle cx="150" cy="120" r="132" fill="#ffffff" opacity=".08"></circle>
+<ellipse cx="258" cy="392" rx="112" ry="24" fill="#000" opacity=".13"></ellipse>
+<path d="M188 202 C174 216 166 258 166 286 C166 314 174 358 188 372 L324 372 C338 358 346 314 346 286 C346 258 338 216 324 202 Z" fill="url(#body)"></path>
+<g clip-path="url(#bc)">
+  <rect x="150" y="196" width="212" height="20" fill="url(#band)"></rect>
+  <rect x="150" y="234" width="212" height="22" fill="url(#band)"></rect>
+  <rect x="150" y="316" width="212" height="22" fill="url(#band)"></rect>
+  <rect x="196" y="196" width="30" height="184" rx="14" fill="#ffffff" opacity=".13"></rect>
+  <rect x="304" y="196" width="58" height="184" fill="#1c242e" opacity=".28"></rect>
+</g>
+<ellipse cx="256" cy="202" rx="68" ry="17" fill="#566476"></ellipse>
+<ellipse cx="256" cy="200" rx="68" ry="16" fill="url(#lid)"></ellipse>
+<ellipse cx="256" cy="200" rx="49" ry="10.5" fill="#4a5867"></ellipse>
+<circle cx="256" cy="200" r="9" fill="#333f4d"></circle>
+<path d="M190 216 C178 246 176 328 190 358" fill="none" stroke="#C7D4E2" stroke-width="5" stroke-linecap="round" opacity=".5"></path>
+</svg>
