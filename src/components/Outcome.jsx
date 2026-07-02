@@ -89,6 +89,7 @@ function Star({ filled, size, pop }) {
 export default function Outcome({
   episode,
   policyId,
+  mechanicResult,
   allies,
   onConceptSeen,
   onRestart,
@@ -126,10 +127,15 @@ export default function Outcome({
   const partida = partidaFor(resultKind)
 
   // Jugo de la pantalla final (prototipo Ep1): puntaje + "superaste al X%".
-  // Ambos deterministas a partir del score global — sin backend.
   const juicy = episode.id === 'ep1'
-  const score = Math.round(global * 12.5)
+  // Puntaje: el corrido de la partida si llegó (game feel); si no, uno derivado
+  // del desempeño global. El percentil es una CURVA LOCAL estimada (no backend);
+  // no es un dato real, es una referencia por desempeño.
+  const score = mechanicResult?.score != null ? mechanicResult.score : Math.round(global * 12.5)
   const percentil = Math.max(3, Math.min(99, Math.round(global * 0.95 + 4)))
+  // Tensión de "casi": cuánto faltó para la siguiente estrella (umbrales 42/55).
+  const nextStarGap = stars === 1 ? 42 - global : stars === 2 ? 55 - global : null
+  const nearMiss = nextStarGap != null && nextStarGap > 0 && nextStarGap <= 6 ? stars + 1 : null
   const [shared, setShared] = useState(false)
 
   function compartir() {
@@ -237,7 +243,7 @@ export default function Outcome({
                     Puntaje
                   </p>
                 </div>
-                <div className="shadow-card flex items-center rounded-[16px] bg-surface px-4 py-2.5 text-center">
+                <div className="shadow-card flex flex-col items-center justify-center rounded-[16px] bg-surface px-4 py-2.5 text-center">
                   <p className="font-nunito text-[0.78rem] font-bold leading-tight text-ink-soft">
                     Superaste al{' '}
                     <span className="font-round text-[1rem]" style={{ color: v.color }}>
@@ -245,8 +251,21 @@ export default function Outcome({
                     </span>{' '}
                     de los ministros
                   </p>
+                  <p className="mt-0.5 font-nunito text-[0.52rem] font-extrabold uppercase tracking-wide text-ink-mute/70">
+                    estimado
+                  </p>
                 </div>
               </div>
+            )}
+
+            {/* Tensión de "casi": faltó poco para otra estrella. */}
+            {juicy && nearMiss && (
+              <p
+                className="mx-auto mt-2.5 rounded-full px-3 py-1 text-center font-nunito text-[0.76rem] font-bold"
+                style={{ background: '#FBE7C6', color: '#9A6B12' }}
+              >
+                ✨ Te faltó poco para {nearMiss} estrellas — ¡un intento más!
+              </p>
             )}
 
             {/* Chips de score */}
@@ -327,15 +346,26 @@ export default function Outcome({
 
             {/* Barra inferior */}
             <div className={`${juicy ? 'mt-3' : 'mt-6'} flex items-center gap-3`}>
-              <button
-                type="button"
-                onClick={onRestart}
-                title="Intentar de nuevo"
-                aria-label="Intentar de nuevo"
-                className="candy candy-soft flex h-[52px] w-[52px] shrink-0 items-center justify-center text-[1.2rem]"
-              >
-                ↻
-              </button>
+              {juicy ? (
+                <button
+                  type="button"
+                  onClick={onRestart}
+                  title="Intentar de nuevo"
+                  className="candy candy-soft flex-1 px-4 py-3.5 text-[0.94rem]"
+                >
+                  ↻ Un intento más
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onRestart}
+                  title="Intentar de nuevo"
+                  aria-label="Intentar de nuevo"
+                  className="candy candy-soft flex h-[52px] w-[52px] shrink-0 items-center justify-center text-[1.2rem]"
+                >
+                  ↻
+                </button>
+              )}
               {nextEpisode ? (
                 <button
                   type="button"

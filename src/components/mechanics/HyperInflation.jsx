@@ -18,7 +18,20 @@ import {
 } from '../../utils/hyperinflation.js'
 import EventCard from './EventCard.jsx'
 import CoachMarks from '../CoachMarks.jsx'
+import Coins from './Coins.jsx'
+import GameProgress from './GameProgress.jsx'
 import { tutorialFor } from '../../theme/tutorials.js'
+
+// Puntaje corrido de la partida (game feel): acumula el "mérito" de cada mes.
+// Solo UI — no toca la lógica de la mecánica. Premia frenar la inflación, subir
+// el apoyo y encadenar combos; nunca resta (siempre sube).
+function turnReward(prev, next) {
+  let p = 35 // base por jugar el mes
+  if (next.inflacion < prev.inflacion) p += (prev.inflacion - next.inflacion) * 8
+  if (next.apoyo > prev.apoyo) p += (next.apoyo - prev.apoyo) * 5
+  p += (next.momentum ?? 0) * 25
+  return Math.round(p)
+}
 
 // Tutorial visto (una sola vez). { main, event } se marcan por separado para
 // que el paso contextual del evento no dependa de haber visto los pasos base.
@@ -112,7 +125,8 @@ function LifeBar({ icon, iconColor, label, value, fill, valueColor, tint }) {
             {label}
           </span>
           <span
-            className="font-round text-[0.82rem] font-bold tabular-nums"
+            key={Math.round(value)}
+            className="animate-pop-big font-round text-[0.82rem] font-bold tabular-nums"
             style={{ color: valueColor }}
           >
             {display}%
@@ -150,8 +164,15 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
   const [picked, setPicked] = useState(null)
   const [combo, setCombo] = useState(0) // momentum a mostrar como badge (0 = oculto)
   const [eventNote, setEventNote] = useState(null) // réplica de la última carta resuelta
+  const [score, setScore] = useState(0) // puntaje corrido (game feel)
+  const [burstKey, setBurstKey] = useState(0) // dispara estallido de monedas
+  const [rainKey, setRainKey] = useState(0) // dispara lluvia de monedas (celebración)
+  const [gold, setGold] = useState(false) // destello dorado de la celebración
   const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
+
+  // La Reforma "está a tiro" cuando aún es creíble (frenaría en seco).
+  const reformaReady = !over && !state.reformo && state.inflacion < cfg.umbralReforma
 
   // Carta de evento pendiente para este mes (deriva del estado; se “consume” al
   // resolverla porque queda en eventosVistos). Bloquea las acciones hasta cerrarla.
@@ -212,13 +233,31 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
     const { state: next, report: rep } = playMonth(state, cfg, accion)
     setState(next)
     setReport(rep)
-    if (bad(next) && !bad(state)) {
+
+    // Puntaje corrido (siempre suma). La reforma exitosa lleva un plus.
+    const reformaWin = accion.id === 'reforma' && next.reformaExitosa
+    setScore((s) => s + turnReward(state, next) + (reformaWin ? 200 : 0))
+
+    const gameOver = isOver(next, cfg)
+    const good = !bad(next) && (rep.buenMes || next.inflacion < state.inflacion || next.apoyo > state.apoyo)
+
+    if (reformaWin) {
+      // Celebración grande: lluvia de monedas + destello dorado + fanfarria.
+      sfx('fanfare')
+      setRainKey((k) => k + 1)
+      setGold(true)
+      setTimeout(() => setGold(false), 800)
+    } else if (bad(next) && !bad(state)) {
+      // Mal movimiento: se mantiene el castigo, pero suave.
       sfx('alert')
       trigger('shake')
-    } else if (!bad(next) && !isOver(next, cfg)) {
-      sfx('advance')
+    } else if (good && !gameOver) {
+      // Buen movimiento: monedas + sting positivo (se siente MÁS que el malo).
+      sfx('coin')
+      setBurstKey((k) => k + 1)
       trigger('flash')
     }
+
     // Combo: a partir de 2 meses buenos encadenados, badge + brillo creciente.
     if (rep.momentum >= 2) {
       setCombo(rep.momentum)
@@ -235,12 +274,17 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
     const next = applyEvent(state, pendingEvent, efecto)
     setState(next)
     setEventNote(opcion?.replica ?? null)
-    if (bad(next) && !bad(state)) {
+
+    // Evento bueno (baja inflación o sube apoyo): monedas + puntaje. Malo: shake suave.
+    const evReward = Math.max(0, (state.inflacion - next.inflacion) * 8 + (next.apoyo - state.apoyo) * 5)
+    if (evReward > 0) {
+      setScore((s) => s + evReward)
+      sfx('coin')
+      setBurstKey((k) => k + 1)
+      trigger('flash')
+    } else if (bad(next) && !bad(state)) {
       sfx('alert')
       trigger('shake')
-    } else if ((efecto.inflacion ?? 0) < 0 || (efecto.apoyo ?? 0) > 0) {
-      sfx('advance')
-      trigger('flash')
     }
   }
 
@@ -262,6 +306,15 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
           aria-hidden
         />
       )}
+      {gold && (
+        <div
+          className="animate-flash-gold pointer-events-none fixed inset-0 z-40"
+          style={{ background: 'radial-gradient(circle at 50% 45%, #FFE9A8, #F5B331 70%)' }}
+          aria-hidden
+        />
+      )}
+      <Coins runKey={burstKey} mode="burst" count={16} />
+      <Coins runKey={rainKey} mode="rain" count={30} />
 
       <div className="mx-auto max-w-md px-5 pb-6 pt-1">
         {/* Top bar */}
@@ -285,24 +338,16 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
           </span>
         </div>
 
-        {/* Chip de META persistente: el jugador nunca pierde el hilo. */}
-        {!over && tut && (
-          <div className="mt-2.5 flex items-center gap-2 rounded-full bg-panel/70 px-3 py-1.5">
-            <span aria-hidden className="text-[0.9rem]">🎯</span>
-            <span className="min-w-0 flex-1 truncate font-nunito text-[0.72rem] font-bold text-ink-soft">
-              <span className="font-extrabold uppercase tracking-wide text-ink-mute">Meta · </span>
-              {tut.goalChip}
-            </span>
-            <span aria-hidden className="flex shrink-0 gap-1">
-              {Array.from({ length: cfg.meses }).map((_, m) => (
-                <span
-                  key={m}
-                  className="h-1.5 w-1.5 rounded-full"
-                  style={{ background: m < state.mes ? acc.face : '#E6D6B8' }}
-                />
-              ))}
-            </span>
-          </div>
+        {/* Progreso de la partida + meta + puntaje corrido (game feel). */}
+        {!over && (
+          <GameProgress
+            mes={state.mes}
+            meses={cfg.meses}
+            score={score}
+            accent={acc}
+            reformaReady={reformaReady}
+            goalLabel={tut?.goalChip ?? 'Frena la inflación antes del final'}
+          />
         )}
 
         {/* Medidores */}
@@ -521,7 +566,7 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
             </p>
             <button
               type="button"
-              onClick={() => onComplete(tier)}
+              onClick={() => onComplete(tier, { score, momentumMax: state.momentumMax })}
               className="candy mt-4 w-full px-5 py-3.5 text-[1rem]"
               style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
             >

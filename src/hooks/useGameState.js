@@ -22,6 +22,7 @@ function initialState() {
     prisoners: {},
     allies: [],
     chosenPolicy: null,
+    chosenMeta: null, // datos extra del desenlace (p. ej. puntaje corrido de la mecánica)
     seenConcepts: [],
   }
 }
@@ -101,7 +102,7 @@ export function useGameState() {
     )
   }, [])
 
-  const choosePolicy = useCallback((policyId, betrayingAllyIds) => {
+  const choosePolicy = useCallback((policyId, betrayingAllyIds, meta = null) => {
     setState((s) => {
       const prisoners = { ...s.prisoners }
       for (const id of betrayingAllyIds) {
@@ -110,7 +111,7 @@ export function useGameState() {
       const allies = Object.entries(prisoners)
         .filter(([, p]) => p.status === 'ally')
         .map(([id]) => id)
-      return { ...s, prisoners, allies, chosenPolicy: policyId, phase: 'outcome' }
+      return { ...s, prisoners, allies, chosenPolicy: policyId, chosenMeta: meta, phase: 'outcome' }
     })
   }, [])
 

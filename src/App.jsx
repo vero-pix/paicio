@@ -177,7 +177,7 @@ export default function App() {
         <MechanicHost
           episode={episode}
           allies={allies}
-          onComplete={(outcomeId) => choosePolicy(outcomeId, [])}
+          onComplete={(outcomeId, meta) => choosePolicy(outcomeId, [], meta)}
           onConceptSeen={markConceptSeen}
         />
       )}
@@ -306,6 +306,7 @@ export default function App() {
         <Outcome
           episode={episode}
           policyId={state.chosenPolicy}
+          mechanicResult={state.chosenMeta}
           allies={allies}
           onConceptSeen={markConceptSeen}
           onRestart={() => restartEpisode(episode)}
