@@ -274,6 +274,7 @@ export default {
   eventos: [
     {
       id: 'petroleo',
+      iconKey: 'petroleo',
       titulo: 'Sube el petróleo mundial',
       texto: 'El barril se dispara y todo lo que se mueve en camión sube con él.',
       icon: '🛢️',
@@ -281,6 +282,7 @@ export default {
     },
     {
       id: 'paro',
+      iconKey: 'sindicato',
       titulo: 'La COB llama a paro general',
       texto: 'La Central Obrera para el país: nadie trabaja, todos exigen aumento.',
       icon: '✊',
@@ -288,6 +290,7 @@ export default {
     },
     {
       id: 'deuda',
+      iconKey: 'deuda-externa',
       titulo: 'Vence un pago de deuda externa',
       texto: 'Los acreedores cobran hoy. La caja no alcanza y la tentación de imprimir crece.',
       icon: '📄',
@@ -295,6 +298,7 @@ export default {
     },
     {
       id: 'dolarizacion',
+      iconKey: 'dolar',
       titulo: 'Rumor: el gobierno dolarizará',
       texto: 'Corre el rumor de que se abandonará el peso. La gente corre a comprar dólares.',
       icon: '💵',
@@ -302,6 +306,7 @@ export default {
     },
     {
       id: 'cosecha',
+      iconKey: 'cosecha',
       titulo: 'Cosecha récord en el altiplano',
       texto: 'La papa y el grano abundan: los precios de la comida ceden y el ánimo mejora.',
       icon: '🌾',
@@ -309,6 +314,7 @@ export default {
     },
     {
       id: 'fmi',
+      iconKey: 'fmi',
       titulo: 'El FMI ofrece crédito',
       texto: 'Dólares frescos ahora, a cambio de un ajuste que la calle detesta.',
       icon: '🏦',
@@ -332,6 +338,7 @@ export default {
     },
     {
       id: 'especuladores',
+      iconKey: 'acaparamiento',
       titulo: 'Especuladores acaparan alimentos',
       texto: 'Bodegas llenas y estantes vacíos: esconden la comida esperando que suba más.',
       icon: '📦',

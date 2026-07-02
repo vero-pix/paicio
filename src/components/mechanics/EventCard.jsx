@@ -11,6 +11,7 @@
 // Estilo candy compartido (.candy). Entra con pop suave; el reduced-motion se
 // respeta global (index.css).
 // ─────────────────────────────────────────────────────────────────────────
+import { eventIcons } from '../../assets/eventos/index.js'
 
 const TONE = {
   good: { bg: '#D6F0E5', color: '#1F9A6E' },
@@ -53,14 +54,39 @@ function Pills({ items }) {
   )
 }
 
-// Disco de color con el ícono del evento.
-function IconDisc({ icon, tint, size = 'h-14 w-14 text-[1.7rem]' }) {
+// Ícono del evento recortado en círculo. El disco de acento viene horneado en
+// la imagen (webp), así que solo aplicamos el marco blanco + sombra de la guía.
+// Si falta el ícono, cae a un disco de acento con el emoji.
+function EventIcon({ evento, tint, px }) {
+  const img = evento.iconKey ? eventIcons[evento.iconKey] : null
+  if (img) {
+    return (
+      <span
+        className="relative inline-block shrink-0"
+        style={{ width: px, height: px, borderRadius: '50%', boxShadow: '0 10px 22px -10px rgba(60,40,10,.5)' }}
+      >
+        <img
+          src={img}
+          alt=""
+          width={px}
+          height={px}
+          loading="lazy"
+          className="block h-full w-full rounded-full object-cover"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-full"
+          style={{ boxShadow: 'inset 0 0 0 5px #fff' }}
+        />
+      </span>
+    )
+  }
   return (
     <span
-      className={`flex ${size} shrink-0 items-center justify-center rounded-full`}
-      style={{ background: tint }}
+      className="flex shrink-0 items-center justify-center rounded-full"
+      style={{ width: px, height: px, background: tint, fontSize: px * 0.38 }}
     >
-      {icon}
+      {evento.icon}
     </span>
   )
 }
@@ -74,7 +100,7 @@ export default function EventCard({ evento, mes, accent, onResolve }) {
     return (
       <div className="animate-drop-in shadow-card mt-4 rounded-[20px] bg-panel p-3.5">
         <div className="flex items-center gap-3">
-          <IconDisc icon={evento.icon} tint={tint} size="h-11 w-11 text-[1.3rem]" />
+          <EventIcon evento={evento} tint={tint} px={52} />
           <div className="min-w-0 flex-1">
             <p className="font-round text-[0.98rem] font-bold leading-tight text-ink-warm">
               {evento.titulo}
@@ -112,7 +138,7 @@ export default function EventCard({ evento, mes, accent, onResolve }) {
           Shock · Mes {mes}
         </span>
         <div className="mt-3 flex justify-center">
-          <IconDisc icon={evento.icon} tint={tint} />
+          <EventIcon evento={evento} tint={tint} px={120} />
         </div>
         <h3 className="mt-3 font-round text-[1.4rem] font-bold leading-tight text-ink-warm">
           {evento.titulo}
