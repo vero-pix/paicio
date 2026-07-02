@@ -91,14 +91,14 @@ function EventIcon({ evento, tint, px }) {
   )
 }
 
-export default function EventCard({ evento, mes, accent, onResolve }) {
+export default function EventCard({ evento, mes, accent, onResolve, spotlightRef }) {
   const esDecision = Array.isArray(evento.opciones) && evento.opciones.length > 0
   const tint = accent.soft ?? '#FBE7C6' // tono tenue de marca para chip/disco
 
   // ── PASIVA: tarjeta compacta inline ─────────────────────────────────────
   if (!esDecision) {
     return (
-      <div className="animate-drop-in shadow-card mt-4 rounded-[20px] bg-panel p-3.5">
+      <div ref={spotlightRef} className="animate-drop-in shadow-card mt-4 rounded-[20px] bg-panel p-3.5">
         <div className="flex items-center gap-3">
           <EventIcon evento={evento} tint={tint} px={52} />
           <div className="min-w-0 flex-1">
@@ -130,7 +130,7 @@ export default function EventCard({ evento, mes, accent, onResolve }) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="animate-drop-in shadow-panel w-full max-w-sm rounded-[24px] bg-panel p-5 text-center">
+      <div ref={spotlightRef} className="animate-drop-in shadow-panel w-full max-w-sm rounded-[24px] bg-panel p-5 text-center">
         <span
           className="inline-block rounded-full px-3 py-1 font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.12em]"
           style={{ background: tint, color: accent.edge }}
