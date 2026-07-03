@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#F6E7CC;-webkit-font-smoothing:antialiased;}
+  @keyframes pc-pop{0%{transform:scale(.9)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+  @keyframes pc-ring{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.5);opacity:0}100%{opacity:0}}
+  @keyframes pc-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  @keyframes pc-shine{0%{transform:translateX(-120%)}60%,100%{transform:translateX(320%)}}
+  @keyframes pc-press{0%,68%,100%{transform:translateY(0);box-shadow:0 6px 0 #C77C1B}78%,90%{transform:translateY(6px);box-shadow:0 1px 0 #C77C1B}}
+  @keyframes pc-fill{0%,10%{width:0}58%,100%{width:68%}}
+  @keyframes pc-lockout{0%,44%{opacity:1}58%,100%{opacity:0}}
+  @keyframes pc-lockin{0%,44%{opacity:0;transform:scale(.55)}62%{transform:scale(1.14)}76%,100%{opacity:1;transform:scale(1)}}
+  @keyframes pc-rise{0%,52%{opacity:0;transform:translateY(2px)}60%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+  @keyframes pc-shake2{0%,50%,100%{transform:translateX(0)}56%,68%{transform:translateX(-4px)}62%,74%{transform:translateX(4px)}}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important}}
+</style>
+</helmet>
+<div style="min-width:1840px;padding:70px 80px 100px;font-family:Nunito,system-ui,sans-serif;color:#3B2A17;background:radial-gradient(circle at 1px 1px, rgba(178,128,52,.16) 1.5px, transparent 0) 0 0/26px 26px, linear-gradient(180deg,#F8ECD4,#F3E2C2);">
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <div style="display:flex;align-items:center;gap:20px;margin-bottom:12px;">
+    <div style="position:relative;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#FFE9A8 0%,#F7C24A 42%,#E29A24 78%,#C77C1B 100%);border:2px solid #EDAE3E;box-shadow:inset 0 -3px 6px rgba(140,80,10,.45),inset 0 3px 5px rgba(255,255,255,.6),0 8px 16px rgba(199,124,27,.4);display:flex;align-items:center;justify-content:center;">
+      <span style="position:absolute;inset:6px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);"></span>
+      <span style="font-family:Fredoka;font-weight:700;font-size:32px;color:#8A4E12;text-shadow:0 1px 0 rgba(255,255,255,.55);">$</span>
+    </div>
+    <div>
+      <div style="font-family:Fredoka;font-weight:700;font-size:34px;letter-spacing:.5px;line-height:1;color:#3B2A17;">PAICIO</div>
+      <div style="font-size:14px;font-weight:600;color:#9A7E56;margin-top:3px;">Dirección visual · rediseño juego casual · mobile ~380px</div>
+    </div>
+    <div style="margin-left:auto;text-align:right;font-size:12.5px;font-weight:700;color:#B5975F;line-height:1.6;">
+      <div>ECONOMÍA JUGABLE · AMÉRICA LATINA</div>
+      <div style="color:#C9A24B;">Bolivia · Argentina · Chile · Brasil</div>
+    </div>
+  </div>
+  <div style="height:2px;background:linear-gradient(90deg,#E0B24E,transparent);border-radius:2px;margin-bottom:46px;"></div>
+
+  <!-- ═══════════ BRAND ═══════════ -->
+  <div style="font-family:Fredoka;font-weight:600;font-size:12px;letter-spacing:2.5px;color:#B08A44;margin-bottom:18px;">MARCA</div>
+  <div style="display:flex;gap:26px;flex-wrap:wrap;align-items:stretch;margin-bottom:56px;">
+
+    <!-- Horizontal lockup -->
+    <div style="flex:1 1 460px;background:#FFFBF3;border-radius:26px;padding:38px 40px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;gap:26px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;">LOGO HORIZONTAL</div>
+      <div style="display:flex;align-items:center;gap:18px;">
+        <div style="position:relative;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#FFE9A8 0%,#F7C24A 42%,#E29A24 78%,#C77C1B 100%);border:3px solid #EDAE3E;box-shadow:inset 0 -4px 7px rgba(140,80,10,.45),inset 0 3px 5px rgba(255,255,255,.6),0 8px 16px rgba(199,124,27,.35);display:flex;align-items:center;justify-content:center;">
+          <span style="position:absolute;inset:7px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);"></span>
+          <span style="font-family:Fredoka;font-weight:700;font-size:40px;color:#8A4E12;text-shadow:0 1px 0 rgba(255,255,255,.55);">$</span>
+        </div>
+        <div style="font-family:Fredoka;font-weight:700;font-size:58px;letter-spacing:1px;line-height:.9;color:#3B2A17;">PAICIO</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px dashed #E4CE9E;">
+        <div style="position:relative;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#FFE9A8,#F7C24A 45%,#D98A16);border:2px solid #EDAE3E;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 9px rgba(199,124,27,.3);">
+          <span style="font-family:Fredoka;font-weight:700;font-size:22px;color:#8A4E12;">$</span>
+        </div>
+        <div style="font-family:Fredoka;font-weight:700;font-size:30px;color:#3B2A17;">PAICIO</div>
+        <span style="font-size:12px;font-weight:700;color:#B79A63;margin-left:6px;">versión compacta</span>
+      </div>
+    </div>
+
+    <!-- Monochrome -->
+    <div style="flex:0 1 300px;background:#FFFBF3;border-radius:26px;padding:38px 34px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;gap:26px;justify-content:space-between;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;">MONOCROMÁTICO</div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="position:relative;width:52px;height:52px;border-radius:50%;background:#3B2A17;display:flex;align-items:center;justify-content:center;">
+          <span style="position:absolute;inset:6px;border-radius:50%;border:1.5px solid rgba(255,255,255,.28);"></span>
+          <span style="font-family:Fredoka;font-weight:700;font-size:28px;color:#FBEFD8;">$</span>
+        </div>
+        <div style="font-family:Fredoka;font-weight:700;font-size:38px;color:#3B2A17;">PAICIO</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;background:#3B2A17;border-radius:16px;padding:14px 16px;">
+        <div style="position:relative;width:44px;height:44px;border-radius:50%;background:#FBEFD8;display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:Fredoka;font-weight:700;font-size:24px;color:#3B2A17;">$</span>
+        </div>
+        <div style="font-family:Fredoka;font-weight:700;font-size:32px;color:#FBEFD8;">PAICIO</div>
+      </div>
+    </div>
+
+    <!-- App icon -->
+    <div style="flex:0 1 240px;background:#FFFBF3;border-radius:26px;padding:38px 34px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;gap:22px;align-items:center;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;align-self:flex-start;">ÍCONO DE APP</div>
+      <div style="position:relative;width:132px;height:132px;border-radius:30px;background:linear-gradient(155deg,#3A2A16,#241708);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 26px -10px rgba(40,25,5,.6),inset 0 1px 0 rgba(255,255,255,.06);overflow:hidden;">
+        <span style="position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(245,179,49,.22),transparent 62%);"></span>
+        <div style="position:relative;width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#FFE9A8 0%,#F7C24A 42%,#E29A24 78%,#C77C1B 100%);border:3px solid #EDAE3E;box-shadow:inset 0 -4px 8px rgba(140,80,10,.5),inset 0 4px 6px rgba(255,255,255,.65),0 8px 18px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;">
+          <span style="position:absolute;inset:8px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);"></span>
+          <span style="font-family:Fredoka;font-weight:700;font-size:46px;color:#8A4E12;text-shadow:0 1px 0 rgba(255,255,255,.55);">$</span>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#B79A63;">moneda-$ sobre fondo oscuro</div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TOKENS ═══════════ -->
+  <div style="font-family:Fredoka;font-weight:600;font-size:12px;letter-spacing:2.5px;color:#B08A44;margin-bottom:18px;">TOKENS</div>
+  <div style="display:flex;gap:26px;flex-wrap:wrap;margin-bottom:56px;align-items:stretch;">
+
+    <!-- Palette -->
+    <div style="flex:1 1 520px;background:#FFFBF3;border-radius:26px;padding:32px 34px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);">
+      <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;margin-bottom:20px;">PALETA</div>
+      <div style="font-size:12.5px;font-weight:800;color:#9A7E56;margin-bottom:10px;">Base cálida</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">
+        <div style="flex:1;min-width:78px;"><div style="height:52px;border-radius:12px;background:#F3E2C2;border:1px solid rgba(180,140,70,.3);"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Crema<br>#F3E2C2</div></div>
+        <div style="flex:1;min-width:78px;"><div style="height:52px;border-radius:12px;background:#FFFBF3;border:1px solid rgba(180,140,70,.3);"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Panel<br>#FFFBF3</div></div>
+        <div style="flex:1;min-width:78px;"><div style="height:52px;border-radius:12px;background:#F5B331;"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Oro marca<br>#F5B331</div></div>
+        <div style="flex:1;min-width:78px;"><div style="height:52px;border-radius:12px;background:#3B2A17;"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Tinta<br>#3B2A17</div></div>
+        <div style="flex:1;min-width:78px;"><div style="height:52px;border-radius:12px;background:#9A7E56;"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Tinta suave<br>#9A7E56</div></div>
+      </div>
+      <div style="font-size:12.5px;font-weight:800;color:#9A7E56;margin-bottom:10px;">Acento por episodio · un país, un color</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">
+        <div style="flex:1;min-width:88px;"><div style="height:46px;border-radius:12px;background:#F5A524;box-shadow:0 4px 0 #D6871A;"></div><div style="font-size:10.5px;font-weight:800;color:#8A7357;margin-top:9px;">Bolivia<br><span style="color:#B79A63;font-weight:700;">#F5A524</span></div></div>
+        <div style="flex:1;min-width:88px;"><div style="height:46px;border-radius:12px;background:#4FA3E3;box-shadow:0 4px 0 #2F82C4;"></div><div style="font-size:10.5px;font-weight:800;color:#8A7357;margin-top:9px;">Argentina<br><span style="color:#B79A63;font-weight:700;">#4FA3E3</span></div></div>
+        <div style="flex:1;min-width:88px;"><div style="height:46px;border-radius:12px;background:#F06A54;box-shadow:0 4px 0 #D24C39;"></div><div style="font-size:10.5px;font-weight:800;color:#8A7357;margin-top:9px;">Chile<br><span style="color:#B79A63;font-weight:700;">#F06A54</span></div></div>
+        <div style="flex:1;min-width:88px;"><div style="height:46px;border-radius:12px;background:#A579E0;box-shadow:0 4px 0 #8657C4;"></div><div style="font-size:10.5px;font-weight:800;color:#8A7357;margin-top:9px;">Brasil · inercia<br><span style="color:#B79A63;font-weight:700;">#A579E0</span></div></div>
+        <div style="flex:1;min-width:88px;"><div style="height:46px;border-radius:12px;background:#35B98A;box-shadow:0 4px 0 #1F9A6E;"></div><div style="font-size:10.5px;font-weight:800;color:#8A7357;margin-top:9px;">Brasil · Real<br><span style="color:#B79A63;font-weight:700;">#35B98A</span></div></div>
+      </div>
+      <div style="font-size:12.5px;font-weight:800;color:#9A7E56;margin-bottom:10px;">Semánticos</div>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1;"><div style="height:38px;border-radius:10px;background:#2FB37E;"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Bien · #2FB37E</div></div>
+        <div style="flex:1;"><div style="height:38px;border-radius:10px;background:#F5A524;"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Alerta · #F5A524</div></div>
+        <div style="flex:1;"><div style="height:38px;border-radius:10px;background:#E8604F;"></div><div style="font-size:10.5px;font-weight:700;color:#8A7357;margin-top:6px;">Crisis · #E8604F</div></div>
+      </div>
+    </div>
+
+    <!-- Type + radii + buttons -->
+    <div style="flex:1 1 460px;display:flex;flex-direction:column;gap:26px;">
+      <div style="background:#FFFBF3;border-radius:26px;padding:32px 34px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;margin-bottom:18px;">TIPOGRAFÍA</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dashed #E4CE9E;padding-bottom:12px;margin-bottom:12px;">
+          <span style="font-family:Fredoka;font-weight:700;font-size:34px;color:#3B2A17;">Fredoka</span>
+          <span style="font-size:11.5px;font-weight:700;color:#B79A63;">Display · números · botones</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;">
+          <span style="font-family:Nunito;font-weight:800;font-size:26px;color:#3B2A17;">Nunito</span>
+          <span style="font-size:11.5px;font-weight:700;color:#B79A63;">Texto · etiquetas · chips</span>
+        </div>
+        <div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;">
+          <span style="font-family:Fredoka;font-weight:700;font-size:40px;color:#3B2A17;">40</span>
+          <span style="font-family:Fredoka;font-weight:600;font-size:26px;color:#5A4327;">26</span>
+          <span style="font-family:Nunito;font-weight:800;font-size:18px;color:#5A4327;">18</span>
+          <span style="font-family:Nunito;font-weight:700;font-size:15px;color:#8A7357;">15</span>
+          <span style="font-family:Nunito;font-weight:800;font-size:12px;letter-spacing:1px;color:#B79A63;">12 · LABEL</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:26px;">
+        <div style="flex:1;background:#FFFBF3;border-radius:26px;padding:28px 30px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);">
+          <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;margin-bottom:18px;">RADIOS</div>
+          <div style="display:flex;gap:12px;align-items:flex-end;">
+            <div><div style="width:44px;height:44px;background:#F0DFB8;border-radius:12px;"></div><div style="font-size:10px;font-weight:700;color:#8A7357;margin-top:6px;text-align:center;">12</div></div>
+            <div><div style="width:52px;height:52px;background:#F0DFB8;border-radius:18px;"></div><div style="font-size:10px;font-weight:700;color:#8A7357;margin-top:6px;text-align:center;">18</div></div>
+            <div><div style="width:60px;height:60px;background:#F0DFB8;border-radius:26px;"></div><div style="font-size:10px;font-weight:700;color:#8A7357;margin-top:6px;text-align:center;">26</div></div>
+            <div><div style="width:48px;height:48px;background:#F0DFB8;border-radius:999px;"></div><div style="font-size:10px;font-weight:700;color:#8A7357;margin-top:6px;text-align:center;">pill</div></div>
+          </div>
+        </div>
+        <div style="flex:1;background:#FFFBF3;border-radius:26px;padding:28px 30px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);">
+          <div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:#B79A63;margin-bottom:18px;">BOTÓN TÁCTIL</div>
+          <div style="font-family:Fredoka;font-weight:600;font-size:17px;color:#fff;background:#F5B331;box-shadow:0 5px 0 #C77C1B;border-radius:16px;padding:13px 20px;text-align:center;margin-bottom:14px;">Primario</div>
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;font-family:Fredoka;font-weight:600;font-size:14px;color:#fff;background:#4FA3E3;box-shadow:0 4px 0 #2F82C4;border-radius:14px;padding:11px;text-align:center;">Acción</div>
+            <div style="flex:1;font-family:Fredoka;font-weight:600;font-size:14px;color:#5A4327;background:#F0DFB8;box-shadow:0 4px 0 #D9C08A;border-radius:14px;padding:11px;text-align:center;">Suave</div>
+          </div>
+          <div style="font-size:10.5px;font-weight:700;color:#B79A63;margin-top:12px;">borde inferior sólido · se hunde al tocar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ SCREENS ═══════════ -->
+  <div style="font-family:Fredoka;font-weight:600;font-size:12px;letter-spacing:2.5px;color:#B08A44;margin-bottom:22px;">PANTALLAS · mobile ~380px</div>
+  <div style="display:flex;gap:44px;align-items:flex-start;">
+
+    <!-- ░░░░░ SCREEN 1 — WELCOME ░░░░░ -->
+    <div style="flex:none;">
+      <div style="font-family:Fredoka;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#B08A44;margin-bottom:14px;">01 · BIENVENIDA</div>
+      <div style="width:384px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 34px 60px -22px rgba(120,80,20,.5),0 0 0 1px rgba(0,0,0,.03);">
+        <div data-shot="1" style="position:relative;border-radius:36px;overflow:hidden;height:812px;background:linear-gradient(180deg,#FFF3D8,#FCE7C0);display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:800;color:#7C6236;"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 30px 0;">
+            <div style="position:relative;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#FFE9A8 0%,#F7C24A 42%,#E29A24 78%,#C77C1B 100%);border:4px solid #EDAE3E;box-shadow:inset 0 -5px 9px rgba(140,80,10,.45),inset 0 5px 7px rgba(255,255,255,.6),0 14px 26px rgba(199,124,27,.4);display:flex;align-items:center;justify-content:center;animation:pc-bob 3.4s ease-in-out infinite;">
+              <span style="position:absolute;width:36px;height:120px;top:-14px;left:14px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg);border-radius:40%;"></span>
+              <span style="position:absolute;inset:9px;border-radius:50%;border:2px solid rgba(255,255,255,.42);"></span>
+              <span style="font-family:Fredoka;font-weight:700;font-size:62px;color:#8A4E12;text-shadow:0 2px 0 rgba(255,255,255,.5);">$</span>
+            </div>
+            <div style="font-family:Fredoka;font-weight:700;font-size:52px;letter-spacing:1px;color:#3B2A17;margin-top:20px;line-height:1;">PAICIO</div>
+            <div style="font-size:15px;font-weight:700;color:#B0894A;margin-top:8px;letter-spacing:.3px;">economía que se juega, no se estudia</div>
+
+            <div style="font-family:Fredoka;font-weight:600;font-size:23px;color:#3B2A17;margin-top:36px;line-height:1.25;text-wrap:balance;">Eres el nuevo<br>Ministro de Economía.</div>
+            <div style="font-size:15px;font-weight:600;color:#8A7357;margin-top:12px;line-height:1.5;max-width:280px;">Cada nivel es una crisis real de América Latina. La juegas… y así la entiendes.</div>
+
+            <div style="display:flex;gap:10px;margin-top:30px;">
+              <div style="background:#fff;border-radius:16px;padding:14px 10px;width:88px;box-shadow:0 6px 14px -6px rgba(150,100,30,.4);"><div style="width:34px;height:34px;border-radius:11px;background:#FDECC8;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;"><span style="width:14px;height:14px;border:3px solid #F5A524;border-radius:4px;"></span></div><div style="font-size:11.5px;font-weight:800;color:#5A4327;line-height:1.2;">Decides</div></div>
+              <div style="background:#fff;border-radius:16px;padding:14px 10px;width:88px;box-shadow:0 6px 14px -6px rgba(150,100,30,.4);"><div style="width:34px;height:34px;border-radius:11px;background:#DDEEFB;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;"><span style="width:16px;height:8px;background:#4FA3E3;border-radius:4px;"></span></div><div style="font-size:11.5px;font-weight:800;color:#5A4327;line-height:1.2;">Medidores</div></div>
+              <div style="background:#fff;border-radius:16px;padding:14px 10px;width:88px;box-shadow:0 6px 14px -6px rgba(150,100,30,.4);"><div style="width:34px;height:34px;border-radius:11px;background:#FBE0D9;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;"><span style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid #F06A54;"></span></div><div style="font-size:11.5px;font-weight:800;color:#5A4327;line-height:1.2;">Desenlace</div></div>
+            </div>
+          </div>
+          <div style="padding:0 30px 30px;">
+            <div style="display:flex;justify-content:center;gap:7px;margin-bottom:20px;"><span style="width:22px;height:7px;border-radius:4px;background:#F5B331;"></span><span style="width:7px;height:7px;border-radius:4px;background:#E4CE9E;"></span><span style="width:7px;height:7px;border-radius:4px;background:#E4CE9E;"></span></div>
+            <div style="font-family:Fredoka;font-weight:600;font-size:20px;color:#fff;background:#F5B331;box-shadow:0 6px 0 #C77C1B;border-radius:20px;padding:17px;text-align:center;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 2px 0 #C77C1B">Empezar a jugar</div>
+            <div style="font-size:13.5px;font-weight:800;color:#B0894A;text-align:center;margin-top:16px;">Ya tengo progreso →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ░░░░░ SCREEN 2 — LEVEL MAP ░░░░░ -->
+    <div style="flex:none;">
+      <div style="font-family:Fredoka;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#B08A44;margin-bottom:14px;">02 · MAPA DE CRISIS</div>
+      <div style="width:384px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 34px 60px -22px rgba(120,80,20,.5),0 0 0 1px rgba(0,0,0,.03);">
+        <div data-shot="2" style="position:relative;border-radius:36px;overflow:hidden;height:812px;background:linear-gradient(180deg,#EAF6EC 0%,#FBEFD2 55%,#FCE3C4 100%);display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:800;color:#7C6236;"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+          <!-- header -->
+          <div style="display:flex;align-items:center;gap:12px;padding:8px 22px 14px;">
+            <div style="font-family:Fredoka;font-weight:700;font-size:24px;color:#3B2A17;">Mapa de crisis</div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:6px 12px 6px 8px;box-shadow:0 5px 12px -6px rgba(150,100,30,.5);">
+              <span style="width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#FFE9A8,#F7C24A 45%,#D98A16);display:flex;align-items:center;justify-content:center;font-family:Fredoka;font-weight:700;font-size:13px;color:#8A4E12;">$</span>
+              <span style="font-family:Fredoka;font-weight:700;font-size:15px;color:#3B2A17;">2 / 5</span>
+            </div>
+          </div>
+          <!-- map -->
+          <div style="position:relative;flex:1;">
+            <svg viewBox="0 0 360 620" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="position:absolute;inset:0;">
+              <path d="M70 560 Q150 520 250 470 Q320 435 250 375 Q150 335 95 300 Q30 260 120 205 Q220 165 270 130 Q315 100 190 70" fill="none" stroke="#E8CE9A" stroke-width="12" stroke-linecap="round" stroke-dasharray="2 20"/>
+            </svg>
+
+            <!-- node 5 locked -->
+            <div style="position:absolute;left:128px;top:30px;width:124px;text-align:center;">
+              <div style="width:66px;height:66px;border-radius:50%;background:#EBDCC0;border:4px solid #fff;box-shadow:0 8px 16px -6px rgba(140,90,30,.4);display:flex;align-items:center;justify-content:center;margin:0 auto;"><span style="font-family:Fredoka;font-weight:700;font-size:22px;color:#B49A6C;">🔒</span></div>
+              <div style="font-family:Fredoka;font-weight:700;font-size:12.5px;color:#9C8358;margin-top:7px;line-height:1.1;">Brasil 1994<br><span style="font-weight:600;font-size:11px;">Plan Real</span></div>
+            </div>
+            <!-- node 4 locked -->
+            <div style="position:absolute;left:240px;top:118px;width:116px;text-align:left;">
+              <div style="display:flex;align-items:center;gap:8px;"><div style="width:60px;height:60px;border-radius:50%;background:#EBDCC0;border:4px solid #fff;box-shadow:0 8px 16px -6px rgba(140,90,30,.4);display:flex;align-items:center;justify-content:center;"><span style="font-size:20px;">🔒</span></div><div style="font-family:Fredoka;font-weight:700;font-size:12px;color:#9C8358;line-height:1.1;">Brasil<br><span style="font-weight:600;font-size:11px;">La inercia</span></div></div>
+            </div>
+            <!-- node 3 current -->
+            <div style="position:absolute;left:34px;top:250px;width:150px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="position:relative;width:84px;height:84px;">
+                  <span style="position:absolute;inset:-6px;border-radius:50%;border:3px solid #F06A54;animation:pc-ring 1.8s ease-out infinite;"></span>
+                  <div style="width:84px;height:84px;border-radius:50%;background:#F06A54;border:5px solid #fff;box-shadow:0 10px 20px -6px rgba(210,76,57,.6);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:Fredoka;font-weight:700;font-size:34px;color:#fff;">3</span>
+                  </div>
+                  <span style="position:absolute;-bottom:0;bottom:-6px;left:50%;transform:translateX(-50%);font-family:Fredoka;font-weight:700;font-size:10px;color:#fff;background:#D24C39;padding:2px 10px;border-radius:999px;box-shadow:0 3px 6px rgba(210,76,57,.5);">JUGAR</span>
+                </div>
+                <div style="font-family:Fredoka;font-weight:700;font-size:14px;color:#3B2A17;line-height:1.15;">Chile 1982<br><span style="font-weight:600;font-size:12px;color:#C0503B;">La paridad</span></div>
+              </div>
+            </div>
+            <!-- node 2 done -->
+            <div style="position:absolute;left:214px;top:420px;width:130px;">
+              <div style="display:flex;align-items:center;gap:9px;">
+                <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#4FA3E3;border:4px solid #fff;box-shadow:0 8px 16px -6px rgba(47,130,196,.5);display:flex;align-items:center;justify-content:center;"><span style="font-size:26px;">🏦</span><span style="position:absolute;-bottom:0;bottom:-4px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:-2px;color:#F5B331;text-shadow:0 1px 1px rgba(0,0,0,.2);">★★★</span></div>
+                <div style="font-family:Fredoka;font-weight:700;font-size:12.5px;color:#3B2A17;line-height:1.1;">Argentina 2001<br><span style="font-weight:600;font-size:11px;color:#3A87CC;">El corralito</span></div>
+              </div>
+            </div>
+            <!-- node 1 done -->
+            <div style="position:absolute;left:30px;top:520px;width:150px;">
+              <div style="display:flex;align-items:center;gap:9px;">
+                <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#F5A524;border:4px solid #fff;box-shadow:0 8px 16px -6px rgba(214,135,26,.5);display:flex;align-items:center;justify-content:center;"><span style="font-size:26px;">🔥</span><span style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:-2px;color:#F5B331;text-shadow:0 1px 1px rgba(0,0,0,.2);">★★☆</span></div>
+                <div style="font-family:Fredoka;font-weight:700;font-size:12.5px;color:#3B2A17;line-height:1.1;">Bolivia 1985<br><span style="font-weight:600;font-size:11px;color:#C77C1B;">Hiperinflación</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- bottom bar -->
+          <div style="display:flex;gap:10px;padding:14px 22px 24px;background:linear-gradient(180deg,transparent,rgba(252,227,196,.9));">
+            <div style="flex:1;background:#fff;border-radius:18px;padding:12px;text-align:center;box-shadow:0 6px 14px -6px rgba(150,100,30,.4);"><div style="font-family:Fredoka;font-weight:700;font-size:12px;color:#B0894A;">Mapa</div></div>
+            <div style="flex:1;background:#F5B331;border-radius:18px;padding:12px;text-align:center;box-shadow:0 5px 0 #C77C1B;cursor:pointer;" style-active="transform:translateY(3px);box-shadow:0 1px 0 #C77C1B"><div style="font-family:Fredoka;font-weight:700;font-size:13px;color:#fff;">Jugar Chile →</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ░░░░░ SCREEN 3 — DECISION ░░░░░ -->
+    <div style="flex:none;">
+      <div style="font-family:Fredoka;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#B08A44;margin-bottom:14px;">03 · DECISIÓN</div>
+      <div style="width:384px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 34px 60px -22px rgba(120,80,20,.5),0 0 0 1px rgba(0,0,0,.03);">
+        <div data-shot="3" style="position:relative;border-radius:36px;overflow:hidden;height:812px;background:linear-gradient(180deg,#FFF3DA,#FBE6C2);display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:800;color:#7C6236;"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+          <!-- top bar -->
+          <div style="display:flex;align-items:center;gap:12px;padding:6px 20px 12px;">
+            <div style="width:34px;height:34px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -5px rgba(150,100,30,.5);"><span style="font-family:Fredoka;font-weight:700;color:#B0894A;font-size:18px;">‹</span></div>
+            <div><div style="font-family:Fredoka;font-weight:700;font-size:17px;color:#3B2A17;line-height:1;">Bolivia 1985</div><div style="font-size:11px;font-weight:800;color:#C77C1B;margin-top:2px;">HIPERINFLACIÓN</div></div>
+            <div style="margin-left:auto;background:#F5A524;border-radius:999px;padding:6px 13px;box-shadow:0 4px 0 #D6871A;"><span style="font-family:Fredoka;font-weight:700;font-size:13px;color:#fff;">Mes 3 / 8</span></div>
+          </div>
+          <!-- meters -->
+          <div style="padding:2px 20px 4px;display:flex;flex-direction:column;gap:9px;">
+            <div style="display:flex;align-items:center;gap:10px;"><div style="width:26px;height:26px;border-radius:8px;background:#FBDAD3;display:flex;align-items:center;justify-content:center;font-size:14px;">🔥</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#8A7357;margin-bottom:3px;"><span>Inflación</span><span style="color:#E8604F;">68%</span></div><div style="height:12px;border-radius:999px;background:#F3E2C2;overflow:hidden;box-shadow:inset 0 1px 2px rgba(140,90,30,.25);"><div style="width:68%;height:100%;border-radius:999px;background:linear-gradient(90deg,#F5A524,#E8604F);"></div></div></div></div>
+            <div style="display:flex;align-items:center;gap:10px;"><div style="width:26px;height:26px;border-radius:8px;background:#D6EFDF;display:flex;align-items:center;justify-content:center;font-size:14px;">🤝</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#8A7357;margin-bottom:3px;"><span>Apoyo popular</span><span style="color:#2FB37E;">55%</span></div><div style="height:12px;border-radius:999px;background:#F3E2C2;overflow:hidden;box-shadow:inset 0 1px 2px rgba(140,90,30,.25);"><div style="width:55%;height:100%;border-radius:999px;background:linear-gradient(90deg,#7FD3A6,#2FB37E);"></div></div></div></div>
+            <div style="display:flex;align-items:center;gap:10px;"><div style="width:26px;height:26px;border-radius:8px;background:#DDEBFA;display:flex;align-items:center;justify-content:center;font-size:14px;">🏦</div><div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#8A7357;margin-bottom:3px;"><span>Reservas</span><span style="color:#4FA3E3;">40%</span></div><div style="height:12px;border-radius:999px;background:#F3E2C2;overflow:hidden;box-shadow:inset 0 1px 2px rgba(140,90,30,.25);"><div style="width:40%;height:100%;border-radius:999px;background:linear-gradient(90deg,#8FC4EF,#4FA3E3);"></div></div></div></div>
+          </div>
+          <!-- hero number -->
+          <div style="margin:12px 20px 4px;background:linear-gradient(160deg,#3B2A17,#26190B);border-radius:24px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 14px 26px -12px rgba(40,25,5,.7);overflow:hidden;position:relative;">
+            <span style="position:absolute;width:140px;height:140px;right:-30px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(245,165,36,.25),transparent 62%);"></span>
+            <div style="width:56px;height:56px;flex:none;border-radius:16px;background:#F5E7C8;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:inset 0 -3px 5px rgba(160,110,40,.35);">🍞</div>
+            <div style="position:relative;">
+              <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:#E8C67F;">PRECIO DEL PAN · HOY</div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px;"><span style="font-family:Fredoka;font-weight:700;font-size:46px;color:#FFE9A8;line-height:.9;letter-spacing:-.5px;animation:pc-pop 1.2s ease-out;">24 800</span><span style="font-family:Fredoka;font-weight:600;font-size:17px;color:#E8C67F;">Bs</span></div>
+            </div>
+            <div style="margin-left:auto;background:#E8604F;border-radius:12px;padding:6px 10px;text-align:center;flex:none;box-shadow:0 4px 0 #C43D2C;"><div style="font-family:Fredoka;font-weight:700;font-size:16px;color:#fff;line-height:1;">▲ 38%</div><div style="font-size:9px;font-weight:800;color:#FFD9D2;margin-top:2px;">EN 1 MES</div></div>
+          </div>
+          <!-- advisor -->
+          <div style="margin:10px 20px 2px;display:flex;align-items:flex-start;gap:12px;">
+            <div style="position:relative;width:58px;height:58px;flex:none;border-radius:50%;padding:3px;background:radial-gradient(circle at 34% 28%,#FFE9A8,#F7C24A 55%,#D98A16);box-shadow:0 6px 14px -6px rgba(199,124,27,.5);">
+              <img src="assets/asesores/don-marcos.png" alt="Don Marcos" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;">
+            </div>
+            <div style="position:relative;background:#fff;border-radius:18px;border-top-left-radius:5px;padding:11px 14px;box-shadow:0 6px 14px -8px rgba(150,100,30,.5);">
+              <div style="font-family:Fredoka;font-weight:700;font-size:12px;color:#C77C1B;margin-bottom:2px;">Don Marcos · Banco Central</div>
+              <div style="font-size:12.5px;font-weight:600;color:#5A4327;line-height:1.35;">“La imprenta ya está caliente, ministro. Un cero más y las cuentas de hoy están pagadas.”</div>
+            </div>
+          </div>
+          <!-- actions 2x2 -->
+          <div style="margin-top:auto;padding:12px 20px 24px;">
+            <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:#B0894A;margin-bottom:10px;">¿QUÉ HACES ESTE MES?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;">
+              <div style="background:#F5A524;border-radius:18px;padding:14px 12px;box-shadow:0 5px 0 #D6871A;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 1px 0 #D6871A"><div style="font-size:24px;line-height:1;">🖨️</div><div style="font-family:Fredoka;font-weight:700;font-size:14.5px;color:#fff;margin-top:8px;line-height:1.05;">Imprimir dinero</div><div style="font-size:10.5px;font-weight:800;color:#FFE7BE;margin-top:4px;">Paga hoy · +inflación</div></div>
+              <div style="background:#F06A54;border-radius:18px;padding:14px 12px;box-shadow:0 5px 0 #D24C39;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 1px 0 #D24C39"><div style="font-size:24px;line-height:1;">✂️</div><div style="font-family:Fredoka;font-weight:700;font-size:14.5px;color:#fff;margin-top:8px;line-height:1.05;">Ajuste fiscal</div><div style="font-size:10.5px;font-weight:800;color:#FFD9D2;margin-top:4px;">−inflación · −apoyo</div></div>
+              <div style="background:#4FA3E3;border-radius:18px;padding:14px 12px;box-shadow:0 5px 0 #2F82C4;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 1px 0 #2F82C4"><div style="font-size:24px;line-height:1;">🤝</div><div style="font-family:Fredoka;font-weight:700;font-size:14.5px;color:#fff;margin-top:8px;line-height:1.05;">Renegociar deuda</div><div style="font-size:10.5px;font-weight:800;color:#D6ECFB;margin-top:4px;">Alivio · 2 usos</div></div>
+              <div style="background:#35B98A;border-radius:18px;padding:14px 12px;box-shadow:0 5px 0 #1F9A6E;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 1px 0 #1F9A6E"><div style="font-size:24px;line-height:1;">⚓</div><div style="font-family:Fredoka;font-weight:700;font-size:14.5px;color:#fff;margin-top:8px;line-height:1.05;">Reforma monetaria</div><div style="font-size:10.5px;font-weight:800;color:#CFF0E3;margin-top:4px;">La salida real</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ░░░░░ SCREEN 4 — OUTCOME ░░░░░ -->
+    <div style="flex:none;">
+      <div style="font-family:Fredoka;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#B08A44;margin-bottom:14px;">04 · DESENLACE</div>
+      <div style="width:384px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 34px 60px -22px rgba(120,80,20,.5),0 0 0 1px rgba(0,0,0,.03);">
+        <div data-shot="4" style="position:relative;border-radius:36px;overflow:hidden;height:812px;background:linear-gradient(180deg,#E9F7EE 0%,#FBEFD4 60%,#FCE7C6 100%);display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:800;color:#7C6236;"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:6px 24px 0;text-align:center;align-items:center;">
+            <div style="font-size:12px;font-weight:800;letter-spacing:2px;color:#2FB37E;">VEREDICTO · BOLIVIA 1985</div>
+            <!-- stars -->
+            <div style="display:flex;gap:8px;margin-top:16px;align-items:flex-end;">
+              <span style="font-size:34px;color:#F5B331;">★</span>
+              <span style="font-size:46px;color:#F5B331;animation:pc-pop 1s ease-out;">★</span>
+              <span style="font-size:34px;color:#F5B331;">★</span>
+            </div>
+            <div style="font-family:Fredoka;font-weight:700;font-size:30px;color:#3B2A17;margin-top:18px;line-height:1.1;text-wrap:balance;">¡Frenaste la<br>hiperinflación!</div>
+            <div style="font-size:14px;font-weight:600;color:#8A7357;margin-top:10px;line-height:1.45;max-width:290px;">Cortaste la imprenta y anclaste una moneda creíble a tiempo. Los precios se congelaron casi de un día para otro.</div>
+
+            <!-- score chips -->
+            <div style="display:flex;gap:9px;margin-top:22px;width:100%;">
+              <div style="flex:1;background:#fff;border-radius:16px;padding:12px 6px;box-shadow:0 6px 14px -8px rgba(150,100,30,.4);"><div style="font-family:Fredoka;font-weight:700;font-size:26px;color:#2FB37E;line-height:1;">92</div><div style="font-size:10px;font-weight:800;color:#9A7E56;margin-top:5px;">ESTABILIDAD</div></div>
+              <div style="flex:1;background:#fff;border-radius:16px;padding:12px 6px;box-shadow:0 6px 14px -8px rgba(150,100,30,.4);"><div style="font-family:Fredoka;font-weight:700;font-size:26px;color:#F5A524;line-height:1;">55</div><div style="font-size:10px;font-weight:800;color:#9A7E56;margin-top:5px;">APOYO</div></div>
+              <div style="flex:1;background:#fff;border-radius:16px;padding:12px 6px;box-shadow:0 6px 14px -8px rgba(150,100,30,.4);"><div style="font-family:Fredoka;font-weight:700;font-size:26px;color:#4FA3E3;line-height:1;">88</div><div style="font-size:10px;font-weight:800;color:#9A7E56;margin-top:5px;">CONFIANZA</div></div>
+            </div>
+
+            <!-- real comparison -->
+            <div style="width:100%;background:#3B2A17;border-radius:20px;padding:16px 18px;margin-top:16px;text-align:left;position:relative;overflow:hidden;">
+              <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:#E8C67F;margin-bottom:10px;">LO QUE PASÓ DE VERDAD 🇧🇴</div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="flex:1;"><div style="font-size:10px;font-weight:800;color:#B79A63;">INFLACIÓN REAL 1985</div><div style="font-family:Fredoka;font-weight:700;font-size:24px;color:#E8604F;line-height:1.1;">×23.000%</div></div>
+                <div style="width:1px;height:34px;background:rgba(232,198,127,.3);"></div>
+                <div style="flex:1;"><div style="font-size:10px;font-weight:800;color:#B79A63;">TU PARTIDA</div><div style="font-family:Fredoka;font-weight:700;font-size:24px;color:#35B98A;line-height:1.1;">controlada</div></div>
+              </div>
+              <div style="font-size:11.5px;font-weight:600;color:#D9C7A2;line-height:1.4;margin-top:10px;">El Plan de Estabilización de 1985 frenó una de las mayores hiperinflaciones de la historia en semanas. Tú lo lograste sin el mismo costo social.</div>
+            </div>
+          </div>
+          <!-- buttons -->
+          <div style="padding:16px 24px 24px;display:flex;gap:11px;">
+            <div style="flex:none;width:58px;background:#fff;border-radius:18px;padding:14px 0;text-align:center;box-shadow:0 5px 0 #E4CE9E;"><span style="font-size:20px;">↗</span></div>
+            <div style="flex:1;background:#35B98A;border-radius:18px;padding:16px;text-align:center;box-shadow:0 6px 0 #1F9A6E;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 2px 0 #1F9A6E"><span style="font-family:Fredoka;font-weight:700;font-size:17px;color:#fff;">Siguiente crisis →</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- ░░░░░ SCREEN 5 — EPISODE INTRO ░░░░░ -->
+    <div style="flex:none;">
+      <div style="font-family:Fredoka;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#B08A44;margin-bottom:14px;">05 · INTRO DE EPISODIO</div>
+      <div style="width:384px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 34px 60px -22px rgba(120,80,20,.5),0 0 0 1px rgba(0,0,0,.03);">
+        <div data-shot="5" style="position:relative;border-radius:36px;overflow:hidden;height:812px;background:linear-gradient(180deg,#FFEFD2,#FBE2BE);display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:800;color:#7C6236;"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:6px 20px 6px;">
+            <div style="width:34px;height:34px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px -5px rgba(150,100,30,.5);"><span style="font-family:Fredoka;font-weight:700;color:#B0894A;font-size:18px;">‹</span></div>
+            <div style="margin-left:auto;background:#F5A524;border-radius:999px;padding:6px 14px;box-shadow:0 4px 0 #D6871A;"><span style="font-family:Fredoka;font-weight:700;font-size:13px;color:#fff;white-space:nowrap;">Bolivia · 1985</span></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;padding:12px 24px 0;">
+            <div style="align-self:flex-start;background:#FBDAD3;border-radius:999px;padding:5px 12px;font-size:10.5px;font-weight:800;letter-spacing:1px;color:#D24C39;">HIPERINFLACIÓN · NIVEL 1</div>
+            <div style="font-family:Fredoka;font-weight:700;font-size:38px;color:#3B2A17;line-height:1;margin-top:14px;">La Gran Quema</div>
+            <div style="font-size:14.5px;font-weight:600;color:#8A7357;line-height:1.5;margin-top:12px;">El dinero se quema en tus manos. El pan cuesta más al mediodía que en la mañana. Y el presidente dice que fue tu culpa.</div>
+
+            <div style="margin-top:18px;background:linear-gradient(160deg,#3B2A17,#26190B);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 12px 22px -12px rgba(40,25,5,.7);overflow:hidden;position:relative;">
+              <span style="position:absolute;width:130px;height:130px;right:-30px;top:-40px;border-radius:50%;background:radial-gradient(circle,rgba(245,165,36,.28),transparent 62%);"></span>
+              <div style="width:52px;height:52px;flex:none;border-radius:15px;background:#F5E7C8;display:flex;align-items:center;justify-content:center;font-size:28px;">🔥</div>
+              <div style="position:relative;"><div style="font-size:10px;font-weight:800;letter-spacing:1px;color:#E8C67F;">EL PAN, HOY</div><div style="display:flex;align-items:baseline;gap:6px;"><span style="font-family:Fredoka;font-weight:700;font-size:32px;color:#FFE9A8;line-height:1;">4 800</span><span style="font-family:Fredoka;font-weight:600;font-size:14px;color:#E8C67F;">Bs</span><span style="font-size:12px;font-weight:800;color:#F5A524;">▲ y subiendo</span></div></div>
+            </div>
+
+            <div style="margin-top:14px;background:#fff;border-radius:18px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 14px -8px rgba(150,100,30,.4);">
+              <div style="width:40px;height:40px;flex:none;border-radius:12px;background:#DDEEFB;display:flex;align-items:center;justify-content:center;"><span style="width:16px;height:16px;border:3px solid #4FA3E3;border-radius:50%;"></span></div>
+              <div><div style="font-size:10.5px;font-weight:800;letter-spacing:1px;color:#B0894A;">TU MISIÓN</div><div style="font-size:13.5px;font-weight:700;color:#3B2A17;line-height:1.25;margin-top:2px;">Frena la hiperinflación antes de que se acaben los 8 meses.</div></div>
+            </div>
+
+            <div style="margin-top:auto;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
+              <div style="position:relative;width:56px;height:56px;flex:none;border-radius:50%;padding:3px;background:radial-gradient(circle at 34% 28%,#FFE9A8,#F7C24A 55%,#D98A16);box-shadow:0 6px 14px -6px rgba(199,124,27,.5);">
+                <img src="assets/asesores/el-presidente.png" alt="El Presidente" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;">
+              </div>
+              <div style="position:relative;background:#fff;border-radius:18px;border-top-left-radius:5px;padding:11px 14px;box-shadow:0 6px 14px -8px rgba(150,100,30,.5);">
+                <div style="font-family:Fredoka;font-weight:700;font-size:12px;color:#C77C1B;margin-bottom:2px;">El Presidente</div>
+                <div style="font-size:12.5px;font-weight:600;color:#5A4327;line-height:1.35;">“El país es tuyo, ministro. Yo ya hice mi parte… que tengas suerte.”</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:0 24px 26px;">
+            <div style="font-family:Fredoka;font-weight:700;font-size:19px;color:#fff;background:#F5A524;box-shadow:0 6px 0 #D6871A;border-radius:20px;padding:17px;text-align:center;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 2px 0 #D6871A">Asumir el cargo →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ░░░░░ SCREEN 6 — NEGOTIATION ░░░░░ -->
+    <div style="flex:none;">
+      <div style="font-family:Fredoka;font-weight:700;font-size:12px;letter-spacing:1.5px;color:#B08A44;margin-bottom:14px;">06 · NEGOCIACIÓN</div>
+      <div style="width:384px;background:#fff;border-radius:46px;padding:12px;box-shadow:0 34px 60px -22px rgba(120,80,20,.5),0 0 0 1px rgba(0,0,0,.03);">
+        <div data-shot="6" style="position:relative;border-radius:36px;overflow:hidden;height:812px;background:linear-gradient(180deg,#F3E5CC,#E7D3AE);display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 26px 4px;font-size:13px;font-weight:800;color:#7C6236;"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:6px 22px 10px;">
+            <div style="font-family:Fredoka;font-weight:700;font-size:19px;color:#3B2A17;white-space:nowrap;">Las negociaciones</div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:6px 12px;box-shadow:0 5px 12px -6px rgba(150,100,30,.5);"><span style="font-family:Fredoka;font-weight:700;font-size:14px;color:#3B2A17;">Coalición 1 / 4</span></div>
+          </div>
+          <!-- coalition strip -->
+          <div style="display:flex;gap:10px;padding:0 22px 12px;">
+            <div style="position:relative;width:50px;height:50px;border-radius:50%;padding:2.5px;background:#2FB37E;box-shadow:0 5px 12px -5px rgba(47,179,126,.6);"><img src="assets/asesores/gladys.png" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;"><span style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:#2FB37E;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;">✓</span></div>
+            <div style="width:50px;height:50px;border-radius:50%;padding:2.5px;background:#D9C7A2;"><img src="assets/asesores/don-marcos.png" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;filter:grayscale(.4);opacity:.75;"></div>
+            <div style="width:50px;height:50px;border-radius:50%;padding:2.5px;background:#D9C7A2;"><img src="assets/asesores/senor-fondo.png" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;filter:grayscale(.4);opacity:.75;"></div>
+            <div style="width:50px;height:50px;border-radius:50%;padding:2.5px;background:#D9C7A2;"><img src="assets/asesores/comerciante.png" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;filter:grayscale(.4);opacity:.75;"></div>
+          </div>
+          <!-- ticker urgency -->
+          <div style="margin:0 22px 0;display:flex;align-items:center;gap:8px;background:#FBDAD3;border-radius:14px;padding:9px 14px;">
+            <span style="font-size:15px;">🍞</span><span style="font-size:12px;font-weight:800;color:#8A7357;">Pan</span><span style="font-family:Fredoka;font-weight:700;font-size:14px;color:#3B2A17;">5 200 Bs</span><span style="font-size:12px;font-weight:800;color:#E8604F;">▲</span><span style="margin-left:auto;font-size:11px;font-weight:800;color:#D24C39;">el ticker no se detiene</span>
+          </div>
+          <!-- modal card -->
+          <div style="margin:16px 20px 0;flex:1;background:#fff;border-radius:28px;padding:22px 22px 24px;box-shadow:0 18px 40px -18px rgba(90,60,15,.55),inset 0 0 0 1px rgba(200,160,80,.14);display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div style="position:relative;width:72px;height:72px;flex:none;border-radius:50%;padding:3.5px;background:radial-gradient(circle at 34% 28%,#FFC9C0,#F06A54 60%,#D24C39);box-shadow:0 8px 16px -6px rgba(210,76,57,.5);"><img src="assets/asesores/gladys.png" alt="Compañera Gladys" style="width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid #fff;"></div>
+              <div style="flex:1;min-width:0;"><div style="font-family:Fredoka;font-weight:700;font-size:18px;color:#3B2A17;line-height:1.05;white-space:nowrap;">Compañera Gladys</div><div style="font-size:12px;font-weight:700;color:#C0503B;margin-top:3px;">Líder del Sindicato</div></div>
+            </div>
+            <div style="margin-top:14px;background:#FDF2DE;border-radius:14px;padding:11px 14px;"><span style="font-size:11px;font-weight:800;letter-spacing:.5px;color:#B0894A;">QUIERE · </span><span style="font-size:13px;font-weight:700;color:#5A4327;">garantía de indexación salarial</span></div>
+            <div style="margin-top:14px;"><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#8A7357;margin-bottom:4px;"><span>Confianza</span><span style="color:#F5A524;">50%</span></div><div style="height:12px;border-radius:999px;background:#F3E2C2;overflow:hidden;box-shadow:inset 0 1px 2px rgba(140,90,30,.25);"><div style="width:50%;height:100%;border-radius:999px;background:linear-gradient(90deg,#F7CE7E,#F5A524);"></div></div></div>
+            <div style="font-size:13px;font-weight:600;color:#8A7357;line-height:1.4;margin-top:16px;text-align:center;">“Confío, pero te estoy mirando. Mi gente no aguanta otra promesa rota.”</div>
+            <div style="display:flex;gap:12px;margin-top:auto;">
+              <div style="flex:1;background:#35B98A;border-radius:18px;padding:15px 10px;text-align:center;box-shadow:0 6px 0 #1F9A6E;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 2px 0 #1F9A6E"><div style="font-size:22px;line-height:1;">🤝</div><div style="font-family:Fredoka;font-weight:700;font-size:16px;color:#fff;margin-top:6px;">COOPERAR</div><div style="font-size:10.5px;font-weight:800;color:#CFF0E3;margin-top:2px;">construye confianza</div></div>
+              <div style="flex:1;background:#E8604F;border-radius:18px;padding:15px 10px;text-align:center;box-shadow:0 6px 0 #C43D2C;cursor:pointer;" style-active="transform:translateY(4px);box-shadow:0 2px 0 #C43D2C"><div style="font-size:22px;line-height:1;">🎭</div><div style="font-family:Fredoka;font-weight:700;font-size:16px;color:#fff;margin-top:6px;">TRAICIONAR</div><div style="font-size:10.5px;font-weight:800;color:#FFD9D2;margin-top:2px;">ventaja inmediata</div></div>
+            </div>
+            <div style="align-self:center;margin-top:14px;display:flex;align-items:center;gap:6px;background:#F3E2C2;border-radius:999px;padding:5px 12px;"><span style="font-size:12px;">🎲</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.5px;color:#9A7E56;">DILEMA DEL PRISIONERO</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════ MICRO-INTERACCIONES ═══════════ -->
+  <div style="font-family:Fredoka;font-weight:600;font-size:12px;letter-spacing:2.5px;color:#B08A44;margin:60px 0 22px;">MICRO-INTERACCIONES · el juego reacciona</div>
+  <div style="display:flex;gap:22px;flex-wrap:wrap;">
+
+    <!-- botón táctil -->
+    <div style="flex:1 1 250px;background:#FFFBF3;border-radius:26px;padding:26px 24px 22px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:22px 0;">
+        <div style="font-family:Fredoka;font-weight:600;font-size:18px;color:#fff;background:#F5B331;border-radius:16px;padding:15px 30px;animation:pc-press 2.4s ease-in-out infinite;">Imprimir</div>
+      </div>
+      <div style="font-size:12px;font-weight:800;color:#9A7E56;text-align:center;">Botón táctil · se hunde al tocar</div>
+    </div>
+
+    <!-- cifra arcade -->
+    <div style="flex:1 1 250px;background:#FFFBF3;border-radius:26px;padding:26px 24px 22px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:14px 0;">
+        <div style="background:linear-gradient(160deg,#3B2A17,#26190B);border-radius:18px;padding:16px 22px;text-align:center;box-shadow:0 12px 22px -12px rgba(40,25,5,.7);">
+          <div style="font-size:10px;font-weight:800;letter-spacing:1px;color:#E8C67F;margin-bottom:4px;">PRECIO DEL PAN</div>
+          {{ counter }}
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:800;color:#9A7E56;text-align:center;">Cifra arcade · salta al cambiar</div>
+    </div>
+
+    <!-- barra de vida -->
+    <div style="flex:1 1 250px;background:#FFFBF3;border-radius:26px;padding:26px 24px 22px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:18px 0;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#8A7357;"><span>Apoyo popular</span><span style="color:#2FB37E;">68%</span></div>
+        <div style="height:14px;border-radius:999px;background:#F3E2C2;overflow:hidden;box-shadow:inset 0 1px 2px rgba(140,90,30,.25);"><div style="height:100%;border-radius:999px;background:linear-gradient(90deg,#7FD3A6,#2FB37E);animation:pc-fill 2.8s ease-in-out infinite;"></div></div>
+      </div>
+      <div style="font-size:12px;font-weight:800;color:#9A7E56;text-align:center;">Barra de vida · se llena al entrar</div>
+    </div>
+
+    <!-- nodo desbloqueado -->
+    <div style="flex:1 1 250px;background:#FFFBF3;border-radius:26px;padding:26px 24px 22px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:14px 0;">
+        <div style="position:relative;width:88px;height:88px;">
+          <span style="position:absolute;inset:-4px;border-radius:50%;border:3px solid #35B98A;animation:pc-ring 2.8s ease-out infinite;"></span>
+          <div style="position:absolute;inset:0;border-radius:50%;background:#EBDCC0;border:4px solid #fff;display:flex;align-items:center;justify-content:center;animation:pc-lockout 2.8s ease-in-out infinite;"><span style="font-size:28px;">🔒</span></div>
+          <div style="position:absolute;inset:0;border-radius:50%;background:#35B98A;border:4px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 18px -6px rgba(31,154,110,.5);animation:pc-lockin 2.8s ease-in-out infinite;"><span style="font-family:Fredoka;font-weight:700;font-size:32px;color:#fff;">4</span></div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:800;color:#9A7E56;text-align:center;">Nodo · bloqueado → ¡nivel abierto!</div>
+    </div>
+
+    <!-- feedback de decisión -->
+    <div style="flex:1 1 250px;background:#FFFBF3;border-radius:26px;padding:26px 24px 22px;box-shadow:0 10px 30px -14px rgba(150,100,30,.35),inset 0 0 0 1px rgba(200,160,80,.18);display:flex;flex-direction:column;">
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:18px 0;">
+        <div style="width:100%;animation:pc-shake2 2.6s ease-in-out infinite;position:relative;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:28px;height:28px;border-radius:9px;background:#FBDAD3;display:flex;align-items:center;justify-content:center;font-size:15px;">🔥</div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#8A7357;margin-bottom:4px;"><span>Inflación</span><span style="color:#E8604F;">68%</span></div>
+              <div style="height:12px;border-radius:999px;background:#F3E2C2;overflow:hidden;"><div style="width:68%;height:100%;border-radius:999px;background:linear-gradient(90deg,#F5A524,#E8604F);"></div></div>
+            </div>
+          </div>
+          <span style="position:absolute;right:2px;top:-2px;font-family:Fredoka;font-weight:700;font-size:16px;color:#E8604F;animation:pc-rise 2.6s ease-in-out infinite;">+9</span>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:800;color:#9A7E56;text-align:center;">Feedback · cada acción reacciona</div>
+    </div>
+
+  </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { i: 0 }
+  vals = [24800, 34300, 47100, 61900, 84500]
+  componentDidMount() {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+    this._t = setInterval(() => {
+      this.setState((s) => ({ i: (s.i + 1) % this.vals.length }))
+    }, 1500)
+  }
+  componentWillUnmount() { clearInterval(this._t) }
+  renderVals() {
+    const v = this.vals[this.state.i]
+    const txt = v.toLocaleString('es-ES').replace(/[.,]/g, ' ')
+    return {
+      counter: React.createElement('span', {
+        key: v,
+        style: {
+          fontFamily: 'Fredoka', fontWeight: 700, fontSize: '46px', color: '#FFE9A8',
+          lineHeight: '.9', letterSpacing: '-.5px', display: 'inline-block',
+          animation: 'pc-pop .5s ease-out',
+        },
+      }, txt),
+    }
+  }
+}
+</script>
+</body>
+</html>

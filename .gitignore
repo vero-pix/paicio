@@ -4,3 +4,7 @@ dist
 *.local
 .vercel
 .claude/
+
+# Respaldos y exports locales (no versionar)
+*.zip
+_backups/
