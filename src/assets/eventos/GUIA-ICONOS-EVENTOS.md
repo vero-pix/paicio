@@ -87,3 +87,55 @@ y sustituye el bloque del objeto. Re-exporta a PNG/WEBP 512.
 - `*.png` — 512×512, fondo opaco (disco incluido).
 - `*.webp` — 512×512, ~7–11 KB, para producción.
 - Vista de contacto + uso: `Iconos Eventos.dc.html` (raíz del proyecto).
+
+---
+
+# 📋 BRIEF · Íconos de eventos Ep2–Ep4 (encargo a Claude Design)
+
+Hoy las cartas de evento de **Ep2 (corralito), Ep3 (paridad), Ep4 (inercia)** usan
+**emoji de fallback**. Este brief pide reemplazarlos por íconos soft-3D (mismo
+lenguaje que Bolivia). **Ep5 (Plan Real) no lleva íconos**: es un puzzle de
+secuencia, no tiene cartas de evento.
+
+**Clave del ahorro:** ~6 de los shocks se repiten entre episodios y **reutilizan
+íconos existentes** de Bolivia (o uno nuevo compartido). Solo hay que dibujar
+**~10 íconos nuevos**, no 24.
+
+### Categorías de disco (reutilizar los mismos gradientes de la tabla de Bolivia)
+buena noticia → verde · externo/FMI → azul · especulación → violeta · crisis
+bancaria → coral · costos/commodity → ámbar · dolarización → teal · deuda/mercado
+→ azul cielo · social/sindical → rojo · político/prensa → violeta apagado.
+
+### ♻️ Reutilizables (ya existen — no redibujar)
+| Ícono existente | Se reusa en |
+|---|---|
+| `fmi` | Ep2 `blindaje`, Ep3 `rescateFMI`, Ep4 `fmiGesto` |
+| `dolar` | Ep2 `rumorPeso`, Ep3 `rumorDeval`, Ep4 `dolarParalelo` |
+| `cosecha` | Ep2 `exportaciones`, Ep3 `exportaPunta` |
+| `banco-corrida` | Ep2 `feriado`, Ep3 `quiebraBanco` |
+| `sindicato` (megáfono) | Ep3 `paroCobre`, Ep4 `sindicatos` |
+| `acaparamiento` | Ep4 `remarcaje` |
+
+### 🆕 A producir (~10 nuevos, 512×512 SVG→PNG/WEBP)
+| Archivo | Evento (ep) | Categoría · Disco | Objeto |
+|---|---|---|---|
+| `riesgo-pais` | Ep2 riesgoPais | mercado · azul cielo `#86B7E6→#3F92DA` | Gráfico de bonos cayendo en picada (flecha roja) |
+| `cacerolazo` | Ep2 cacerolazo | social · rojo `#F3987F→#DE5740` | Cacerola/olla con cuchara de palo golpeando |
+| `patacones` | Ep2 patacones | dolarización · teal `#7DC7BC→#2E9E8F` | Bono/vale provincial atado, sello impreso |
+| `fuga-capitales` | Ep2 fugaCapitales + Ep3 fugaDolares | especulación · violeta `#BC96E4→#8A5BC4` | Maletín abierto con billetes que salen volando |
+| `fed-tasas` | Ep3 fed | externo · azul `#93BAD9→#4E82AE` | Columna/edificio con flecha de tasa subiendo |
+| `cobre` | Ep3 cobre | costos · ámbar `#F8CE86→#ED9E38` | Lingotes de cobre apilados (naranja metálico) |
+| `prensa` | Ep4 filtracion | prensa · violeta apagado `#B5A0C9→#7E68A0` | Periódico doblado con titular (sin texto legible) |
+| `senal-fiscal` | Ep4 senalFiscal | buena noticia · verde `#83C79A→#3E9B63` | Tijera de recorte + visto bueno / gráfico al alza |
+| `congelamiento` | Ep4 reboteCongelamiento | crisis · azul frío `#9CC7E8→#5A93C4` | Copo de nieve / bloque de hielo derritiéndose |
+| `congreso` | Ep4 respaldoCongreso | político · violeta apagado `#B5A0C9→#7E68A0` | Cúpula/columnas del Congreso |
+
+### Handoff técnico (cuando lleguen los .webp)
+1. Dejar los `.webp` 512×512 en `src/assets/eventos/`.
+2. Importarlos en `src/assets/eventos/index.js` y agregarlos al mapa `eventIcons`
+   (clave = nombre de archivo).
+3. En `src/data/episodes/episode{2,3,4}.js`, agregar `iconKey: '<archivo>'` a cada
+   evento (ver tablas). `EventCard` ya cae al emoji si el `iconKey` aún no existe,
+   así que el orden no rompe nada.
+
+**No bloquea el desarrollo:** mientras no lleguen, el emoji cubre.

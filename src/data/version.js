@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.12.0'
+export const APP_VERSION = '0.13.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.13.0',
+    fecha: '3 jul 2026',
+    cambios: [
+      'Sonido más a tu gusto: ahora puedes silenciar la música sin apagar los efectos, y la pista tensa de las decisiones viene apagada por defecto (la activas si quieres, en el panel 🔊).',
+      'Interfaz más luminosa: el botón de sonido, el de comentarios 💬 y los tooltips "¿por qué?" pasaron a la paleta clara, en línea con el resto del juego.',
+    ],
+  },
   {
     version: '0.12.0',
     fecha: '3 jul 2026',

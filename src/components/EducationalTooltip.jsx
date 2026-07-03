@@ -20,7 +20,7 @@ export default function EducationalTooltip({ conceptId, label, onSeen }) {
         type="button"
         onClick={toggle}
         aria-expanded={open}
-        className="cursor-pointer rounded-sm border border-dashed border-paper-dim/70 bg-paper/5 px-1.5 py-0.5 font-mono text-[0.72rem] tracking-wide text-paper-dim transition-colors hover:border-paper hover:text-paper"
+        className="cursor-pointer rounded-full border border-dashed border-ink-mute/60 bg-surface/70 px-2.5 py-1 font-nunito text-[0.66rem] font-bold text-ink-soft transition-colors hover:border-ink-mute"
       >
         {label || concept.title} ⓘ
       </button>
@@ -28,15 +28,15 @@ export default function EducationalTooltip({ conceptId, label, onSeen }) {
       {open && (
         <span
           role="dialog"
-          className="animate-fade-up absolute bottom-full left-0 z-30 mb-2 block w-64 max-w-[80vw] rounded-md border border-edge bg-cell p-3 text-left shadow-2xl shadow-black/60"
+          className="animate-fade-up shadow-panel absolute bottom-full left-0 z-30 mb-2 block w-64 max-w-[80vw] rounded-[16px] bg-panel p-3 text-left"
         >
-          <span className="block font-display text-sm font-semibold text-paper">
+          <span className="block font-round text-[0.86rem] font-bold text-ink-warm">
             {concept.title}
           </span>
-          <span className="mt-1 block font-body text-[0.8rem] italic text-paper-dim">
+          <span className="mt-1 block font-nunito text-[0.78rem] italic text-ink-mute">
             {concept.short}
           </span>
-          <span className="mt-2 block font-body text-[0.82rem] leading-snug text-paper">
+          <span className="mt-1.5 block font-nunito text-[0.82rem] leading-snug text-ink-soft">
             {concept.body}
           </span>
         </span>

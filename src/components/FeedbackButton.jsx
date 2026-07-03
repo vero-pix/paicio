@@ -114,18 +114,18 @@ export default function FeedbackButton() {
           loadMine(clientId)
         }}
         aria-label="Comentar al desarrollador"
-        className="fixed bottom-4 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-edge bg-cell text-paper shadow-lg shadow-black/50 transition-all hover:border-paper-dim hover:-translate-y-px"
+        className="shadow-card fixed bottom-4 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-surface text-ink-warm transition-all hover:-translate-y-px"
       >
         <span aria-hidden className="text-lg">💬</span>
         {hasReply && (
-          <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-ink bg-positive" />
+          <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#2FB37E]" />
         )}
       </button>
 
       {/* Modal */}
       {open && (
-        <div className="animate-fade-in fixed inset-0 z-50 flex items-end justify-center bg-ink/70 backdrop-blur-sm sm:items-center">
-          <div className="grain max-h-[88%] w-full max-w-md overflow-y-auto rounded-t-2xl border-t border-edge bg-cell p-5 pb-7 shadow-2xl sm:rounded-2xl sm:border">
+        <div className="animate-fade-in fixed inset-0 z-50 flex items-end justify-center bg-[#2A1C0C]/60 backdrop-blur-sm sm:items-center">
+          <div className="shadow-panel max-h-[88%] w-full max-w-md overflow-y-auto rounded-t-[24px] bg-panel p-5 pb-7 sm:rounded-[24px]">
             <div className="relative z-10">
               {/* Header + tabs */}
               <div className="flex items-start justify-between">
@@ -133,7 +133,7 @@ export default function FeedbackButton() {
                   <button
                     type="button"
                     onClick={() => setTab('write')}
-                    className={`font-display text-xl leading-tight transition-colors ${tab === 'write' ? 'text-paper' : 'text-paper-dim/60'}`}
+                    className={`font-round text-[1.15rem] font-bold leading-tight transition-colors ${tab === 'write' ? 'text-ink-warm' : 'text-ink-mute'}`}
                   >
                     Comentar
                   </button>
@@ -143,7 +143,7 @@ export default function FeedbackButton() {
                       setTab('mine')
                       loadMine(clientId)
                     }}
-                    className={`font-display text-xl leading-tight transition-colors ${tab === 'mine' ? 'text-paper' : 'text-paper-dim/60'}`}
+                    className={`font-round text-[1.15rem] font-bold leading-tight transition-colors ${tab === 'mine' ? 'text-ink-warm' : 'text-ink-mute'}`}
                   >
                     Mis comentarios{mine.length ? ` (${mine.length})` : ''}
                   </button>
@@ -152,7 +152,7 @@ export default function FeedbackButton() {
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Cerrar"
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-paper-dim hover:bg-ink/40 hover:text-paper"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-mute hover:bg-cream hover:text-ink-warm"
                 >
                   ✕
                 </button>
@@ -160,7 +160,7 @@ export default function FeedbackButton() {
 
               {tab === 'write' ? (
                 <div className="mt-3 space-y-3">
-                  <p className="font-body text-[0.84rem] leading-snug text-paper-dim">
+                  <p className="font-nunito text-[0.84rem] leading-snug text-ink-soft">
                     Tu comentario ayuda a mejorar PAICIO. Te respondo acá mismo, en
                     "Mis comentarios".
                   </p>
@@ -168,21 +168,22 @@ export default function FeedbackButton() {
                     placeholder="Tu nombre (opcional)"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="h-11 w-full rounded-md border border-edge bg-ink/40 px-4 font-body text-sm text-paper outline-none placeholder:text-paper-dim/50 focus:border-paper-dim"
+                    className="h-11 w-full rounded-[12px] border border-[#E8CE9A] bg-surface px-4 font-nunito text-sm text-ink-warm outline-none placeholder:text-ink-mute/70 focus:border-ink-mute"
                   />
                   <textarea
                     autoFocus
                     placeholder="¿Qué no se entiende? ¿Qué mejorarías? ¿Qué te gustó?"
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    className="h-28 w-full resize-none rounded-md border border-edge bg-ink/40 p-4 font-body text-[0.95rem] text-paper outline-none placeholder:text-paper-dim/50 focus:border-paper-dim"
+                    className="h-28 w-full resize-none rounded-[12px] border border-[#E8CE9A] bg-surface p-4 font-nunito text-[0.95rem] text-ink-warm outline-none placeholder:text-ink-mute/70 focus:border-ink-mute"
                   />
-                  {error && <p className="font-mono text-[0.72rem] text-crisis">{error}</p>}
+                  {error && <p className="font-nunito text-[0.72rem] font-bold text-[#D24C39]">{error}</p>}
                   <button
                     type="button"
                     onClick={send}
                     disabled={!comment.trim() || sending}
-                    className="w-full rounded-sm border border-crisis bg-crisis/15 py-3 font-display font-semibold tracking-wide text-paper transition-all hover:bg-crisis/25 active:scale-[0.99] disabled:opacity-40"
+                    className="candy w-full px-5 py-3 text-[0.95rem] disabled:opacity-40"
+                    style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
                   >
                     {sending ? 'Enviando…' : 'Enviar comentario →'}
                   </button>
@@ -190,36 +191,36 @@ export default function FeedbackButton() {
               ) : (
                 <div className="mt-4 space-y-4">
                   {mine.length === 0 ? (
-                    <p className="py-6 text-center font-body text-sm text-paper-dim">
+                    <p className="py-6 text-center font-nunito text-sm text-ink-soft">
                       Aún no comentaste. Tus comentarios y mis respuestas aparecerán acá.
                     </p>
                   ) : (
                     mine.map((m) => (
                       <div key={m.id} className="space-y-2">
-                        <div className="rounded-md border border-edge bg-ink/30 p-3">
+                        <div className="shadow-card rounded-[16px] bg-surface p-3">
                           <div className="mb-1.5 flex items-center justify-between">
-                            <span className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-paper-dim">
+                            <span className="font-nunito text-[0.56rem] font-extrabold uppercase tracking-[0.14em] text-ink-mute">
                               Tú{m.stage ? ` · ${m.stage}` : ''}
                             </span>
-                            <span className="font-mono text-[0.55rem] text-paper-dim/70">
+                            <span className="font-nunito text-[0.56rem] font-bold text-ink-mute/70">
                               {fmt(m.created_at)}
                             </span>
                           </div>
-                          <p className="font-body text-[0.92rem] leading-relaxed text-paper">
+                          <p className="font-nunito text-[0.92rem] leading-relaxed text-ink-warm">
                             {m.comment}
                           </p>
                         </div>
                         {m.reply ? (
-                          <div className="ml-4 rounded-md border-l-2 border-positive bg-positive/10 p-3">
-                            <span className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-positive">
+                          <div className="ml-4 rounded-[16px] border-l-2 border-[#2FB37E] bg-[#D6F0E5] p-3">
+                            <span className="font-nunito text-[0.56rem] font-extrabold uppercase tracking-[0.14em] text-[#1F9A6E]">
                               Respuesta de Vero
                             </span>
-                            <p className="mt-1 font-body text-[0.92rem] leading-relaxed text-paper">
+                            <p className="mt-1 font-nunito text-[0.92rem] leading-relaxed text-ink-warm">
                               {m.reply}
                             </p>
                           </div>
                         ) : (
-                          <p className="ml-4 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-paper-dim/70">
+                          <p className="ml-4 font-nunito text-[0.6rem] font-extrabold uppercase tracking-[0.14em] text-ink-mute/80">
                             Esperando respuesta…
                           </p>
                         )}
