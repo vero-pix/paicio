@@ -44,9 +44,9 @@ export default function App() {
       playMusic('menu')
       return undefined
     }
-    // Toda mecánica corre en la fase 'negotiation'. La pista tensa de la decisión
-    // solo suena si el jugador la activó (off por defecto: molestaba); si no,
-    // queda la música ambiente del episodio.
+    // Toda mecánica corre en la fase 'negotiation'. En la partida suena la pista
+    // de decisión (lounge, on por defecto); si el jugador la apaga, queda la
+    // música ambiente del episodio.
     const inMechanic = state.phase === 'negotiation'
     if (inMechanic && isDecisionMusic()) {
       playMusic('decision', { fallbackToAmbient: false })

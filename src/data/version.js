@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.14.0'
+export const APP_VERSION = '0.15.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.15.0',
+    fecha: '3 jul 2026',
+    cambios: [
+      'Música nueva en la pantalla de decisión: una pista lounge suave y agradable reemplaza a la anterior. Puedes silenciarla o cambiarla desde el panel 🔊 sin tocar los efectos.',
+    ],
+  },
   {
     version: '0.14.0',
     fecha: '3 jul 2026',

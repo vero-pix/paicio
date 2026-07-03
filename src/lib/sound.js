@@ -17,9 +17,9 @@ const SFX_VOL = 0.55 // volumen base de los efectos
 
 // ── Estado persistido ──────────────────────────────────────────────────────
 // muted: silencio general (música + SFX). musicMuted: silencia SOLO la música,
-// dejando los efectos. decisionMusic: si la pista tensa de la decisión suena
-// (off por defecto — molestaba).
-const PREF_DEFAULTS = { muted: false, volume: 0.7, musicMuted: false, decisionMusic: false }
+// dejando los efectos. decisionMusic: si la pista de la partida (pantalla de
+// decisión) suena (on por defecto — ahora es una pista lounge agradable).
+const PREF_DEFAULTS = { muted: false, volume: 0.7, musicMuted: false, decisionMusic: true }
 function loadPrefs() {
   try {
     const raw = localStorage.getItem(LS_KEY)
@@ -66,9 +66,9 @@ function master() {
   return prefs.muted ? 0 : prefs.volume
 }
 
-// Multiplicador de volumen por pista. La de "decisión" es tensa y molestaba:
-// suena bastante más baja que el resto de la música.
-const TRACK_VOL = { decision: 0.42 }
+// Multiplicador de volumen por pista. La de "decisión" (lounge de la partida)
+// suena un poco por debajo del resto para no distraer al decidir.
+const TRACK_VOL = { decision: 0.85 }
 
 // ¿La música está silenciada? (silencio general O silencio de música). Los SFX
 // NO dependen de esto — solo de `prefs.muted` (ver master()).
