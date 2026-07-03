@@ -97,10 +97,10 @@ export default function SoundToggle() {
             />
           </div>
 
-          {/* Pista tensa de la decisión (off por defecto) */}
+          {/* Música de la partida (pantalla de decisión), on por defecto */}
           <div className="mt-2 flex items-center justify-between gap-2">
             <span className="min-w-0 font-nunito text-[0.74rem] font-bold text-ink-soft">
-              🎬 Tensión en decisiones
+              🎵 Música en la partida
             </span>
             <Switch
               on={decision}
