@@ -32,35 +32,41 @@ aprendes **jugándola**: la mecánica ES la lección. Balance de diseño acordad
 
 ---
 
-## 🎮 En curso — "PAICIO más juego" (70/30)
-
-Los testers lo encontraban aburrido/difícil/sin gancho. Capa de juego encima de
-la mecánica. Prototipada y **validada en Bolivia**, ahora **replicada** a las
-otras crisis por turnos.
-
-### ✅ Capa replicada a Ep2/Ep3/Ep4 (v0.11.0)
-Orquestación extraída a piezas compartidas para no copiar-pegar (Bolivia quedó
-intacto): `utils/gameLayer.js` + `hooks/useGameLayer.js` (eventos, momentum,
-puntaje, jugo) + `hooks/useTutorial.js` (onboarding), parametrizado por los
-medidores de cada episodio.
-- **Cartas de evento / shocks aleatorios** (tipo Reigns): ~8 por episodio,
-  pasivas o de decisión, con copy histórico (corralito, paridad, inercia).
-- **Telegrafiado** del efecto de cada acción + **combo/momentum** + **puntaje
-  corrido** (va al desenlace) + **jugo de recompensa** (monedas/flashes).
-- **Onboarding**: coach-marks, chip de meta y primer turno guiado en Ep2–4;
-  coach ligero + monedas en Ep5 (Plan Real, que es puzzle de secuencia).
-
-### 🔜 Pendiente del lote
-- **Íconos de eventos** ilustrados para Ep2–5 (hoy usan emoji de fallback).
-  Pedir a Design ~8 por episodio (guía en `GUIA-ICONOS-EVENTOS.md`).
-- **Fracaso barato**: reintento instantáneo ("un intento más"). No existe aún
-  en ningún episodio; construir de cero (wrapper o dentro de las mecánicas).
-- **Reto Diario** (semilla por fecha, resultado compartible tipo Wordle) +
-  tarjeta de resultado. La agenda de eventos ya es seedable (base lista).
+### ✅ "PAICIO más juego" — lote cerrado (v0.16.0, en producción)
+Los testers lo encontraban aburrido/difícil/sin gancho. Se metió una capa de
+juego encima de la mecánica, prototipada en Bolivia y replicada a piezas
+compartidas (`utils/gameLayer.js` + `hooks/useGameLayer.js` + `useTutorial.js`).
+- **Cartas de evento / shocks** (tipo Reigns) en los 5 episodios, telegrafiado
+  del efecto, **combo/momentum**, puntaje corrido y jugo de recompensa.
+- **Onboarding** guiado (coach-marks, chip de meta, primer turno) Ep2–5.
+- **Fracaso barato**: reintento instantáneo ("un intento más") sin volver al mapa.
+- **Reto Diario**: semilla por fecha (misma partida para todos) + tarjeta
+  compartible tipo Wordle.
+- **VersionBadge global** visible en todas las pantallas (antes enterrado).
+- **Paleta clara**: controles (sonido, feedback, tooltips) retuneados a la
+  dirección LatAm luminosa. Las 3 cards focales oscuras se mantienen a propósito.
+- **Íconos de eventos ilustrados** (soft-3D) integrados en los 5 episodios
+  (v0.14.0). Único sin ícono propio: `respaldoCongreso` (Ep4), con emoji.
+- **Audio**: música desacoplada de los SFX (silenciable aparte); pista de la
+  partida cambiada a una lounge suave (v0.15.0); música por episodio asignada
+  por país/época — Bolivia andino, Argentina tango, Chile andino, Brasil bossa,
+  Plan Real piano, menú vintage (v0.16.0).
+- **Código muerto** del dilema del prisionero eliminado (PR #13, mergeado):
+  −21KB JS / −6KB CSS.
 
 ---
 
-## 🔜 Futuro (V2)
+## 🎯 Ahora — VALIDAR antes de expandir
+El lote existía para arreglar el gancho. Antes de construir más contenido, medir
+con testers si el loop ya engancha/retiene (completan el loop, usan combos,
+reintentan, vuelven al Reto Diario). Esta señal es el gate a V2.
+
+### 🎨 Pendientes menores (no bloqueantes)
+- **Ícono de `respaldoCongreso`** (Ep4): falta el de "congreso"; hoy usa emoji.
+- **Música**: escuchar la lounge de la partida y las pistas por episodio; ajustar
+  o reemplazar archivos en `public/audio/music/` si alguna no convence.
+
+## 🔜 Futuro (V2) — solo tras pasar el gate de validación
 
 ### Nuevos episodios LatAm (solo tras validar que el loop es divertido)
 
@@ -85,8 +91,6 @@ medidores de cada episodio.
 ### Otros
 - Retratos ilustrados de los 4 episodios restantes (siguen sepia).
 - Reputación / consecuencias entre episodios; ranking; multijugador.
-- Limpieza del subsistema muerto del dilema del prisionero
-  (`prisonersDilemma.js`, `NegotiationMatrix`, `Prisoner`, `PolicyChoice`).
 
 ---
 
