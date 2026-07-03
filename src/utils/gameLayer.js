@@ -98,3 +98,28 @@ export function eventReward(prev, next, meters) {
   }
   return Math.round(r)
 }
+
+// ── Mejor intento (para el "fracaso barato": reintentar y comparar) ─────────
+// Mejor puntaje histórico de un episodio en este dispositivo. Es solo game feel
+// (comparación "tu mejor intento"); no afecta la lógica ni el desenlace.
+const bestKey = (episodeId) => `paicio.best.${episodeId}`
+
+export function readBest(episodeId) {
+  try {
+    return Number(localStorage.getItem(bestKey(episodeId))) || 0
+  } catch {
+    return 0
+  }
+}
+
+// Registra un puntaje y devuelve el mejor histórico (tras considerar el nuevo).
+export function recordBest(episodeId, score) {
+  const prev = readBest(episodeId)
+  const best = Math.max(prev, score ?? 0)
+  try {
+    if (best > prev) localStorage.setItem(bestKey(episodeId), String(best))
+  } catch {
+    /* localStorage no disponible */
+  }
+  return best
+}

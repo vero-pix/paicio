@@ -25,7 +25,7 @@ const MECHANICS = {
   expectations: Expectations,
 }
 
-export default function MechanicHost({ episode, allies, onComplete, onConceptSeen }) {
+export default function MechanicHost({ episode, allies, dailySeed, onComplete, onConceptSeen }) {
   const Mechanic = MECHANICS[episode.mechanic]
 
   if (!Mechanic) {
@@ -42,6 +42,7 @@ export default function MechanicHost({ episode, allies, onComplete, onConceptSee
       <Mechanic
         episode={episode}
         allies={allies}
+        dailySeed={dailySeed}
         onComplete={onComplete}
         onConceptSeen={onConceptSeen}
       />

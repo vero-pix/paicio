@@ -2,9 +2,18 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.11.0'
+export const APP_VERSION = '0.12.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.12.0',
+    fecha: '3 jul 2026',
+    cambios: [
+      '¡Reto Diario! Una misma crisis para todos cada día, con un solo intento, y una tarjeta de resultado para compartir (estilo Wordle). Entra desde “🗓️ Reto” en el mapa.',
+      'Fracaso barato: si pierdes una crisis, ahora puedes reintentar al instante (“¡un intento más!”) sin volver al mapa, y ves tu mejor puntaje.',
+      'La versión y las novedades ahora están siempre a mano: un sello fijo (✦ v…) visible en cualquier pantalla, con el botón de actualizar adentro.',
+    ],
+  },
   {
     version: '0.11.0',
     fecha: '3 jul 2026',

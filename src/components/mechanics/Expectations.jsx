@@ -48,7 +48,7 @@ function deltaLabel(label, n) {
   return `${label} ${n > 0 ? '+' : '−'}${Math.abs(Math.round(n))}`
 }
 
-export default function Expectations({ episode, onComplete, onConceptSeen }) {
+export default function Expectations({ episode, dailySeed, onComplete, onConceptSeen }) {
   const cfg = useMemo(
     () => ({ ...episode.expectations, eventos: episode.eventos ?? [] }),
     [episode],
@@ -66,7 +66,7 @@ export default function Expectations({ episode, onComplete, onConceptSeen }) {
   const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
 
-  const gl = useGameLayer({ eventos: cfg.eventos, totalTurns: cfg.rondas, meters: METERS, trigger })
+  const gl = useGameLayer({ eventos: cfg.eventos, totalTurns: cfg.rondas, meters: METERS, trigger, seed: dailySeed })
   const pendingEvent = over ? null : gl.eventoDelTurno(state.ronda)
 
   const metersRef = useRef(null)

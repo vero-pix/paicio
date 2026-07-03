@@ -51,7 +51,7 @@ function deltaLabel(label, n) {
   return `${label} ${n > 0 ? '+' : '−'}${Math.abs(Math.round(n))}`
 }
 
-export default function BankRun({ episode, onComplete, onConceptSeen }) {
+export default function BankRun({ episode, dailySeed, onComplete, onConceptSeen }) {
   const cfg = useMemo(
     () => ({ ...episode.bankRun, eventos: episode.eventos ?? [] }),
     [episode],
@@ -69,7 +69,7 @@ export default function BankRun({ episode, onComplete, onConceptSeen }) {
   const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
 
-  const gl = useGameLayer({ eventos: cfg.eventos, totalTurns: cfg.dias, meters: METERS, trigger })
+  const gl = useGameLayer({ eventos: cfg.eventos, totalTurns: cfg.dias, meters: METERS, trigger, seed: dailySeed })
   const pendingEvent = over ? null : gl.eventoDelTurno(state.dia)
 
   // ── Onboarding ──────────────────────────────────────────────────────────

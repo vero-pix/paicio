@@ -24,6 +24,7 @@ function initialState() {
     chosenPolicy: null,
     chosenMeta: null, // datos extra del desenlace (p. ej. puntaje corrido de la mecánica)
     seenConcepts: [],
+    daily: null, // { iso, seed } cuando la partida es el Reto Diario; null = normal
   }
 }
 
@@ -63,7 +64,26 @@ export function useGameState() {
       prisoners: buildPrisoners(episode),
       allies: [],
       chosenPolicy: null,
+      chosenMeta: null,
       seenConcepts: [],
+      daily: null, // jugar normal siempre limpia el modo diario
+    })
+  }, [])
+
+  // Reto Diario: entra al episodio del día con su semilla fija (misma secuencia
+  // de eventos para todos ese día). Va derecho a la mecánica (sin celda) para
+  // que se sienta como un reto rápido tipo Wordle.
+  const startDaily = useCallback((episode, iso, seed) => {
+    setState({
+      phase: 'negotiation',
+      episodeId: episode.id,
+      startedAt: Date.now(),
+      prisoners: buildPrisoners(episode),
+      allies: [],
+      chosenPolicy: null,
+      chosenMeta: null,
+      seenConcepts: [],
+      daily: { iso, seed },
     })
   }, [])
 
@@ -120,6 +140,22 @@ export function useGameState() {
     startEpisode(episode)
   }, [startEpisode])
 
+  // "Fracaso barato": reinicia el episodio EN EL ACTO, sin volver al mapa ni
+  // pasar por la celda. Vuelve derecho a la mecánica con estado fresco (misma
+  // crisis, nueva partida). El componente de la mecánica se re-monta y se
+  // re-inicializa solo. No aplica al Reto Diario (un intento por día).
+  const retryEpisode = useCallback((episode) => {
+    setState((s) => ({
+      ...s,
+      phase: 'negotiation',
+      prisoners: buildPrisoners(episode),
+      allies: [],
+      chosenPolicy: null,
+      chosenMeta: null,
+      startedAt: s.startedAt ?? Date.now(),
+    }))
+  }, [])
+
   // Vuelve al selector de episodios.
   const backToSelect = useCallback(() => {
     setState(initialState())
@@ -129,11 +165,13 @@ export function useGameState() {
     state,
     setPhase,
     startEpisode,
+    startDaily,
     startGame,
     applyNegotiation,
     markConceptSeen,
     choosePolicy,
     restartEpisode,
+    retryEpisode,
     backToSelect,
   }
 }
