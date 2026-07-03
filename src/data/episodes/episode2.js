@@ -254,6 +254,91 @@ export default {
     ],
   },
 
+  // ── CARTAS DE EVENTO ("shocks" tipo Reigns) ────────────────────────────
+  // Capa de game loop: al inicio de algunos días cae una carta que golpea los
+  // medidores (reservas / confianza) por el mismo clamp. ~50% por día, sin
+  // reemplazo. Sin `iconKey` → EventCard usa el emoji de `icon` (arte pendiente).
+  eventos: [
+    {
+      id: 'riesgoPais',
+      titulo: 'El riesgo país se dispara',
+      texto: 'Los bonos de Paicio se desploman. Los mercados dan por muerta la convertibilidad.',
+      icon: '📉',
+      efecto: { confianza: -8 },
+    },
+    {
+      id: 'cacerolazo',
+      titulo: 'Cacerolazo nacional',
+      texto: 'Miles salen a golpear ollas frente al Congreso. "¡Que se vayan todos!", gritan.',
+      icon: '🍳',
+      efecto: { confianza: -10 },
+    },
+    {
+      id: 'patacones',
+      titulo: 'Las provincias emiten su cuasi-moneda',
+      texto: 'Sin pesos para pagar sueldos, las provincias imprimen bonos propios. El peso pierde piso.',
+      icon: '🎫',
+      efecto: { confianza: -6 },
+    },
+    {
+      id: 'fugaCapitales',
+      titulo: 'Fuga de capitales al exterior',
+      texto: 'Los grandes depositantes giran su plata a Montevideo antes de que sea tarde.',
+      icon: '🛫',
+      efecto: { reservas: -12 },
+    },
+    {
+      id: 'rumorPeso',
+      titulo: 'Rumor: pesificarán los depósitos en dólares',
+      texto: 'Corre la voz de que los ahorros en dólares se devolverán en pesos devaluados. Pánico.',
+      icon: '💵',
+      efecto: { confianza: -11 },
+    },
+    {
+      id: 'exportaciones',
+      titulo: 'Repunte de exportaciones',
+      texto: 'La cosecha récord entra dólares frescos a las arcas y da un respiro de calma.',
+      icon: '🌾',
+      efecto: { reservas: 8, confianza: 3 },
+    },
+    {
+      id: 'feriado',
+      titulo: 'La banca pide un feriado bancario',
+      texto: 'Cerrar las ventanillas un día frena la sangría… pero confirma a todos que algo anda muy mal.',
+      icon: '🚪',
+      opciones: [
+        {
+          label: 'Declarar el feriado',
+          efecto: { reservas: 6, confianza: -8 },
+          replica: 'Las reservas dejan de sangrar por hoy, pero la fila del lunes será el doble.',
+        },
+        {
+          label: 'Mantener los bancos abiertos',
+          efecto: { confianza: 4, reservas: -6 },
+          replica: 'La gente ve las puertas abiertas y respira… pero igual se lleva lo suyo.',
+        },
+      ],
+    },
+    {
+      id: 'blindaje',
+      titulo: 'El FMI ofrece un blindaje',
+      texto: 'Un megapréstamo para reforzar las reservas, a cambio de un ajuste que la calle detesta.',
+      icon: '🌐',
+      opciones: [
+        {
+          label: 'Aceptar el blindaje',
+          efecto: { reservas: 16, confianza: -6 },
+          replica: 'Las arcas se llenan de dólares prestados. La calle ya afila las cacerolas.',
+        },
+        {
+          label: 'Rechazarlo',
+          efecto: { confianza: 3 },
+          replica: 'Sin ayuda de afuera y sin condiciones. Lo resolvemos solos… o no.',
+        },
+      ],
+    },
+  ],
+
   // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
   outcomes: {
     // Calmó la corrida sin congelar: confianza alta y sin corralito.

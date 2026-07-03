@@ -75,6 +75,31 @@ export function playRound(state, cfg, accion) {
   }
 }
 
+// ── Capa de juego (cartas de evento + telegrafiado) ────────────────────────
+
+// Aplica el efecto de una carta sobre expectativas/credibilidad (mismo clamp).
+// El fin por credibilidad agotada lo detecta isOver, no hace falta bandera.
+export function applyEvent(state, evento, efecto = {}) {
+  const expectativas = clamp(state.expectativas + (efecto.expectativas ?? 0))
+  const credibilidad = clamp(state.credibilidad + (efecto.credibilidad ?? 0))
+  return {
+    ...state,
+    expectativas,
+    credibilidad,
+    log: [...state.log, { evento: evento.titulo, efecto }],
+  }
+}
+
+// Efecto DIRECTO estimado de una acción para telegrafiarlo. No incluye la
+// deriva de inercia ni el rebote de fin de ronda. La URV baja expectativas en
+// función de la credibilidad ya construida (por eso rinde más si te creen).
+export function previewAction(state, cfg, accion) {
+  const credibilidad = accion.cred ?? 0
+  const expectativas =
+    accion.id === 'urv' ? -Math.round(state.credibilidad / 5 + 8) : accion.exp ?? 0
+  return { expectativas, credibilidad }
+}
+
 export function isOver(state, cfg) {
   return state.ronda > cfg.rondas || state.credibilidad <= 0
 }

@@ -2,9 +2,20 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.10.0'
+export const APP_VERSION = '0.11.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.11.0',
+    fecha: '3 jul 2026',
+    cambios: [
+      'La capa de juego de Bolivia llegó a las otras crisis: el corralito, la defensa de la paridad y la inercia ahora tienen cartas de evento, rachas y jugo de recompensa.',
+      'Cartas de "shock" al azar en cada crisis: cacerolazos y blindajes en el corralito, la Fed y el cobre en la paridad, remarcajes y rebotes en la inercia.',
+      'Telegrafiado: cada acción muestra su efecto estimado antes de confirmar, para que decidas con más información.',
+      'Puntaje corrido, combos por rachas de buenos turnos y monedas de celebración, ahora en las cuatro crisis por turnos.',
+      'Onboarding guiado también en el corralito, la paridad, la inercia y el Plan Real: coach-marks, chip de meta y primer turno sugerido.',
+    ],
+  },
   {
     version: '0.10.0',
     fecha: '1 jul 2026',

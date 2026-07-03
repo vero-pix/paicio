@@ -19,17 +19,25 @@ const TONE = {
   neutral: { bg: '#EDE3CE', color: '#8A7A5A' },
 }
 
-// Pills de un efecto: usa las custom del dato o las deriva de { inflacion, apoyo }.
-function pillsFor(efecto = {}, custom) {
+// Medidores por defecto (Bolivia): mantiene el comportamiento original si el
+// llamador no pasa `meters`. `goodWhen` define el color: subir un medidor "low"
+// (inflación, expectativas) es malo; subir uno "high" (apoyo, reservas) es bueno.
+const DEFAULT_METERS = [
+  { key: 'inflacion', label: 'Inflación', goodWhen: 'low' },
+  { key: 'apoyo', label: 'Apoyo', goodWhen: 'high' },
+]
+
+// Pills de un efecto: usa las custom del dato, o las deriva de los medidores del
+// episodio leyendo cada `key` del efecto.
+function pillsFor(efecto = {}, custom, meters = DEFAULT_METERS) {
   if (custom) return custom
   const out = []
-  if (efecto.inflacion) {
-    const n = efecto.inflacion
-    out.push({ label: `Inflación ${n > 0 ? '+' : '−'}${Math.abs(n)}`, tono: n > 0 ? 'bad' : 'good' })
-  }
-  if (efecto.apoyo) {
-    const n = efecto.apoyo
-    out.push({ label: `Apoyo ${n > 0 ? '+' : '−'}${Math.abs(n)}`, tono: n > 0 ? 'good' : 'bad' })
+  for (const m of meters) {
+    const n = efecto[m.key]
+    if (!n) continue
+    const sube = n > 0
+    const bueno = m.goodWhen === 'low' ? !sube : sube
+    out.push({ label: `${m.label} ${sube ? '+' : '−'}${Math.abs(n)}`, tono: bueno ? 'good' : 'bad' })
   }
   if (out.length === 0) out.push({ label: 'sin cambios', tono: 'neutral' })
   return out
@@ -91,7 +99,7 @@ function EventIcon({ evento, tint, px }) {
   )
 }
 
-export default function EventCard({ evento, mes, accent, onResolve, spotlightRef }) {
+export default function EventCard({ evento, mes, mesLabel = 'Mes', accent, onResolve, spotlightRef, meters }) {
   const esDecision = Array.isArray(evento.opciones) && evento.opciones.length > 0
   const tint = accent.soft ?? '#FBE7C6' // tono tenue de marca para chip/disco
 
@@ -106,7 +114,7 @@ export default function EventCard({ evento, mes, accent, onResolve, spotlightRef
               {evento.titulo}
             </p>
             <div className="mt-1">
-              <Pills items={pillsFor(evento.efecto)} />
+              <Pills items={pillsFor(evento.efecto, undefined, meters)} />
             </div>
           </div>
           <button
@@ -135,7 +143,7 @@ export default function EventCard({ evento, mes, accent, onResolve, spotlightRef
           className="inline-block rounded-full px-3 py-1 font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.12em]"
           style={{ background: tint, color: accent.edge }}
         >
-          Shock · Mes {mes}
+          Shock · {mesLabel} {mes}
         </span>
         <div className="mt-3 flex justify-center">
           <EventIcon evento={evento} tint={tint} px={120} />
@@ -164,7 +172,7 @@ export default function EventCard({ evento, mes, accent, onResolve, spotlightRef
                   {op.label}
                 </button>
                 <div className="mt-1.5 pl-1">
-                  <Pills items={pillsFor(op.efecto, op.pills)} />
+                  <Pills items={pillsFor(op.efecto, op.pills, meters)} />
                 </div>
               </div>
             )

@@ -84,6 +84,33 @@ export function playRound(state, cfg, accion) {
   }
 }
 
+// ── Capa de juego (cartas de evento + telegrafiado) ────────────────────────
+
+// Aplica el efecto de una carta sobre reservas/empleo (mismo clamp) y recalcula
+// el colapso por si el shock agota las reservas.
+export function applyEvent(state, evento, efecto = {}) {
+  const reservas = clamp(state.reservas + (efecto.reservas ?? 0))
+  const empleo = clamp(state.empleo + (efecto.empleo ?? 0))
+  return {
+    ...state,
+    reservas,
+    empleo,
+    colapso: state.colapso || reservas <= 0,
+    log: [...state.log, { evento: evento.titulo, efecto }],
+  }
+}
+
+// Efecto DIRECTO estimado de una acción para telegrafiarlo. No incluye el
+// drenaje especulativo emergente (que crece con los días): muestra el costo
+// inmediato de la defensa. 'devaluar' no se telegrafía (cierra la crisis).
+export function previewAction(state, cfg, accion) {
+  if (accion.id === 'devaluar') return {}
+  return {
+    reservas: (accion.reservas ?? 0) - (accion.reservasCosto ?? 0),
+    empleo: accion.empleo ?? 0,
+  }
+}
+
 export function isOver(state, cfg) {
   return state.devaluado || state.colapso || state.dia > cfg.dias
 }

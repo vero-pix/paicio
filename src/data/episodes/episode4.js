@@ -251,6 +251,92 @@ export default {
     ],
   },
 
+  // ── CARTAS DE EVENTO ("shocks" tipo Reigns) ────────────────────────────
+  // Capa de game loop: al inicio de algunas rondas cae una carta que golpea los
+  // medidores (expectativas / credibilidad) por el mismo clamp. ~50% por ronda,
+  // sin reemplazo. Subir expectativas es MALO; subir credibilidad es bueno.
+  // Sin `iconKey` → EventCard usa el emoji de `icon` (arte pendiente).
+  eventos: [
+    {
+      id: 'filtracion',
+      titulo: 'Se filtra que tu plan copia al anterior',
+      texto: 'La prensa publica que el "plan nuevo" es una fotocopia del que ya fracasó. Nadie te cree.',
+      icon: '📰',
+      efecto: { credibilidad: -8 },
+    },
+    {
+      id: 'sindicatos',
+      titulo: 'Los sindicatos exigen indexar salarios',
+      texto: 'Piden atar los sueldos a la inflación pasada. Si cedes, la inercia se perpetúa sola.',
+      icon: '✊',
+      efecto: { expectativas: 8 },
+    },
+    {
+      id: 'dolarParalelo',
+      titulo: 'Salta el dólar paralelo',
+      texto: 'En la calle el dólar vuela y todos ajustan sus precios al blue. La inflación se autoalimenta.',
+      icon: '💵',
+      efecto: { expectativas: 7 },
+    },
+    {
+      id: 'remarcaje',
+      titulo: 'Los empresarios remarcan preventivamente',
+      texto: 'Suben precios "por las dudas", antes de que suba el resto. La profecía empieza a cumplirse.',
+      icon: '🏷️',
+      efecto: { expectativas: 8, credibilidad: -3 },
+    },
+    {
+      id: 'senalFiscal',
+      titulo: 'La prensa aplaude una señal fiscal',
+      texto: 'Un recorte creíble sale en portada. Por una vez, alguien empieza a tomarte en serio.',
+      icon: '📈',
+      efecto: { credibilidad: 7 },
+    },
+    {
+      id: 'reboteCongelamiento',
+      titulo: 'Rebota un congelamiento anterior',
+      texto: 'Los precios que estaban pisados se sueltan de golpe y saltan más alto que antes.',
+      icon: '❄️',
+      efecto: { expectativas: 10 },
+    },
+    {
+      id: 'fmiGesto',
+      titulo: 'El FMI pide un gesto de austeridad',
+      texto: 'Un ajuste visible ahora te daría credibilidad de verdad, pero te cuesta capital político.',
+      icon: '🌐',
+      opciones: [
+        {
+          label: 'Hacer el gesto',
+          efecto: { credibilidad: 10, expectativas: -2 },
+          replica: 'Duele políticamente, pero por primera vez el mercado te mira distinto.',
+        },
+        {
+          label: 'Postergarlo',
+          efecto: { credibilidad: -4 },
+          replica: 'Otra promesa para después. Ya nadie cuenta los "después".',
+        },
+      ],
+    },
+    {
+      id: 'respaldoCongreso',
+      titulo: 'El Congreso ofrece respaldo… con condiciones',
+      texto: 'Te dan los votos, pero exigen no tocar el gasto electoral. Respaldo hoy, inercia mañana.',
+      icon: '🏛️',
+      opciones: [
+        {
+          label: 'Aceptar el respaldo',
+          efecto: { credibilidad: 8, expectativas: 3 },
+          replica: 'Tienes los votos y una foto de unidad, aunque el gasto siga corriendo.',
+        },
+        {
+          label: 'Gobernar sin ellos',
+          efecto: { credibilidad: -3 },
+          replica: 'Sin el Congreso, cada anuncio pesa la mitad. Pero el plan es tuyo, entero.',
+        },
+      ],
+    },
+  ],
+
   // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
   outcomes: {
     // Rompió la inercia con credibilidad.
