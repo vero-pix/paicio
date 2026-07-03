@@ -146,7 +146,7 @@ function LifeBar({ icon, iconColor, label, value, fill, valueColor, tint }) {
   )
 }
 
-export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
+export default function HyperInflation({ episode, dailySeed, onComplete, onConceptSeen }) {
   // El mazo de eventos vive en episode.eventos (dato del episodio); lo sumamos a
   // la config de la mecánica para que la capa de game loop lo lea desde cfg.
   const cfg = useMemo(
@@ -159,7 +159,8 @@ export default function HyperInflation({ episode, onComplete, onConceptSeen }) {
     [episode],
   )
 
-  const [state, setState] = useState(() => initHyperinflation(cfg))
+  // dailySeed (Reto Diario) hace la partida determinista; sin él, azar normal.
+  const [state, setState] = useState(() => initHyperinflation(cfg, dailySeed ?? undefined))
   const [report, setReport] = useState(null)
   const [picked, setPicked] = useState(null)
   const [combo, setCombo] = useState(0) // momentum a mostrar como badge (0 = oculto)

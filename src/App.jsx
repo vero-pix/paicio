@@ -15,19 +15,26 @@ import NegotiationMatrix from './components/NegotiationMatrix.jsx'
 import PolicyChoice from './components/PolicyChoice.jsx'
 import Outcome from './components/Outcome.jsx'
 import MechanicHost from './components/mechanics/MechanicHost.jsx'
+import VersionBadge from './components/VersionBadge.jsx'
+import { dailySeed } from './utils/daily.js'
 
 export default function App() {
   const {
     state,
     startEpisode,
+    startDaily,
     startGame,
     setPhase,
     applyNegotiation,
     markConceptSeen,
     choosePolicy,
     restartEpisode,
+    retryEpisode,
     backToSelect,
   } = useGameState()
+
+  // Inicia el Reto Diario: episodio y semilla del día (desde DailyPanel).
+  const handleStartDaily = (ep, iso) => startDaily(ep, iso, dailySeed(iso))
 
   // Episodio activo (null en la pantalla de selección).
   const episode = state.episodeId ? episodesById[state.episodeId] : null
@@ -127,8 +134,13 @@ export default function App() {
         {showIntro ? (
           <Intro onEnter={dismissIntro} />
         ) : (
-          <EpisodeSelect onSelect={startEpisode} onShowIntro={() => setShowIntro(true)} />
+          <EpisodeSelect
+            onSelect={startEpisode}
+            onShowIntro={() => setShowIntro(true)}
+            onStartDaily={handleStartDaily}
+          />
         )}
+        <VersionBadge />
       </div>
     )
   }
@@ -177,6 +189,7 @@ export default function App() {
         <MechanicHost
           episode={episode}
           allies={allies}
+          dailySeed={state.daily?.seed}
           onComplete={(outcomeId, meta) => choosePolicy(outcomeId, [], meta)}
           onConceptSeen={markConceptSeen}
         />
@@ -308,8 +321,11 @@ export default function App() {
           policyId={state.chosenPolicy}
           mechanicResult={state.chosenMeta}
           allies={allies}
+          daily={state.daily}
           onConceptSeen={markConceptSeen}
           onRestart={() => restartEpisode(episode)}
+          onRetry={() => retryEpisode(episode)}
+          onExit={backToSelect}
           onNextEpisode={(ep) => startEpisode(ep)}
         />
       )}
@@ -319,6 +335,8 @@ export default function App() {
           PAICIO · Episodio {episode.numero} · {episode.titulo}
         </p>
       </footer>
+
+      <VersionBadge />
     </div>
   )
 }

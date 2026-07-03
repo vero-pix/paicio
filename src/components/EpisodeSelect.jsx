@@ -1,7 +1,8 @@
+import { useState } from 'react'
 import { episodes } from '../data/episodes/index.js'
 import { accentFor } from '../theme/accents.js'
-import VersionBadge from './VersionBadge.jsx'
 import EpisodeMotif from './EpisodeMotif.jsx'
+import DailyPanel from './DailyPanel.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // EpisodeSelect — "Mapa de crisis" (rediseño LatAm).
@@ -25,8 +26,9 @@ const NODES = [
 const PATH =
   'M79 527 Q200 475 259 415 Q150 355 108 291 Q205 225 266 167 Q225 105 169 56'
 
-export default function EpisodeSelect({ onSelect, onShowIntro }) {
+export default function EpisodeSelect({ onSelect, onShowIntro, onStartDaily }) {
   const firstPlayable = episodes.find((e) => !e.bloqueado)
+  const [showDaily, setShowDaily] = useState(false)
 
   return (
     <div
@@ -176,11 +178,21 @@ export default function EpisodeSelect({ onSelect, onShowIntro }) {
           <button
             type="button"
             onClick={onShowIntro}
+            aria-label="¿Qué es PAICIO?"
             className="candy candy-soft px-4 py-3.5 text-[0.9rem]"
           >
             ¿Qué es?
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => setShowDaily(true)}
+          aria-label="Reto Diario"
+          title="Reto Diario"
+          className="candy candy-soft px-4 py-3.5 text-[0.9rem]"
+        >
+          🗓️ Reto
+        </button>
         <button
           type="button"
           onClick={() => firstPlayable && onSelect(firstPlayable)}
@@ -191,7 +203,12 @@ export default function EpisodeSelect({ onSelect, onShowIntro }) {
         </button>
       </div>
 
-      <VersionBadge />
+      {showDaily && (
+        <DailyPanel
+          onPlay={(ep, iso) => onStartDaily?.(ep, iso)}
+          onClose={() => setShowDaily(false)}
+        />
+      )}
     </div>
   )
 }

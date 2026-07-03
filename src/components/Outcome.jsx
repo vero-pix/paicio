@@ -3,6 +3,8 @@ import { episodes } from '../data/episodes/index.js'
 import { accentFor } from '../theme/accents.js'
 import { sting } from '../lib/sound.js'
 import { useScreenFx } from '../lib/animations.js'
+import { readBest, recordBest } from '../utils/gameLayer.js'
+import { writeDaily, dailyShareText, starBar, fechaCorta } from '../utils/daily.js'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Outcome — "Desenlace / Veredicto" (rediseño LatAm).
@@ -91,8 +93,11 @@ export default function Outcome({
   policyId,
   mechanicResult,
   allies,
+  daily,
   onConceptSeen,
   onRestart,
+  onRetry,
+  onExit,
   onNextEpisode,
 }) {
   const acc = accentFor(episode.id)
@@ -126,8 +131,9 @@ export default function Outcome({
   const stars = resultKind === 'perfect' ? 3 : resultKind === 'partial' ? 2 : 1
   const partida = partidaFor(resultKind)
 
-  // Jugo de la pantalla final (prototipo Ep1): puntaje + "superaste al X%".
-  const juicy = episode.id === 'ep1'
+  // Jugo de la pantalla final: puntaje + "superaste al X%". Ahora en toda
+  // mecánica que trae puntaje corrido (Ep1–Ep4); Ep5 (puzzle) no lo trae.
+  const juicy = mechanicResult?.score != null
   // Puntaje: el corrido de la partida si llegó (game feel); si no, uno derivado
   // del desempeño global. El percentil es una CURVA LOCAL estimada (no backend);
   // no es un dato real, es una referencia por desempeño.
@@ -138,15 +144,26 @@ export default function Outcome({
   const nearMiss = nextStarGap != null && nextStarGap > 0 && nextStarGap <= 6 ? stars + 1 : null
   const [shared, setShared] = useState(false)
 
+  const isDaily = !!daily
+  const won = resultKind !== 'wrong'
+  // "Mejor intento" (fracaso barato): récord previo antes de registrar el actual.
+  // En modo diario no se compara (un intento) para no confundir.
+  const [prevBest] = useState(() => (juicy && !isDaily ? readBest(episode.id) : 0))
+  const nuevoRecord = juicy && !isDaily && score > prevBest && prevBest > 0
+
   function compartir() {
     const flag = FLAGS[episode.id] ?? ''
-    const texto = [
-      `PAICIO · ${episode.paisReferencia.split(',')[0]} ${episode.año} ${flag}`,
-      `${'⭐'.repeat(stars)}  ·  ${score} pts`,
-      v.title,
-      `Superé al ${percentil}% de los ministros`,
-      'https://paicio.vercel.app',
-    ].join('\n')
+    // El reto diario comparte SIN spoilers (ni crisis ni desenlace): fecha,
+    // estrellas y puntaje, estilo Wordle.
+    const texto = isDaily
+      ? dailyShareText(daily.iso, { stars, score })
+      : [
+          `PAICIO · ${episode.paisReferencia.split(',')[0]} ${episode.año} ${flag}`,
+          `${'⭐'.repeat(stars)}  ·  ${score} pts`,
+          v.title,
+          `Superé al ${percentil}% de los ministros`,
+          'https://paicio.vercel.app',
+        ].join('\n')
     if (navigator.share) {
       navigator.share({ text: texto }).catch(() => {})
     } else {
@@ -184,6 +201,15 @@ export default function Outcome({
     if (revealed && policy?.concept) onConceptSeen?.(policy.concept)
   }, [revealed, policy, onConceptSeen])
 
+  // Al revelarse: registra el mejor intento (modo normal) y sella el resultado
+  // del Reto Diario (para el candado "ya jugaste hoy").
+  useEffect(() => {
+    if (!revealed) return
+    if (juicy && !isDaily) recordBest(episode.id, score)
+    if (isDaily) writeDaily(daily.iso, { stars, score, epId: episode.id })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revealed])
+
   return (
     <div className={`on-cream relative ${fx === 'shake' ? 'animate-shake' : ''}`}>
       <div
@@ -209,6 +235,11 @@ export default function Outcome({
         ) : (
           <div className="animate-fade-up flex flex-1 flex-col">
             {/* Kicker + estrellas + título */}
+            {isDaily && (
+              <p className="mb-1 text-center font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.16em] text-ink-mute">
+                🗓️ Reto Diario · {fechaCorta(daily.iso)}
+              </p>
+            )}
             <p
               className="text-center font-nunito text-[0.68rem] font-extrabold uppercase tracking-[0.15em]"
               style={{ color: v.color }}
@@ -333,8 +364,20 @@ export default function Outcome({
             {/* Empuja la barra inferior hacia abajo */}
             <div className="flex-1" />
 
-            {/* Compartir resultado (prototipo Ep1) */}
-            {juicy && (
+            {/* Mejor intento / récord (fracaso barato, solo modo normal). */}
+            {juicy && !isDaily && (nuevoRecord || prevBest > 0) && (
+              <p
+                className="mx-auto mt-3 rounded-full px-3 py-1 text-center font-nunito text-[0.74rem] font-bold"
+                style={{ background: '#F7E0B0', color: '#9A6B12' }}
+              >
+                {nuevoRecord
+                  ? '🏆 ¡Nuevo récord personal!'
+                  : `Tu mejor intento: ${Math.max(prevBest, score).toLocaleString('es-CL')} pts`}
+              </p>
+            )}
+
+            {/* Compartir resultado (mecánicas con puntaje o Reto Diario). */}
+            {(juicy || isDaily) && (
               <button
                 type="button"
                 onClick={compartir}
@@ -344,46 +387,71 @@ export default function Outcome({
               </button>
             )}
 
-            {/* Barra inferior */}
-            <div className={`${juicy ? 'mt-3' : 'mt-6'} flex items-center gap-3`}>
-              {juicy ? (
+            {/* Barra inferior — depende del modo/resultado:
+                · Reto Diario: un intento, solo volver al mapa.
+                · Derrota (modo normal): "Reintentar" primario (fracaso barato).
+                · Victoria: "un intento más" + siguiente crisis / completaste. */}
+            <div className={`${juicy || isDaily ? 'mt-3' : 'mt-6'} flex items-center gap-3`}>
+              {isDaily ? (
                 <button
                   type="button"
-                  onClick={onRestart}
-                  title="Intentar de nuevo"
-                  className="candy candy-soft flex-1 px-4 py-3.5 text-[0.94rem]"
-                >
-                  ↻ Un intento más
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={onRestart}
-                  title="Intentar de nuevo"
-                  aria-label="Intentar de nuevo"
-                  className="candy candy-soft flex h-[52px] w-[52px] shrink-0 items-center justify-center text-[1.2rem]"
-                >
-                  ↻
-                </button>
-              )}
-              {nextEpisode ? (
-                <button
-                  type="button"
-                  onClick={() => onNextEpisode?.(nextEpisode)}
-                  className="candy flex-1 px-5 py-3.5 text-[1rem]"
-                  style={{ '--face': '#35B98A', '--edge': '#1F9A6E' }}
-                >
-                  Siguiente crisis →
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={onRestart}
+                  onClick={onExit}
                   className="candy flex-1 px-5 py-3.5 text-[1rem]"
                   style={{ '--face': acc.face, '--edge': acc.edge }}
                 >
-                  Completaste PAICIO · Jugar de nuevo
+                  Volver al mapa →
                 </button>
+              ) : !won ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={onExit}
+                    title="Volver al mapa"
+                    aria-label="Volver al mapa"
+                    className="candy candy-soft flex h-[52px] w-[52px] shrink-0 items-center justify-center text-[1.2rem]"
+                  >
+                    ⌂
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onRetry}
+                    className="candy flex-1 px-5 py-3.5 text-[1rem]"
+                    style={{ '--face': acc.face, '--edge': acc.edge }}
+                  >
+                    ↻ Reintentar — ¡un intento más!
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={onRetry}
+                    title="Intentar de nuevo"
+                    aria-label="Intentar de nuevo"
+                    className="candy candy-soft flex h-[52px] w-[52px] shrink-0 items-center justify-center text-[1.2rem]"
+                  >
+                    ↻
+                  </button>
+                  {nextEpisode ? (
+                    <button
+                      type="button"
+                      onClick={() => onNextEpisode?.(nextEpisode)}
+                      className="candy flex-1 px-5 py-3.5 text-[1rem]"
+                      style={{ '--face': '#35B98A', '--edge': '#1F9A6E' }}
+                    >
+                      Siguiente crisis →
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={onRestart}
+                      className="candy flex-1 px-5 py-3.5 text-[1rem]"
+                      style={{ '--face': acc.face, '--edge': acc.edge }}
+                    >
+                      Completaste PAICIO · Jugar de nuevo
+                    </button>
+                  )}
+                </>
               )}
             </div>
 

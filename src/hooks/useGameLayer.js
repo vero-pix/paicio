@@ -20,9 +20,10 @@ import {
 //
 //   meters:  [{ key, goodWhen, danger }]  descriptor del episodio
 //   trigger: el trigger de useScreenFx del componente (flash/shake)
+//   seed:    semilla fija opcional (Reto Diario). Si falta, azar por partida.
 // ─────────────────────────────────────────────────────────────────────────
-export function useGameLayer({ eventos, totalTurns, meters, trigger }) {
-  const [seed] = useState(randomSeed)
+export function useGameLayer({ eventos, totalTurns, meters, trigger, seed: seedProp }) {
+  const [seed] = useState(() => (seedProp != null ? seedProp : randomSeed()))
   const schedule = useMemo(
     () => buildEventSchedule(eventos, totalTurns, mulberry32(seed)),
     [eventos, totalTurns, seed],
