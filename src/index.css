@@ -71,8 +71,12 @@
   --animate-bob: bob 3.4s ease-in-out infinite;
   --animate-ring: ring 1.8s ease-out infinite;
   --animate-pop: pop 0.5s ease-out;
+  --animate-pop-big: pop-big 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
   --animate-rise: rise 0.9s ease-out forwards;
   --animate-shake2: shake2 0.3s ease-in-out;
+  --animate-coin-fly: coin-fly 1s ease-out forwards;
+  --animate-coin-fall: coin-fall 1.5s ease-in forwards;
+  --animate-flash-gold: flash-gold 0.8s ease-out forwards;
 }
 
 @keyframes blink {
@@ -364,6 +368,63 @@ body {
   }
   75% {
     transform: translateX(4px);
+  }
+}
+
+/* Pop más marcado para el número del medidor tras un buen movimiento. */
+@keyframes pop-big {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Moneda que estalla hacia afuera (--dx/--dy/--rot por partícula). */
+@keyframes coin-fly {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3)) scale(1);
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* Lluvia de monedas (celebración): cae desde arriba girando. */
+@keyframes coin-fall {
+  0% {
+    transform: translateY(-14vh) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(114vh) rotate(var(--rot));
+    opacity: 0.15;
+  }
+}
+
+/* Destello dorado de la celebración (reforma exitosa). */
+@keyframes flash-gold {
+  0% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.62;
+  }
+  100% {
+    opacity: 0;
   }
 }
 

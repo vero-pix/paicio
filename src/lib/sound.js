@@ -142,6 +142,22 @@ const SFX = {
     tone(140, { type: 'sine', dur: 0.28, gain: 0.28, glideTo: 60 })
     noiseBurst({ dur: 0.22, gain: 0.18, type: 'lowpass', freq: 1200, q: 0.5 })
   },
+  // Moneda / recompensa: dos campanitas brillantes ascendentes. Sabor a premio.
+  coin() {
+    tone(1318, { type: 'triangle', dur: 0.12, gain: 0.14 })
+    setTimeout(() => tone(1760, { type: 'triangle', dur: 0.18, gain: 0.12 }), 70)
+    setTimeout(() => tone(2637, { type: 'sine', dur: 0.22, gain: 0.06 }), 120)
+  },
+  // Fanfarria corta: arpegio mayor triunfal + campana. Para la reforma exitosa.
+  fanfare() {
+    ;[523, 659, 784, 1046, 1319].forEach((f, i) =>
+      setTimeout(() => tone(f, { type: 'triangle', dur: 0.3, gain: 0.16 }), i * 90),
+    )
+    setTimeout(() => {
+      tone(1568, { type: 'sine', dur: 0.7, gain: 0.12 })
+      tone(2093, { type: 'sine', dur: 0.7, gain: 0.07 })
+    }, 450)
+  },
 }
 
 export function sfx(name) {
