@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<defs>
+  <radialGradient id="co-disc" cx="42%" cy="34%" r="72%">
+    <stop offset="0%" stop-color="#6FC08C"></stop><stop offset="100%" stop-color="#3E9B63"></stop>
+  </radialGradient>
+  <linearGradient id="co-skin" x1="30%" y1="12%" x2="72%" y2="96%">
+    <stop offset="0%" stop-color="#e6b184"></stop><stop offset="52%" stop-color="#d2966a"></stop><stop offset="100%" stop-color="#b0784f"></stop>
+  </linearGradient>
+  <linearGradient id="co-cloth" x1="30%" y1="0%" x2="70%" y2="100%">
+    <stop offset="0%" stop-color="#c9b892"></stop><stop offset="100%" stop-color="#a89a76"></stop>
+  </linearGradient>
+  <radialGradient id="co-cheek" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#e8907a" stop-opacity=".38"></stop><stop offset="100%" stop-color="#e8907a" stop-opacity="0"></stop>
+  </radialGradient>
+</defs>
+<rect width="512" height="512" fill="url(#co-disc)"></rect>
+<circle cx="150" cy="120" r="120" fill="#ffffff" opacity=".08"></circle>
+
+<path d="M70 512 C74 424 156 388 256 388 C356 388 438 424 442 512 Z" fill="url(#co-cloth)"></path>
+<path d="M214 392 L256 434 L298 392 L298 402 L256 448 L214 402 Z" fill="#dcae5e"></path><path d="M236 396 L256 470 L276 396 L266 388 L256 440 L246 388 Z" fill="#c9b892"></path><rect x="248" y="404" width="16" height="56" rx="4" fill="#b5a06f"></rect>
+
+<path d="M222 352 L222 402 Q256 420 290 402 L290 352 Z" fill="#b0784f"></path>
+<ellipse cx="256" cy="356" rx="38" ry="14" fill="#000" opacity=".12"></ellipse>
+<path d="M156 258 C150 182 200 134 256 134 C312 134 362 182 356 258 C352 206 326 186 300 190 C290 158 222 158 212 190 C186 186 160 206 156 258 Z" fill="#3d2d20"></path>
+
+<path d="M256 118 C328 118 366 176 366 250 C366 320 322 372 256 372 C190 372 146 320 146 250 C146 176 184 118 256 118 Z" fill="url(#co-skin)"></path>
+
+<ellipse cx="150" cy="262" rx="17" ry="24" fill="#d2966a"></ellipse><ellipse cx="362" cy="262" rx="17" ry="24" fill="#d2966a"></ellipse>
+
+<path d="M300 150 C348 178 356 300 300 356 C348 320 350 190 300 150 Z" fill="#b0784f" opacity=".35"></path>
+
+<circle cx="200" cy="300" r="30" fill="url(#co-cheek)"></circle><circle cx="312" cy="300" r="30" fill="url(#co-cheek)"></circle>
+
+<path d="M168 190 C150 240 152 300 182 344" stroke="#ffe6ca" stroke-width="5" fill="none" opacity=".5" stroke-linecap="round"></path>
+
+
+<path d="M256 262 C250 286 244 300 240 308 Q256 320 272 308" stroke="#b0784f" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"></path>
+<path d="M238 217 Q216 208 194 218" stroke="#2e2118" stroke-width="6.5" fill="none" stroke-linecap="round"></path><path d="M274 217 Q296 208 318 218" stroke="#2e2118" stroke-width="6.5" fill="none" stroke-linecap="round"></path>
+
+    <ellipse cx="216" cy="248" rx="19" ry="10" fill="#fbf6ee"></ellipse>
+    <circle cx="216" cy="248" r="9.5" fill="#5b3d24"></circle>
+    <circle cx="216" cy="248" r="4.5" fill="#1e130a"></circle>
+    <circle cx="219" cy="245" r="2" fill="#fff" opacity=".9"></circle>
+    <path d="M196 240.9 Q216 235 236 239.1" stroke="#b0784f" stroke-width="3.5" fill="none" stroke-linecap="round"></path>
+    <ellipse cx="296" cy="248" rx="19" ry="10" fill="#fbf6ee"></ellipse>
+    <circle cx="296" cy="248" r="9.5" fill="#5b3d24"></circle>
+    <circle cx="296" cy="248" r="4.5" fill="#1e130a"></circle>
+    <circle cx="299" cy="245" r="2" fill="#fff" opacity=".9"></circle>
+    <path d="M276 240.9 Q296 235 316 239.1" stroke="#b0784f" stroke-width="3.5" fill="none" stroke-linecap="round"></path>
+<path d="M232 334 Q256 348 280 334" stroke="#a85b4a" stroke-width="4.5" fill="none" stroke-linecap="round"></path>
+<path d="M170 210 C176 176 208 150 256 148 C304 150 336 176 342 210 C330 182 300 168 256 168 C212 168 182 182 170 210 Z" fill="#2e2118"></path><path d="M196 158 L188 138 M232 146 L230 126 M282 146 L288 128 M320 160 L332 144" stroke="#3d2d20" stroke-width="5" stroke-linecap="round"></path><path d="M226 340 C240 350 272 350 286 340 C276 356 236 356 226 340 Z" fill="#3d2d20"></path><path d="M256 330 L256 342" stroke="#2e2118" stroke-width="3"></path>
+</svg>
