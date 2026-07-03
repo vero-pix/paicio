@@ -260,6 +260,91 @@ export default {
     ],
   },
 
+  // ── CARTAS DE EVENTO ("shocks" tipo Reigns) ────────────────────────────
+  // Capa de game loop: al inicio de algunas rondas cae una carta que golpea los
+  // medidores (reservas / empleo) por el mismo clamp. ~50% por ronda, sin
+  // reemplazo. Sin `iconKey` → EventCard usa el emoji de `icon` (arte pendiente).
+  eventos: [
+    {
+      id: 'fed',
+      titulo: 'La Fed sube las tasas',
+      texto: 'El crédito mundial se encarece de golpe. Sostener la paridad cuesta el doble de reservas.',
+      icon: '📈',
+      efecto: { reservas: -8 },
+    },
+    {
+      id: 'cobre',
+      titulo: 'Se desploma el precio del cobre',
+      texto: 'El principal producto de Paicio pierde un tercio de su valor. Las minas mandan a casa a miles.',
+      icon: '⛏️',
+      efecto: { empleo: -8 },
+    },
+    {
+      id: 'quiebraBanco',
+      titulo: 'Quiebra un banco grande',
+      texto: 'Uno de los bancos endeudados en dólares no puede pagar. El sistema tiembla.',
+      icon: '🏚️',
+      efecto: { reservas: -6, empleo: -5 },
+    },
+    {
+      id: 'fugaDolares',
+      titulo: 'Fuga de dólares',
+      texto: 'Los que saben huelen la devaluación y sacan sus dólares del país antes que nadie.',
+      icon: '🛫',
+      efecto: { reservas: -10 },
+    },
+    {
+      id: 'rumorDeval',
+      titulo: 'Rumor de devaluación inminente',
+      texto: 'La prensa da la paridad por perdida. Todos corren a comprar dólares mientras estén baratos.',
+      icon: '🗣️',
+      efecto: { reservas: -8 },
+    },
+    {
+      id: 'exportaPunta',
+      titulo: 'Salto exportador puntual',
+      texto: 'Un embarque grande de fruta y harina entra dólares frescos a las reservas.',
+      icon: '📦',
+      efecto: { reservas: 7 },
+    },
+    {
+      id: 'paroCobre',
+      titulo: 'Los mineros del cobre amenazan con paro',
+      texto: 'Sin red de protección, los trabajadores exigen un gesto o paran la exportación que te queda.',
+      icon: '✊',
+      opciones: [
+        {
+          label: 'Ceder: subsidio de emergencia',
+          efecto: { empleo: 8, reservas: -6 },
+          replica: 'Las minas siguen andando y la calle se calma, pero las arcas quedan más flacas.',
+        },
+        {
+          label: 'Aguantar la línea dura',
+          efecto: { empleo: -8 },
+          replica: 'Ni un peso extra. El paro se declara y la producción se detiene.',
+        },
+      ],
+    },
+    {
+      id: 'rescateFMI',
+      titulo: 'El FMI ofrece un préstamo puente',
+      texto: 'Dólares para reforzar reservas, a cambio de un ajuste que hunde más el empleo.',
+      icon: '🌐',
+      opciones: [
+        {
+          label: 'Tomar el préstamo',
+          efecto: { reservas: 16, empleo: -6 },
+          replica: 'Munición fresca para defender la paridad… pero el ajuste pega donde ya duele.',
+        },
+        {
+          label: 'Rechazar las condiciones',
+          efecto: { empleo: 3 },
+          replica: 'Sin la letra chica del Fondo. Defiendes con lo que tienes.',
+        },
+      ],
+    },
+  ],
+
   // Desenlaces por nivel (formato común a las mecánicas no-PD; ver Outcome.jsx).
   // La curva representa el ÍNDICE DE DESEMPLEO (más bajo = mejor).
   outcomes: {

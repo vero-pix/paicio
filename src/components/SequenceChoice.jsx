@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { sfx } from '../lib/sound.js'
 import { accentFor } from '../theme/accents.js'
 import ActionIcon from './icons/ActionIcon.jsx'
 import { MechanicShell, TopBar, ACTION_PALETTE, GOOD_ACCENT } from './mechanics/candyKit.jsx'
+import Coins from './mechanics/Coins.jsx'
+import CoachMarks from './CoachMarks.jsx'
+import { useTutorial } from '../hooks/useTutorial.js'
 
 // ─────────────────────────────────────────────────────────────────────────
 // SequenceChoice — Fase 3 exclusiva del Episodio 5 (Plan Real).
@@ -25,6 +28,16 @@ export default function SequenceChoice({ episode, onComplete }) {
     return shuffled
   })
   const [confirming, setConfirming] = useState(false)
+  const [rainKey, setRainKey] = useState(0)
+
+  // Onboarding: un solo coach que resalta la lista ordenable (una vez).
+  const listRef = useRef(null)
+  const tut = useTutorial(episode.id, {
+    refByTarget: { list: listRef },
+    over: false,
+    pendingEvent: null,
+    firstTurnActive: false,
+  })
 
   function move(idx, dir) {
     const next = [...ordered]
@@ -46,8 +59,16 @@ export default function SequenceChoice({ episode, onComplete }) {
   }
 
   function handleConfirm() {
-    sfx('advance')
-    onComplete(getOutcome().id)
+    const outcome = getOutcome()
+    // Jugo de recompensa proporcional al acierto: lluvia + fanfarria si es el
+    // final feliz, avance simple si no.
+    if (outcome.id === 'perfect') {
+      sfx('fanfare')
+      setRainKey((k) => k + 1)
+    } else {
+      sfx('advance')
+    }
+    onComplete(outcome.id)
   }
 
   return (
@@ -72,7 +93,7 @@ export default function SequenceChoice({ episode, onComplete }) {
       </div>
 
       {/* Lista ordenable */}
-      <div className="mt-4 space-y-2.5">
+      <div ref={listRef} className="mt-4 space-y-2.5">
         {ordered.map((action, idx) => {
           const pal = ACTION_PALETTE[idx % ACTION_PALETTE.length]
           return (
@@ -137,6 +158,17 @@ export default function SequenceChoice({ episode, onComplete }) {
           ordered={ordered}
           onCancel={() => setConfirming(false)}
           onConfirm={handleConfirm}
+        />
+      )}
+
+      <Coins runKey={rainKey} mode="rain" count={30} />
+
+      {tut.showMainCoach && (
+        <CoachMarks
+          steps={tut.mainSteps}
+          accent={acc}
+          onDone={tut.onMainDone}
+          onSkip={tut.onSkip}
         />
       )}
     </MechanicShell>

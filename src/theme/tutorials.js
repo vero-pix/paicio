@@ -40,6 +40,69 @@ export const EPISODE_TUTORIALS = {
       caption: '¡Imprevisto! Los eventos caen al azar. Reacciona y sigue tu plan.',
     },
   },
+
+  ep2: {
+    goalChip: 'Corta el pánico antes del día 5',
+    firstTurnHint: { action: 'garantia', label: 'Empieza por aquí' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Dos frentes: Reservas y Confianza. Si cualquiera llega a cero, los bancos caen.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada día eliges UNA medida. Tócala para ver su efecto antes de confirmar.',
+      },
+    ],
+    event: {
+      caption: '¡Imprevisto! Rumores y shocks caen al azar. Reacciona y sigue tu plan.',
+    },
+  },
+
+  ep3: {
+    goalChip: 'Suelta la paridad a tiempo',
+    firstTurnHint: { action: 'intervenir', label: 'Defiende primero' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Defender quema Reservas o Empleo. Si cualquiera se agota, la caída es caótica.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada ronda eliges cómo responder. La salida real es devaluar… a tiempo.',
+      },
+    ],
+    event: {
+      caption: '¡Shock del mercado! Los ataques caen al azar. Aguanta y calcula.',
+    },
+  },
+
+  ep4: {
+    goalChip: 'Baja las expectativas con credibilidad',
+    firstTurnHint: { action: 'ajusteFiscal', label: 'Construye credibilidad' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Baja las Expectativas para ganar; la Credibilidad es tu munición. Sin ella, nada dura.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada mes eliges una jugada. Congelar alivia hoy… y rebota mañana.',
+      },
+    ],
+    event: {
+      caption: '¡Ruido en la calle! Rumores y remarcajes caen al azar. No pierdas la calma.',
+    },
+  },
+
+  ep5: {
+    steps: [
+      {
+        target: 'list',
+        caption: 'Ordena los 4 pasos con las flechas ↑ ↓. Solo un orden gana: el timing lo es todo.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null

@@ -176,15 +176,48 @@ export function AdvisorBubble({ portrait, name, nameColor, subtitle, text }) {
 }
 
 // Botón de acción táctil. `id` alimenta el ActionIcon; `face`/`edge` el color.
-export function CandyAction({ id, face, edge, name, hint, meta, disabled, picked, onClick }) {
+// Opcionales de la capa de juego:
+//  - pills: etiquetas de efecto telegrafiado (["Reservas −6", …]).
+//  - highlight + hintLabel: pulso "empieza por aquí" del primer turno guiado.
+export function CandyAction({
+  id,
+  face,
+  edge,
+  name,
+  hint,
+  meta,
+  pills,
+  highlight,
+  hintLabel,
+  disabled,
+  picked,
+  onClick,
+}) {
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`candy w-full p-2.5 text-left ${picked ? 'translate-y-1' : ''}`}
+      className={`candy relative w-full p-2.5 text-left ${picked ? 'translate-y-1' : ''}`}
       style={{ '--face': face, '--edge': edge }}
     >
+      {highlight && (
+        <>
+          <span
+            aria-hidden
+            className="animate-ring pointer-events-none absolute -inset-0.5 rounded-[16px]"
+            style={{ boxShadow: `0 0 0 3px ${face}` }}
+          />
+          {hintLabel && (
+            <span
+              className="animate-bob pointer-events-none absolute -top-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-1 font-nunito text-[0.6rem] font-extrabold text-white shadow-card"
+              style={{ background: edge }}
+            >
+              👆 {hintLabel}
+            </span>
+          )}
+        </>
+      )}
       <span className="flex items-center justify-between gap-2">
         <span className="flex min-w-0 items-center gap-2">
           <ActionIcon id={id} className="h-5 w-5 shrink-0 text-white" />
@@ -201,7 +234,51 @@ export function CandyAction({ id, face, edge, name, hint, meta, disabled, picked
           {hint}
         </span>
       )}
+      {pills && pills.length > 0 && (
+        <span className="mt-1.5 flex flex-wrap gap-1">
+          {pills.map((p, i) => (
+            <span
+              key={i}
+              className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white"
+            >
+              {p}
+            </span>
+          ))}
+        </span>
+      )}
     </button>
+  )
+}
+
+// Badge de combo (racha de turnos buenos). Brillo creciente con el momentum.
+export function ComboBadge({ combo }) {
+  if (!combo || combo < 2) return null
+  return (
+    <div className="mt-2.5 flex justify-center" aria-live="polite">
+      <span
+        className="candy animate-pop px-3 py-1.5 text-[0.78rem]"
+        style={{
+          '--face': '#F5B331',
+          '--edge': '#E0912A',
+          filter: `drop-shadow(0 0 ${combo * 3}px rgba(245,179,49,${0.35 + combo * 0.12}))`,
+        }}
+      >
+        🔥 ¡Racha ×{combo}!
+      </span>
+    </div>
+  )
+}
+
+// Overlays de jugo (monedas + destello dorado) para las mecánicas por turnos.
+// Se dispara con las keys del useGameLayer. Coins vive en su propio módulo.
+export function GoldFlash({ on }) {
+  if (!on) return null
+  return (
+    <div
+      className="animate-flash-gold pointer-events-none fixed inset-0 z-40"
+      style={{ background: 'radial-gradient(circle at 50% 45%, #FFE9A8, #F5B331 70%)' }}
+      aria-hidden
+    />
   )
 }
 

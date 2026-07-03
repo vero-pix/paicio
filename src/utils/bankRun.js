@@ -81,6 +81,34 @@ export function playDay(state, cfg, accion) {
   }
 }
 
+// ── Capa de juego (cartas de evento + telegrafiado) ────────────────────────
+
+// Aplica el efecto de una carta sobre los dos medidores (mismo clamp) y
+// recalcula el colapso por si el shock deja al banco seco.
+export function applyEvent(state, evento, efecto = {}) {
+  const reservas = clamp(state.reservas + (efecto.reservas ?? 0))
+  const confianza = clamp(state.confianza + (efecto.confianza ?? 0))
+  return {
+    ...state,
+    reservas,
+    confianza,
+    colapso: state.colapso || reservas <= 0,
+    log: [...state.log, { evento: evento.titulo, efecto }],
+  }
+}
+
+// Efecto DIRECTO estimado de una acción para telegrafiarlo antes de elegir. No
+// incluye la ola de retiros emergente de fin de día (esa se descubre jugando).
+// La confianza de las acciones que "decaen" pierde potencia con cada uso.
+export function previewAction(state, cfg, accion) {
+  const prevUses = state.usos[accion.id] ?? 0
+  const factor = accion.decae ? 1 / 2 ** prevUses : 1
+  return {
+    reservas: accion.reservas ?? 0,
+    confianza: Math.round((accion.confianza ?? 0) * factor),
+  }
+}
+
 // ¿Terminó la crisis? (colapso o se acabaron los días)
 export function isOver(state, cfg) {
   return state.colapso || state.dia > cfg.dias
