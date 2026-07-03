@@ -321,6 +321,7 @@ export default {
     },
     {
       id: 'blindaje',
+      iconKey: 'fmi',
       titulo: 'El FMI ofrece un blindaje',
       texto: 'Un megapréstamo para reforzar las reservas, a cambio de un ajuste que la calle detesta.',
       icon: '🌐',

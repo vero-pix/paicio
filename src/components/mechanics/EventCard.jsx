@@ -66,7 +66,10 @@ function Pills({ items }) {
 // la imagen (webp), así que solo aplicamos el marco blanco + sombra de la guía.
 // Si falta el ícono, cae a un disco de acento con el emoji.
 function EventIcon({ evento, tint, px }) {
-  const img = evento.iconKey ? eventIcons[evento.iconKey] : null
+  // iconKey explícito, o el id del evento como convención (los íconos de
+  // Ep2–Ep4 se nombraron según el id). Si no hay ícono, cae al emoji.
+  const key = evento.iconKey ?? evento.id
+  const img = key ? eventIcons[key] : null
   if (img) {
     return (
       <span
