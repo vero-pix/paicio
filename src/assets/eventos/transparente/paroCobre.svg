@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><radialGradient id="d" cx="42%" cy="34%" r="76%"><stop offset="0" stop-color="#F3987F"></stop><stop offset="1" stop-color="#DE5740"></stop></radialGradient>
+<linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1CBA2"></stop><stop offset="1" stop-color="#D89B6A"></stop></linearGradient>
+</defs>
+<path d="M204 336 h104 l10 60 h-124 z" fill="#D65B3F"></path>
+<rect x="196" y="320" width="120" height="26" rx="12" fill="#B33A22"></rect>
+<path d="M214 268 q0 -14 14 -14 h64 q14 0 14 14 v58 q0 14 -14 14 h-64 q-14 0 -14 -14 z" fill="url(#skin)"></path>
+<circle cx="230" cy="266" r="15" fill="url(#skin)"></circle><circle cx="256" cy="262" r="16" fill="url(#skin)"></circle><circle cx="282" cy="262" r="16" fill="url(#skin)"></circle><circle cx="304" cy="268" r="13" fill="url(#skin)"></circle>
+<g stroke="#C98F5F" stroke-width="4" opacity=".5" stroke-linecap="round"><line x1="243" y1="272" x2="243" y2="320"></line><line x1="269" y1="270" x2="269" y2="320"></line><line x1="294" y1="272" x2="294" y2="320"></line></g>
+<path d="M216 318 q40 7 84 0" fill="none" stroke="#C98F5F" stroke-width="3.5" opacity=".45" stroke-linecap="round"></path>
+<path d="M214 296 q-16 -2 -18 18 q0 18 18 17 l22 1 q6 -20 -6 -32 z" fill="url(#skin)"></path>
+<path d="M214 300 q-10 0 -11 14" fill="none" stroke="#C98F5F" stroke-width="3" opacity=".45"></path>
+<path d="M226 270 q-4 30 0 48" fill="none" stroke="#F6E4CC" stroke-width="6" stroke-linecap="round" opacity=".4"></path>
+</svg>

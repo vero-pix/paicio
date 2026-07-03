@@ -327,6 +327,7 @@ export default {
     },
     {
       id: 'rescateFMI',
+      iconKey: 'fmi',
       titulo: 'El FMI ofrece un préstamo puente',
       texto: 'Dólares para reforzar reservas, a cambio de un ajuste que hunde más el empleo.',
       icon: '🌐',

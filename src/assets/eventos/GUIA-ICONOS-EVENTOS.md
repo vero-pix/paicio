@@ -90,16 +90,16 @@ y sustituye el bloque del objeto. Re-exporta a PNG/WEBP 512.
 
 ---
 
-# 📋 BRIEF · Íconos de eventos Ep2–Ep4 (encargo a Claude Design)
+# 📋 Íconos de eventos Ep2–Ep4 · ✅ ENTREGADOS (v0.14.0)
 
-Hoy las cartas de evento de **Ep2 (corralito), Ep3 (paridad), Ep4 (inercia)** usan
-**emoji de fallback**. Este brief pide reemplazarlos por íconos soft-3D (mismo
-lenguaje que Bolivia). **Ep5 (Plan Real) no lleva íconos**: es un puzzle de
-secuencia, no tiene cartas de evento.
+Claude Design entregó un ícono soft-3D **por cada evento** de Ep2–Ep4 (nombrados
+según el `id` del evento) + versiones refrescadas de los 8 de Bolivia. Ya están
+integrados: `EventCard` resuelve el ícono por `iconKey` o, si falta, por el `id`
+del evento. Las cartas `blindaje` (Ep2) y `rescateFMI` (Ep3) reusan `fmi`;
+`respaldoCongreso` (Ep4) sigue con emoji (no se produjo su ícono). **Ep5 (Plan
+Real) no lleva íconos**: es un puzzle de secuencia, sin cartas de evento.
 
-**Clave del ahorro:** ~6 de los shocks se repiten entre episodios y **reutilizan
-íconos existentes** de Bolivia (o uno nuevo compartido). Solo hay que dibujar
-**~10 íconos nuevos**, no 24.
+Las tablas de abajo quedan como referencia de qué representa cada ícono.
 
 ### Categorías de disco (reutilizar los mismos gradientes de la tabla de Bolivia)
 buena noticia → verde · externo/FMI → azul · especulación → violeta · crisis

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><radialGradient id="d" cx="42%" cy="34%" r="76%"><stop offset="0" stop-color="#93BAD9"></stop><stop offset="1" stop-color="#4E82AE"></stop></radialGradient>
+<linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#68B98A"></stop><stop offset="1" stop-color="#3C8B5E"></stop></linearGradient>
+<linearGradient id="red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0705A"></stop><stop offset="1" stop-color="#C43D2C"></stop></linearGradient>
+<linearGradient id="steel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFD7E0"></stop><stop offset="1" stop-color="#8994A2"></stop></linearGradient>
+<linearGradient id="navy" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46516A"></stop><stop offset="1" stop-color="#232A3A"></stop></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE29C"></stop><stop offset=".5" stop-color="#F3C15A"></stop><stop offset="1" stop-color="#C9871F"></stop></linearGradient>
+<linearGradient id="wood" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C58A4E"></stop><stop offset="1" stop-color="#8A5A2C"></stop></linearGradient>
+<linearGradient id="stone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FCF5E6"></stop><stop offset="1" stop-color="#D6C39F"></stop></linearGradient>
+<linearGradient id="copper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8A06A"></stop><stop offset="1" stop-color="#B5622E"></stop></linearGradient>
+<linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FCF6E8"></stop><stop offset="1" stop-color="#E7D6B3"></stop></linearGradient>
+<linearGradient id="ice" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF7FD"></stop><stop offset="1" stop-color="#9FD4EC"></stop></linearGradient>
+<linearGradient id="pot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B6470"></stop><stop offset="1" stop-color="#2E3540"></stop></linearGradient>
+<linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1CBA2"></stop><stop offset="1" stop-color="#D89B6A"></stop></linearGradient>
+<linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4C08A"></stop><stop offset="1" stop-color="#C4914E"></stop></linearGradient>
+<radialGradient id="bubble" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset="1" stop-color="#E7EFE9"></stop></radialGradient>
+<radialGradient id="globe" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#5AA2E0"></stop><stop offset="1" stop-color="#2A6BB0"></stop></radialGradient>
+</defs><circle cx="256" cy="290" r="86" fill="url(#globe)"></circle><g fill="none" stroke="#DCEBF7" stroke-width="4" opacity=".5"><circle cx="256" cy="290" r="86"></circle><ellipse cx="256" cy="290" rx="40" ry="86"></ellipse><line x1="256" y1="204" x2="256" y2="376"></line><line x1="170" y1="290" x2="342" y2="290"></line><ellipse cx="256" cy="250" rx="80" ry="30"></ellipse><ellipse cx="256" cy="330" rx="80" ry="30"></ellipse></g><path d="M214 252 q34 -8 50 12 q6 22 -18 28 q-32 4 -38 -16 z" fill="#8FD6AB" opacity=".85"></path><path d="M266 306 q30 -2 32 22 q-8 22 -34 14 z" fill="#8FD6AB" opacity=".8"></path><ellipse cx="224" cy="256" rx="24" ry="15" fill="#fff" opacity=".28"></ellipse></svg>

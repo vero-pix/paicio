@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.13.0'
+export const APP_VERSION = '0.14.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.14.0',
+    fecha: '3 jul 2026',
+    cambios: [
+      'Las cartas de evento de todas las crisis estrenan íconos ilustrados (adiós emojis): el cacerolazo y el blindaje en el corralito, el cobre y la Fed en la paridad, los remarcajes y la prensa en la inercia, y más.',
+    ],
+  },
   {
     version: '0.13.0',
     fecha: '3 jul 2026',
