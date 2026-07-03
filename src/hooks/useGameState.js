@@ -96,24 +96,6 @@ export function useGameState() {
     }))
   }, [])
 
-  const applyNegotiation = useCallback((prisonerId, result, playerMove) => {
-    setState((s) => {
-      const prev = s.prisoners[prisonerId]
-      const trust = Math.max(0, Math.min(100, prev.trust + result.trustDelta))
-      const status = result.allied
-        ? 'ally'
-        : result.hostile
-          ? 'hostile'
-          : 'available'
-      const history = [...prev.history, playerMove]
-      const prisoners = { ...s.prisoners, [prisonerId]: { trust, status, history } }
-      const allies = Object.entries(prisoners)
-        .filter(([, p]) => p.status === 'ally')
-        .map(([id]) => id)
-      return { ...s, prisoners, allies }
-    })
-  }, [])
-
   const markConceptSeen = useCallback((conceptId) => {
     setState((s) =>
       s.seenConcepts.includes(conceptId)
@@ -167,7 +149,6 @@ export function useGameState() {
     startEpisode,
     startDaily,
     startGame,
-    applyNegotiation,
     markConceptSeen,
     choosePolicy,
     restartEpisode,
