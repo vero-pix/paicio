@@ -16,14 +16,18 @@ const MUSIC_VOL = 0.4 // volumen de la música (no tapa el texto)
 const SFX_VOL = 0.55 // volumen base de los efectos
 
 // ── Estado persistido ──────────────────────────────────────────────────────
+// muted: silencio general (música + SFX). musicMuted: silencia SOLO la música,
+// dejando los efectos. decisionMusic: si la pista tensa de la decisión suena
+// (off por defecto — molestaba).
+const PREF_DEFAULTS = { muted: false, volume: 0.7, musicMuted: false, decisionMusic: false }
 function loadPrefs() {
   try {
     const raw = localStorage.getItem(LS_KEY)
-    if (raw) return { muted: false, volume: 0.7, ...JSON.parse(raw) }
+    if (raw) return { ...PREF_DEFAULTS, ...JSON.parse(raw) }
   } catch {
     /* ignore */
   }
-  return { muted: false, volume: 0.7 }
+  return { ...PREF_DEFAULTS }
 }
 let prefs = loadPrefs()
 function savePrefs() {
@@ -62,9 +66,20 @@ function master() {
   return prefs.muted ? 0 : prefs.volume
 }
 
-// Volumen efectivo de la música: base por episodio escalada por el volumen global.
-function musicVol() {
-  return MUSIC_VOL * prefs.volume
+// Multiplicador de volumen por pista. La de "decisión" es tensa y molestaba:
+// suena bastante más baja que el resto de la música.
+const TRACK_VOL = { decision: 0.42 }
+
+// ¿La música está silenciada? (silencio general O silencio de música). Los SFX
+// NO dependen de esto — solo de `prefs.muted` (ver master()).
+function musicSilenced() {
+  return prefs.muted || prefs.musicMuted
+}
+
+// Volumen efectivo de la música: base escalada por el volumen global y por el
+// multiplicador de la pista actual (o la indicada).
+function musicVol(id = currentId) {
+  return MUSIC_VOL * prefs.volume * (TRACK_VOL[id] ?? 1)
 }
 
 function tone(freq, { type = 'sine', dur = 0.15, gain = 0.2, attack = 0.005, glideTo = null } = {}) {
@@ -268,7 +283,7 @@ function startAmbient(id) {
   const now = c.currentTime
   const gain = c.createGain()
   gain.gain.setValueAtTime(0.0001, now)
-  gain.gain.exponentialRampToValueAtTime(prefs.muted ? 0.0001 : musicVol(), now + 2.5)
+  gain.gain.exponentialRampToValueAtTime(musicSilenced() ? 0.0001 : musicVol(), now + 2.5)
 
   const filter = c.createBiquadFilter()
   filter.type = 'lowpass'
@@ -333,7 +348,7 @@ export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
       loop: true,
       html5: false,
       volume: 0,
-      mute: prefs.muted,
+      mute: musicSilenced(),
     })
     currentHowl = howl
     howl.once('load', () => {
@@ -342,7 +357,7 @@ export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
         return
       }
       howl.play()
-      howl.fade(0, musicVol(), fade) // entra
+      howl.fade(0, musicSilenced() ? 0 : musicVol(), fade) // entra (o queda mudo si la música está silenciada)
       crossOut() // sale lo anterior en paralelo
     })
     howl.once('loaderror', () => {
@@ -383,13 +398,13 @@ export function stopMusic() {
 // ── Mute / volumen ────────────────────────────────────────────────────────────
 function applyVolumeToMusic() {
   const c = ctx
-  if (currentHowl) currentHowl.volume(prefs.muted ? 0 : musicVol())
+  if (currentHowl) currentHowl.volume(musicSilenced() ? 0 : musicVol())
   if (ambient && c) {
     const now = c.currentTime
     ambient.gain.gain.cancelScheduledValues(now)
     ambient.gain.gain.setValueAtTime(Math.max(0.0001, ambient.gain.gain.value), now)
     ambient.gain.gain.exponentialRampToValueAtTime(
-      prefs.muted ? 0.0001 : musicVol(),
+      musicSilenced() ? 0.0001 : musicVol(),
       now + 0.4,
     )
   }
@@ -416,20 +431,48 @@ export function setVolume(v) {
   applyVolumeToMusic()
 }
 
+// Silencio de música (independiente de los SFX).
+export function isMusicMuted() {
+  return prefs.musicMuted
+}
+export function setMusicMuted(v) {
+  prefs.musicMuted = !!v
+  savePrefs()
+  applyVolumeToMusic()
+}
+export function toggleMusicMuted() {
+  setMusicMuted(!prefs.musicMuted)
+  return prefs.musicMuted
+}
+
+// ¿Suena la pista tensa en la pantalla de decisión? (off por defecto). App.jsx
+// lee esto para decidir qué música poner en la mecánica.
+export function isDecisionMusic() {
+  return prefs.decisionMusic
+}
+export function setDecisionMusic(v) {
+  prefs.decisionMusic = !!v
+  savePrefs()
+}
+export function toggleDecisionMusic() {
+  setDecisionMusic(!prefs.decisionMusic)
+  return prefs.decisionMusic
+}
+
 // ── Pausa al perder el foco de la pestaña ─────────────────────────────────────
 if (typeof document !== 'undefined') {
   document.addEventListener('visibilitychange', () => {
     const hidden = document.hidden
     if (currentHowl) {
       if (hidden) currentHowl.pause()
-      else if (!prefs.muted) currentHowl.play()
+      else if (!musicSilenced()) currentHowl.play()
     }
     if (ambient && ctx) {
       const now = ctx.currentTime
       ambient.gain.gain.cancelScheduledValues(now)
       ambient.gain.gain.setValueAtTime(Math.max(0.0001, ambient.gain.gain.value), now)
       ambient.gain.gain.exponentialRampToValueAtTime(
-        hidden || prefs.muted ? 0.0001 : musicVol(),
+        hidden || musicSilenced() ? 0.0001 : musicVol(),
         now + 0.5,
       )
     }

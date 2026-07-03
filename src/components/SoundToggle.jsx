@@ -1,12 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
-import { isMuted, toggleMuted, getVolume, setVolume, sfx } from '../lib/sound.js'
+import {
+  isMuted,
+  toggleMuted,
+  getVolume,
+  setVolume,
+  isMusicMuted,
+  toggleMusicMuted,
+  isDecisionMusic,
+  toggleDecisionMusic,
+  sfx,
+} from '../lib/sound.js'
 
-// Control de sonido persistente (esquina superior derecha):
-// - Tap en el ícono: abre/cierra el panel.
-// - Panel: botón de mute + slider de volumen global.
+// Control de sonido persistente (esquina superior derecha). Rediseño LatAm:
+// panel claro. Separa música y efectos:
+//  - Silenciar todo (mute maestro).
+//  - Música on/off (independiente de los SFX).
+//  - Tensión en decisiones on/off (la pista tensa; off por defecto).
+//  - Volumen global.
 export default function SoundToggle() {
   const [open, setOpen] = useState(false)
   const [muted, setMuted] = useState(() => isMuted())
+  const [musicMuted, setMusicMutedState] = useState(() => isMusicMuted())
+  const [decision, setDecision] = useState(() => isDecisionMusic())
   const [vol, setVol] = useState(() => Math.round(getVolume() * 100))
   const ref = useRef(null)
 
@@ -22,6 +37,22 @@ export default function SoundToggle() {
 
   const icon = muted || vol === 0 ? '🔇' : '🔊'
 
+  // Interruptor compacto reutilizable (texto verde=on / gris=off).
+  const Switch = ({ on, onClick, labelOn = 'sí', labelOff = 'no' }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-full px-2 py-0.5 font-nunito text-[0.6rem] font-extrabold uppercase tracking-wide transition-colors"
+      style={
+        on
+          ? { background: '#D6F0E5', color: '#1F9A6E' }
+          : { background: '#EDE3CE', color: '#8A7A5A' }
+      }
+    >
+      {on ? labelOn : labelOff}
+    </button>
+  )
+
   return (
     <div ref={ref} className="fixed right-3 top-3 z-50">
       <button
@@ -29,7 +60,7 @@ export default function SoundToggle() {
         onClick={() => setOpen((o) => !o)}
         aria-label="Sonido"
         title="Sonido"
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-edge bg-cell/80 text-paper-dim shadow-md shadow-black/40 backdrop-blur-sm transition-all hover:border-paper-dim hover:text-paper"
+        className="shadow-card flex h-9 w-9 items-center justify-center rounded-full bg-surface text-ink-soft transition-all hover:text-ink-warm"
       >
         <span aria-hidden className="text-sm">
           {icon}
@@ -37,36 +68,72 @@ export default function SoundToggle() {
       </button>
 
       {open && (
-        <div className="animate-fade-up absolute right-0 top-11 w-52 rounded-md border border-edge bg-cell p-3 shadow-2xl shadow-black/50">
+        <div className="animate-fade-up shadow-panel absolute right-0 top-11 w-60 rounded-[16px] bg-panel p-3.5">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[0.58rem] uppercase tracking-[0.15em] text-paper-dim">
+            <span className="font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.12em] text-ink-mute">
               Sonido
             </span>
             <button
               type="button"
               onClick={() => setMuted(toggleMuted())}
-              className="font-mono text-[0.58rem] uppercase tracking-wide text-paper-dim transition-colors hover:text-paper"
+              className="font-nunito text-[0.62rem] font-extrabold uppercase tracking-wide text-ink-soft transition-colors hover:text-ink-warm"
             >
               {muted ? '🔇 activar' : '🔊 silenciar'}
             </button>
           </div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={vol}
-            aria-label="Volumen"
-            onChange={(e) => {
-              const v = Number(e.target.value)
-              setVol(v)
-              setVolume(v / 100)
-              if (muted && v > 0) setMuted(toggleMuted())
-            }}
-            onPointerUp={() => sfx('click')}
-            className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-ink accent-crisis"
-            style={{ accentColor: 'var(--color-crisis)' }}
-          />
-          <p className="mt-1 text-right font-mono text-[0.54rem] text-paper-dim/70">{vol}%</p>
+
+          {/* Música (independiente de los efectos) */}
+          <div className="mt-3 flex items-center justify-between">
+            <span className="font-nunito text-[0.74rem] font-bold text-ink-soft">🎵 Música</span>
+            <Switch
+              on={!musicMuted}
+              onClick={() => {
+                toggleMusicMuted()
+                setMusicMutedState(isMusicMuted())
+                sfx('click')
+              }}
+              labelOn="activa"
+              labelOff="muda"
+            />
+          </div>
+
+          {/* Pista tensa de la decisión (off por defecto) */}
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <span className="min-w-0 font-nunito text-[0.74rem] font-bold text-ink-soft">
+              🎬 Tensión en decisiones
+            </span>
+            <Switch
+              on={decision}
+              onClick={() => {
+                toggleDecisionMusic()
+                setDecision(isDecisionMusic())
+                sfx('click')
+              }}
+            />
+          </div>
+
+          {/* Volumen global */}
+          <div className="mt-3 border-t border-cream pt-3">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={vol}
+              aria-label="Volumen"
+              onChange={(e) => {
+                const v = Number(e.target.value)
+                setVol(v)
+                setVolume(v / 100)
+                if (muted && v > 0) setMuted(toggleMuted())
+              }}
+              onPointerUp={() => sfx('click')}
+              className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-cream"
+              style={{ accentColor: '#E8604F' }}
+            />
+            <p className="mt-1 text-right font-nunito text-[0.58rem] font-extrabold text-ink-mute/80">
+              Volumen {vol}%
+            </p>
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useGameState } from './hooks/useGameState.js'
-import { playMusic, stopMusic } from './lib/sound.js'
+import { playMusic, stopMusic, isDecisionMusic } from './lib/sound.js'
 import { useInflation } from './hooks/useInflation.js'
 import { episodesById } from './data/episodes/index.js'
 import { portraits } from './assets/portraits.js'
@@ -58,7 +58,9 @@ export default function App() {
     const ep = episodesById[state.episodeId]
     const mech = ep?.mechanic ?? 'prisonersDilemma'
     const inMechanic = state.phase === 'negotiation' && mech !== 'prisonersDilemma'
-    if (inMechanic) {
+    // La pista tensa de la decisión solo suena si el jugador la activó (off por
+    // defecto: molestaba). Si no, queda la música ambiente del episodio.
+    if (inMechanic && isDecisionMusic()) {
       playMusic('decision', { fallbackToAmbient: false })
     } else {
       playMusic(state.episodeId)
