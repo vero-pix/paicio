@@ -187,6 +187,7 @@ export default function AssemblyLine({ episode, dailySeed, onComplete, onConcept
           onResolve={resolverEvento}
           spotlightRef={eventRef}
           meters={METERS}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 

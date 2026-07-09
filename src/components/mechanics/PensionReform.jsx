@@ -167,6 +167,7 @@ export default function PensionReform({ episode, dailySeed, onComplete, onConcep
           accent={acc}
           onResolve={resolverEvento}
           meters={METERS}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 

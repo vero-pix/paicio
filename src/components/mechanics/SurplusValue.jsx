@@ -152,6 +152,7 @@ export default function SurplusValue({ episode, dailySeed, onComplete, onConcept
           onResolve={resolverEvento}
           spotlightRef={eventRef}
           meters={METERS}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 

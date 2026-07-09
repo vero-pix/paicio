@@ -116,7 +116,7 @@ function EventIcon({ evento, tint, px }) {
   )
 }
 
-export default function EventCard({ evento, mes, mesLabel = 'Mes', accent, onResolve, spotlightRef, meters, swipe = false }) {
+export default function EventCard({ evento, mes, mesLabel = 'Mes', accent, onResolve, spotlightRef, meters, swipe = true }) {
   const esDecision = Array.isArray(evento.opciones) && evento.opciones.length > 0
   const tint = accent.soft ?? '#FBE7C6' // tono tenue de marca para chip/disco
 

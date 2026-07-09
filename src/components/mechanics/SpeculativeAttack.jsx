@@ -182,6 +182,7 @@ export default function SpeculativeAttack({ episode, dailySeed, onComplete, onCo
           onResolve={resolverEvento}
           spotlightRef={eventRef}
           meters={METERS}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 

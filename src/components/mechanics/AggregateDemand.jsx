@@ -154,6 +154,7 @@ export default function AggregateDemand({ episode, dailySeed, onComplete, onConc
           onResolve={resolverEvento}
           spotlightRef={eventRef}
           meters={METERS}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 

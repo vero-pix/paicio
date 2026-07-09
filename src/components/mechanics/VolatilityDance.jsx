@@ -235,6 +235,7 @@ export default function VolatilityDance({ episode, onComplete }) {
           mesLabel="Ronda"
           accent={acc}
           onResolve={() => setEvento(null)}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 

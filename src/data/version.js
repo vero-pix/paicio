@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.26.2'
+export const APP_VERSION = '0.28.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.28.0',
+    fecha: '9 jul 2026',
+    cambios: [
+      '🃏 Swipe en todas las crisis: ahora deslizas las cartas de decisión de cualquier episodio (derecha una opción, izquierda la otra). Los botones siguen ahí si prefieres tocar.',
+    ],
+  },
   {
     version: '0.26.2',
     fecha: '9 jul 2026',

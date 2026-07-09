@@ -473,6 +473,7 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
             accent={acc}
             onResolve={resolverEvento}
             spotlightRef={eventRef}
+            swipe={episode.swipeEvents !== false}
           />
         )}
 

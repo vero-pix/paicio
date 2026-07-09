@@ -173,6 +173,7 @@ export default function Expectations({ episode, dailySeed, onComplete, onConcept
           onResolve={resolverEvento}
           spotlightRef={eventRef}
           meters={METERS}
+          swipe={episode.swipeEvents !== false}
         />
       )}
 
