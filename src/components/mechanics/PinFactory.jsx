@@ -59,25 +59,27 @@ export default function PinFactory({ episode, onComplete }) {
   const acc = accentFor(episode.id)
 
   const [state, setState] = useState(() => initPinFactory(cfg))
-  const [animating, setAnimating] = useState(false)
-  const [lastChoice, setLastChoice] = useState(null)
+  // `pending` guarda la elección + el estado resultante para MOSTRAR la
+  // consecuencia (reacción de Smith + producción nueva) y esperar un "Continuar"
+  // explícito. Sin auto-avance: eliges → lees → Continuar (patrón del resto).
+  const [pending, setPending] = useState(null)
   const over = isOver(state, cfg)
 
   const pasoActual = STEPS[state.paso - 1]
   const tier = over ? outcomeTier(state, cfg) : null
 
   function elegir(choice) {
-    if (animating || over) return
+    if (pending || over) return
     sfx('click')
-    setAnimating(true)
-    setLastChoice(choice)
+    setPending({ choice, next: playStep(state, cfg, choice) })
+  }
 
-    setTimeout(() => {
-      const next = playStep(state, cfg, choice)
-      setState(next)
-      setAnimating(false)
-      setLastChoice(null)
-    }, 1200)
+  function continuar() {
+    if (!pending) return
+    sfx('click')
+    const next = pending.next
+    setPending(null)
+    setState(next)
   }
 
   return (
@@ -89,7 +91,7 @@ export default function PinFactory({ episode, onComplete }) {
         pill={over ? 'Fin' : `Paso ${state.paso}/${STEPS.length}`}
       />
 
-      <OutputCounter output={state.output} />
+      <OutputCounter output={pending ? pending.next.output : state.output} />
 
       {over ? (
         <EndPanel
@@ -114,8 +116,8 @@ export default function PinFactory({ episode, onComplete }) {
             </p>
           </div>
 
-          {/* Opciones */}
-          {!animating && !lastChoice && (
+          {/* Opciones (ocultas mientras lees el resultado) */}
+          {!pending && (
             <div className="mt-4 space-y-2.5">
               {pasoActual.choices.map((choice, i) => (
                 <button
@@ -145,25 +147,37 @@ export default function PinFactory({ episode, onComplete }) {
             </div>
           )}
 
-          {/* Reacción de Smith a la elección */}
-          {lastChoice && (
+          {/* Resultado de la elección — se lee y se avanza con "Continuar" */}
+          {pending && (
             <div className="animate-fade-up mt-4">
               <div className="rounded-[16px] bg-surface p-3.5 shadow-card">
                 <p className="font-nunito text-[0.78rem] font-bold" style={{ color: acc.edge }}>
-                  ✦ Resultado
+                  ✦ Elegiste: {pending.choice.label}
                 </p>
-                <p className="mt-1 font-nunito text-[0.82rem] italic leading-snug text-ink-soft">
-                  {lastChoice.smithReaction}
+                <p className="mt-1.5 font-nunito text-[0.85rem] italic leading-snug text-ink-soft">
+                  {pending.choice.smithReaction}
                 </p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="font-round text-[1.1rem] font-bold" style={{ color: acc.edge }}>
-                    {state.output.toLocaleString()}
+                <div className="mt-2.5 flex items-baseline gap-2 border-t border-ink-mute/15 pt-2.5">
+                  <span className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
+                    Producción
+                  </span>
+                  <span className="font-round text-[1.3rem] font-bold tabular-nums" style={{ color: acc.edge }}>
+                    {pending.next.output.toLocaleString()}
                   </span>
                   <span className="font-nunito text-[0.65rem] font-bold text-ink-mute">
                     alfileres/día
                   </span>
                 </div>
               </div>
+
+              <button
+                type="button"
+                onClick={continuar}
+                className="candy mt-3 w-full px-5 py-3.5 text-[1rem]"
+                style={{ '--face': acc.face, '--edge': acc.edge }}
+              >
+                {isOver(pending.next, cfg) ? 'Ver resultado →' : 'Continuar →'}
+              </button>
             </div>
           )}
         </>

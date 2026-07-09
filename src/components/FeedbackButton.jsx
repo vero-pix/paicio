@@ -114,7 +114,11 @@ export default function FeedbackButton() {
           loadMine(clientId)
         }}
         aria-label="Comentar al desarrollador"
-        className="shadow-card fixed bottom-4 right-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-surface text-ink-warm transition-all hover:-translate-y-px"
+        className="shadow-card fixed z-40 flex h-11 w-11 items-center justify-center rounded-full bg-surface text-ink-warm transition-all hover:-translate-y-px"
+        style={{
+          bottom: 'calc(env(safe-area-inset-bottom) + 1rem)',
+          right: 'calc(env(safe-area-inset-right) + 1rem)',
+        }}
       >
         <span aria-hidden className="text-lg">💬</span>
         {hasReply && (

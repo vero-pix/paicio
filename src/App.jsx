@@ -130,8 +130,15 @@ export default function App() {
 
   return (
     <div className="min-h-full">
-      {/* Barra de navegación */}
-      <div className="mx-auto flex max-w-md items-center gap-2 px-3 pt-3 pb-1">
+      {/* Barra de navegación (respeta el notch/safe-area de iPhone) */}
+      <div
+        className="mx-auto flex max-w-md items-center gap-2 pb-1"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top) + 0.75rem)',
+          paddingLeft: 'calc(env(safe-area-inset-left) + 0.75rem)',
+          paddingRight: 'calc(env(safe-area-inset-right) + 0.75rem)',
+        }}
+      >
         <button
           type="button"
           onClick={backToSelect}

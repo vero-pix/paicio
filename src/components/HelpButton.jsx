@@ -134,10 +134,13 @@ export default function HelpButton({ episode = null }) {
 
   return (
     <>
-      {/* Disparador fijo (arriba a la derecha, a la izquierda del 🔊). */}
+      {/* Disparador fijo (arriba a la derecha, a la izquierda del 🔊; respeta notch). */}
       <div
-        className="fixed right-14 top-3 z-40"
-        style={{ paddingTop: 'env(safe-area-inset-top)', paddingRight: 'env(safe-area-inset-right)' }}
+        className="fixed z-40"
+        style={{
+          top: 'calc(env(safe-area-inset-top) + 0.75rem)',
+          right: 'calc(env(safe-area-inset-right) + 3.5rem)',
+        }}
       >
         <button
           type="button"

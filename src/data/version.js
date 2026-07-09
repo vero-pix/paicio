@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.32.0'
+export const APP_VERSION = '0.32.1'
 
 export const NOVEDADES = [
+  {
+    version: '0.32.1',
+    fecha: '9 jul 2026',
+    cambios: [
+      '📱 Arreglos para iPhone: la barra de navegación y los botones ya no quedan bajo el notch (respetan el área segura), y ahora hay botón ⌂ Inicio también en el mapa de episodios.',
+      '📌 "La Fábrica de Alfileres" (Adam Smith): al elegir, ahora ves la consecuencia (la reacción de Smith y cuánto cambió la producción) y avanzas tocando "Continuar" — antes se cerraba solo sin dejarte leer.',
+    ],
+  },
   {
     version: '0.32.0',
     fecha: '9 jul 2026',

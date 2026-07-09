@@ -66,20 +66,24 @@ export default function EpisodeSelect({ line, episodes, onSelect, onShowIntro, o
           : 'linear-gradient(180deg, #EAF6EC 0%, #FBEFD2 55%, #FCE3C4 100%)',
       }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-4">
+      {/* Header (respeta el notch/safe-area de iPhone) */}
+      <div
+        className="flex items-center justify-between px-6"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top) + 1rem)',
+        }}
+      >
         <div className="flex items-center gap-2">
           {onBack && (
             <button
               type="button"
               onClick={onBack}
-              aria-label="Volver"
-              className="candy candy-soft px-3 py-2 text-[0.8rem]"
+              aria-label="Inicio"
+              className="candy candy-soft flex items-center gap-1.5 px-3 py-2 font-nunito text-[0.7rem] font-extrabold uppercase tracking-wide"
             >
-              ←
+              ⌂ Inicio
             </button>
           )}
-          <span className="font-round text-[0.8rem] font-semibold text-ink-soft">9:41</span>
         </div>
         <span className="flex gap-1 text-ink-mute" aria-hidden>
           <span className="h-1.5 w-1.5 rounded-full bg-current" />

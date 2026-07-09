@@ -13,6 +13,7 @@ export default function LineSelect({ onSelect, totalStars }) {
     <div
       className="on-cream relative mx-auto min-h-[100dvh] max-w-md overflow-hidden px-5 pb-8"
       style={{
+        paddingTop: 'env(safe-area-inset-top)',
         background:
           'linear-gradient(180deg, #EAF6EC 0%, #FBEFD2 45%, #FCE3C4 100%)',
       }}

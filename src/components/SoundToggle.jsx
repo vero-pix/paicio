@@ -54,7 +54,14 @@ export default function SoundToggle() {
   )
 
   return (
-    <div ref={ref} className="fixed right-3 top-3 z-50">
+    <div
+      ref={ref}
+      className="fixed z-50"
+      style={{
+        top: 'calc(env(safe-area-inset-top) + 0.75rem)',
+        right: 'calc(env(safe-area-inset-right) + 0.75rem)',
+      }}
+    >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
