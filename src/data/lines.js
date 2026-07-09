@@ -23,8 +23,8 @@ export const LINES = [
     desc: 'Viaja a 1776 y descubre la fábrica de alfileres de Adam Smith. Después ven a Detroit con Ford, y viaja por la historia del pensamiento económico.',
     icon: '📜',
     gradient: ['#F0E6FF', '#E0D4F5', '#D0C2EB'],
-    unlocked: false,
-    requires: { stars: 6 },
+    unlocked: true,
+    requires: null,
   },
   {
     id: 'chile',
@@ -33,8 +33,8 @@ export const LINES = [
     desc: 'Chile es un experimento económico viviente. Desde el cobre hasta las AFP, desde Allende hasta los Chicago Boys. Cada episodio es una pieza de la identidad chilena.',
     icon: '🇨🇱',
     gradient: ['#EAF6EC', '#D4EDDA', '#FBEFD2'],
-    unlocked: false,
-    requires: { stars: 12 },
+    unlocked: true,
+    requires: null,
   },
   {
     id: 'norte',
@@ -43,8 +43,8 @@ export const LINES = [
     desc: 'Australia en pensiones, Suiza en salud, Singapur en vivienda, Noruega en desigualdad. Este no es un viaje turístico: es un manual de construcción. Cada episodio te da las herramientas para construir un país que funcione. Idealmente, el tuyo.',
     icon: '🧭',
     gradient: ['#E3F2FD', '#F0E6FF', '#E8F5E9'],
-    unlocked: false,
-    requires: { stars: 15 },
+    unlocked: true,
+    requires: null,
   },
 ]
 
