@@ -178,6 +178,7 @@ export default function BankRun({ episode, dailySeed, onComplete, onConceptSeen 
           onResolve={resolverEvento}
           spotlightRef={eventRef}
           meters={METERS}
+          swipe={episode.swipeEvents}
         />
       )}
 

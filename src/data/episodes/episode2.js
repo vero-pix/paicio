@@ -24,6 +24,10 @@ export default {
   // Mecánica central del episodio (ver src/utils/bankRun.js).
   mechanic: 'bankRun',
 
+  // Prototipo (solo Ep2): las cartas de evento de DECISIÓN se pueden resolver
+  // deslizándolas (swipe tipo Reigns), además del tap. Ver EventCard.jsx.
+  swipeEvents: true,
+
   // Periódico de la pantalla de celda.
   newspaper: {
     name: 'EL HERALDO DE PAICIO',

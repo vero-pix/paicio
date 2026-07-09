@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.26.1'
+export const APP_VERSION = '0.26.2'
 
 export const NOVEDADES = [
+  {
+    version: '0.26.2',
+    fecha: '9 jul 2026',
+    cambios: [
+      '🃏 Nuevo (prototipo, solo en "El Corralito"): desliza las cartas de decisión para elegir — derecha una opción, izquierda la otra. También puedes seguir tocando los botones.',
+    ],
+  },
   {
     version: '0.26.1',
     fecha: '9 jul 2026',
