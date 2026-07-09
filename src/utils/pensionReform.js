@@ -16,17 +16,17 @@ export function initPensionReform(cfg) {
 const REFORMS = {
   subirCotizacion: {
     label: 'Subir cotización al 15%',
-    desc: 'Aumentás el aporte obligatorio de 10% a 15% escalonado. La gente ahorra más, pero duele en el bolsillo.',
+    desc: 'Aumentas el aporte obligatorio de 10% a 15% escalonado. La gente ahorra más, pero duele en el bolsillo.',
     efecto: { tasaReemplazo: 15, cobertura: 0, costoFiscal: -1, confianza: -5, fondo: 20 },
   },
   bajarComisiones: {
     label: 'Regular comisiones al 0.5%',
-    desc: 'Topás las comisiones de administración. Los fondos se quejan, pero la plata se queda en las cuentas de la gente.',
+    desc: 'Topas las comisiones de administración. Los fondos se quejan, pero la plata se queda en las cuentas de la gente.',
     efecto: { tasaReemplazo: 12, cobertura: 0, costoFiscal: 0, confianza: 10, fondo: 15 },
   },
   diversificar: {
     label: 'Inversión global sin trabas',
-    desc: 'Permitís que los fondos inviertan globalmente sin restricciones. Mejor rentabilidad, menos riesgo local.',
+    desc: 'Permites que los fondos inviertan globalmente sin restricciones. Mejor rentabilidad, menos riesgo local.',
     efecto: { tasaReemplazo: 10, cobertura: 0, costoFiscal: 0, confianza: 5, fondo: 18 },
   },
   pilarSolidario: {

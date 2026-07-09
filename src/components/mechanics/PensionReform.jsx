@@ -1,8 +1,19 @@
 import { useMemo, useState } from 'react'
 import { sfx } from '../../lib/sound.js'
+import { useScreenFx } from '../../lib/animations.js'
 import { accentFor } from '../../theme/accents.js'
-import { MechanicShell, TopBar, LifeBar, EndPanel } from './candyKit.jsx'
+import {
+  MechanicShell,
+  TopBar,
+  EndPanel,
+  EduChip,
+  ComboBadge,
+  GoldFlash,
+} from './candyKit.jsx'
 import EventCard from './EventCard.jsx'
+import Coins from './Coins.jsx'
+import GameProgress from './GameProgress.jsx'
+import { useGameLayer } from '../../hooks/useGameLayer.js'
 import { initPensionReform, REFORM_LIST, applyReform, applyEvent, skipRound, isOver, outcomeTier } from '../../utils/pensionReform.js'
 
 const METERS = [
@@ -13,14 +24,20 @@ const METERS = [
   { key: 'costoFiscal', label: 'Costo fiscal (% PIB)', goodWhen: 'low', danger: 5, color: '#E8604F' },
 ]
 
-export default function PensionReform({ episode, onComplete }) {
+export default function PensionReform({ episode, dailySeed, onComplete, onConceptSeen }) {
   const cfg = useMemo(() => episode.pensionReform, [episode])
   const acc = accentFor(episode.id)
   const [state, setState] = useState(() => initPensionReform(cfg))
   const [animating, setAnimating] = useState(false)
   const [evento, setEvento] = useState(null)
+  const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
   const tier = over ? outcomeTier(state) : null
+
+  // Capa de juego: puntaje/momentum/combo/jugo. No toca el estado de la mecánica
+  // (los efectos los aplica applyReform/applyEvent); solo puntúa y celebra.
+  // Los eventos se disparan por `ronda`, así que la capa no agenda cartas propias.
+  const gl = useGameLayer({ eventos: [], totalTurns: cfg.rondas, meters: METERS, trigger, seed: dailySeed })
 
   const disponibles = REFORM_LIST.filter((r) => !state.reformsAplicadas.includes(r.id))
 
@@ -32,52 +49,85 @@ export default function PensionReform({ episode, onComplete }) {
     if (ev) setEvento(ev)
   }
 
-  function elegir(reformId) {
-    if (animating || over || evento) return
-    sfx('click')
-    const next = applyReform(state, reformId)
+  // Cierra un turno (reforma o salto): puntúa con la capa de juego y encola el
+  // evento de la ronda si corresponde.
+  function avanzar(next) {
     setState(next)
+    const gameOver = isOver(next, cfg)
+    const win = gameOver && outcomeTier(next) === 'perfect'
+    gl.onTurn(state, next, { over: gameOver, win })
     setAnimating(true)
     setTimeout(() => {
       setAnimating(false)
       eventoDeRonda(next)
     }, 400)
+  }
+
+  function elegir(reformId) {
+    if (animating || over || evento) return
+    sfx('click')
+    avanzar(applyReform(state, reformId))
   }
 
   function pasar() {
     if (animating || over || evento) return
-    const next = skipRound(state)
-    setState(next)
-    setAnimating(true)
-    setTimeout(() => {
-      setAnimating(false)
-      eventoDeRonda(next)
-    }, 400)
-  }
-
-  // Aplica el efecto de la carta y la cierra.
-  function resolverEvento(efecto) {
     sfx('click')
-    setState((s) => applyEvent(s, efecto))
-    setEvento(null)
+    avanzar(skipRound(state))
   }
 
-  function metaBar(val) {
+  // Aplica el efecto de la carta, la cierra y la puntúa.
+  function resolverEvento(efecto) {
+    const next = applyEvent(state, efecto)
+    setState(next)
+    setEvento(null)
+    gl.onEventResolved(state, next, evento.id)
+  }
+
+  function metaBar(val, color) {
     return (
       <div className="h-2 w-full overflow-hidden rounded-full bg-ink-mute/15">
-        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${Math.min(val, 100)}%` }} />
+        <div
+          className="h-full rounded-full transition-all duration-700"
+          style={{ width: `${Math.min(val, 100)}%`, background: color }}
+        />
       </div>
     )
   }
 
   return (
-    <MechanicShell tint="linear-gradient(180deg,#E3F2FD,#E8F5E9)">
+    <MechanicShell
+      shake={fx === 'shake'}
+      flash={fx === 'flash'}
+      tint="linear-gradient(180deg,#E3F2FD,#E8F5E9)"
+    >
+      <GoldFlash on={gl.gold} />
+      <Coins runKey={gl.burstKey} mode="burst" count={16} />
+      <Coins runKey={gl.rainKey} mode="rain" count={30} />
+
       <TopBar
         title="La Cuenta que Crece"
         crisis="Pensiones · Modelos globales"
         accent={acc}
         pill={over ? 'Fin' : `Reforma ${state.reformsAplicadas.length + 1}`}
       />
+
+      {!over && (
+        <GameProgress
+          mes={state.ronda}
+          meses={cfg.rondas}
+          score={gl.score}
+          accent={acc}
+          goalLabel="Llega al 70% de tasa de reemplazo sin quebrar el fisco"
+        />
+      )}
+
+      <div className="mt-2 flex items-center gap-2">
+        <EduChip
+          conceptId="pensiones"
+          label="¿Qué define una buena pensión?"
+          onSeen={onConceptSeen}
+        />
+      </div>
 
       {/* Medidores compactos */}
       <div className="mt-3 space-y-1.5">
@@ -87,7 +137,7 @@ export default function PensionReform({ episode, onComplete }) {
               <div className="h-2 w-2 rounded-full shrink-0" style={{ background: m.color || acc.face }} />
               {m.label}
             </div>
-            <div className="flex-1">{metaBar(state[m.key])}</div>
+            <div className="flex-1">{metaBar(state[m.key], m.color || acc.face)}</div>
             <span className="font-round text-[0.75rem] font-bold tabular-nums text-ink-warm w-10 text-right">
               {state[m.key]}
             </span>
@@ -107,6 +157,8 @@ export default function PensionReform({ episode, onComplete }) {
         </div>
       </div>
 
+      <ComboBadge combo={gl.combo} />
+
       {evento && (
         <EventCard
           evento={evento}
@@ -122,17 +174,17 @@ export default function PensionReform({ episode, onComplete }) {
         <EndPanel
           text={
             tier === 'perfect'
-              ? 'Sistema de primer mundo. El diseño importa, y vos lo demostraste.'
+              ? 'Sistema de primer mundo. El diseño importa, y tú lo demostraste.'
               : tier === 'partial'
                 ? 'Mejoraste el sistema, pero sin llegar al potencial. Falta una reforma clave.'
                 : 'El sistema no aguantó. Las reformas fueron insuficientes o mal aplicadas.'
           }
-          onComplete={() => onComplete(tier, { score: state.tasaReemplazo })}
+          onComplete={() => onComplete(tier, { score: gl.score, momentumMax: gl.momentumMax })}
         />
       ) : evento ? null : (
         <>
           <p className="mt-4 font-nunito text-[0.7rem] font-extrabold uppercase tracking-wide text-ink-mute">
-            Elegí una reforma para aplicar:
+            Elige una reforma para aplicar:
           </p>
           <div className="mt-2 space-y-2">
             {disponibles.map((r, i) => {

@@ -116,7 +116,12 @@ export default function EventCard({ evento, mes, mesLabel = 'Mes', accent, onRes
             <p className="font-round text-[0.98rem] font-bold leading-tight text-ink-warm">
               {evento.titulo}
             </p>
-            <div className="mt-1">
+            {evento.texto && (
+              <p className="mt-0.5 font-nunito text-[0.78rem] leading-snug text-ink-soft">
+                {evento.texto}
+              </p>
+            )}
+            <div className="mt-1.5">
               <Pills items={pillsFor(evento.efecto, undefined, meters)} />
             </div>
           </div>

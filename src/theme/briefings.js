@@ -128,7 +128,7 @@ export const EPISODE_BRIEFINGS = {
 
   ep13: {
     mission:
-      'El cobre es el sueldo de Chile. Aprendé a bailar con su precio: vendé cuando está arriba, aguantá cuando está abajo e invertí cuando hay viento a favor.',
+      'El cobre es el sueldo de Chile. Aprende a bailar con su precio: vende cuando está arriba, aguanta cuando está abajo e invierte cuando hay viento a favor.',
     antagonist: {
       portrait: portraits.trabajadorChile,
       name: 'El Precio del Cobre',
@@ -138,7 +138,7 @@ export const EPISODE_BRIEFINGS = {
 
   ep14: {
     mission:
-      'Misma plata, sistemas distintos, resultados muy diferentes. Descubrí por qué Australia, Canadá y Suecia tienen las pensiones que funcionan — y cómo llevar esas ideas a tu país.',
+      'Misma plata, sistemas distintos, resultados muy diferentes. Descubre por qué Australia, Canadá y Suecia tienen las pensiones que funcionan — y cómo llevar esas ideas a tu país.',
     antagonist: {
       portrait: portraits.tecnocrata,
       name: 'El Diseñador',

@@ -215,7 +215,7 @@ export const EPISODE_TUTORIALS = {
     steps: [
       {
         target: 'actions',
-        caption: 'Cada ronda elegís cómo vender. La barra se mueve sola: hacé clic cuando esté en la zona dorada.',
+        caption: 'Cada ronda eliges cómo vender. La barra se mueve sola: haz clic cuando esté en la zona dorada.',
       },
       {
         target: 'meters',
@@ -225,7 +225,7 @@ export const EPISODE_TUTORIALS = {
   },
 
   ep14: {
-    goalChip: 'Llevá la tasa de reemplazo al 70%+',
+    goalChip: 'Lleva la tasa de reemplazo al 70%+',
     steps: [
       {
         target: 'meters',

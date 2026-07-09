@@ -2,9 +2,18 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.26.0'
+export const APP_VERSION = '0.26.1'
 
 export const NOVEDADES = [
+  {
+    version: '0.26.1',
+    fecha: '9 jul 2026',
+    cambios: [
+      '🇨🇱 Textos en chileno: se sacó el voseo argentino de "La Cueca del Cobre", "La Cuenta que Crece" y las mecánicas nuevas. Además, arreglados typos (Noruega, commodity, Ford).',
+      '💰 "La Cuenta que Crece" (pensiones) ahora tiene puntaje, combo y jugo como los demás episodios.',
+      '💬 Las cartas de evento vuelven a mostrar su historia (antes solo salía el título).',
+    ],
+  },
   {
     version: '0.26.0',
     fecha: '9 jul 2026',
@@ -28,7 +37,7 @@ export const NOVEDADES = [
     fecha: '8 jul 2026',
     cambios: [
       '🇨🇱 Nueva línea: "Chile" — el país como laboratorio económico.',
-      '🪙 Episodio 13: "La Cueca del Cobre" — un rhythm game donde bailás con el precio del cobre. Vendé en el momento exacto, invertí en Codelco y aguantá la volatilidad.',
+      '🪙 Episodio 13: "La Cueca del Cobre" — un rhythm game donde bailas con el precio del cobre. Vende en el momento exacto, invierte en Codelco y aguanta la volatilidad.',
       '🎮 Mecánica NUEVA: volatilityDance. Una barra oscila como el precio del cobre; clic en la zona dorada para vender al mejor precio. Primera mecánica de reflejos en PAICIO.',
     ],
   },

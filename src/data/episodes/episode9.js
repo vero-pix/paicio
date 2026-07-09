@@ -315,7 +315,7 @@ export default {
       id: 'perfect',
       concept: 'economiasEscala',
       headlineWin:
-        '¡93 MINUTOS! LA LÍNEA DE MONTAJE DE FORDS LA FÁBRICA MÁS PRODUCTIVA DEL MUNDO',
+        '¡93 MINUTOS! LA LÍNEA DE MONTAJE DE FORD: LA FÁBRICA MÁS PRODUCTIVA DEL MUNDO',
       resultText:
         'Llegaste a 93 minutos por auto — el récord de Highland Park. La línea de montaje móvil, las piezas estandarizadas, la integración vertical y el salario de $5 convirtieron a Ford en la fábrica más productiva del planeta. El Model T baja a $300, el trabajador gana el doble y el mundo entero quiere un auto. La producción en masa acaba de nacer.',
       scores: { eficiencia: 92, innovacion: 88, impacto: 95 },
@@ -326,7 +326,7 @@ export default {
       id: 'partial',
       concept: 'ingenieriaProduccion',
       headlineWin:
-        'MEJORASTE LA PRODUCCIÓN, PERO SIN LLEGAR AL RÉCORD DE FORDS',
+        'MEJORASTE LA PRODUCCIÓN, PERO SIN LLEGAR AL RÉCORD DE FORD',
       resultText:
         'Lograste reducir el tiempo de ensamblaje significativamente, pero no alcanzaste los 93 minutos de Ford. Tal vez no implementaste la línea móvil, o no integraste los proveedores, o no convenciste a Ford de pagar $5 al día. La fábrica produce más que antes, pero el potencial quedó en el tintero.',
       scores: { eficiencia: 55, innovacion: 50, impacto: 60 },

@@ -2,8 +2,8 @@
 // EPISODIO 14 — PENSIONES: LA CUENTA QUE CRECE
 // Referencia: Australia (Superannuation), Canadá (CPP), Suecia (AP7)
 //
-// Mecánica NUEVA: pensionReform. Sos ministro de finanzas y heredás un
-// sistema de pensiones quebrado. Cada runda aplicás una reforma para
+// Mecánica NUEVA: pensionReform. Eres ministro de finanzas y heredas un
+// sistema de pensiones quebrado. Cada ronda aplicas una reforma para
 // acercar tu sistema a los modelos que sí funcionan en el mundo.
 //
 // La lección: los sistemas de pensiones no fallan por casualidad.
@@ -23,7 +23,7 @@ export default {
   crisisHistorica: 'El diseño de las pensiones',
   paisReferencia: 'Modelos globales',
   resumen:
-    'Australia, Canadá, Suecia: tres países donde las pensiones funcionan. Misma plata, resultados muy distintos. Descubrí qué hace la diferencia y construí un sistema que sí sirva.',
+    'Australia, Canadá, Suecia: tres países donde las pensiones funcionan. Misma plata, resultados muy distintos. Descubre qué hace la diferencia y construye un sistema que sí sirva.',
   bloqueado: false,
   mechanic: 'pensionReform',
   newspaper: {
@@ -35,7 +35,7 @@ export default {
       'El gobierno instituye el Superannuation Guarantee. Todos los trabajadores tendrán una cuenta de ahorro individual, administrada por fondos sin fines de lucro. El cambio más profundo desde el sistema de salud.',
   },
   opening: [
-    'Llegás al ministerio y te pasan el diagnóstico:',
+    'Llegas al ministerio y te pasan el diagnóstico:',
     '',
     'La gente trabaja 40 años, ahorra obligatoriamente,',
     'y al final recibe una miseria.',
@@ -51,7 +51,7 @@ export default {
     'Son reglas: comisiones bajas, competencia real,',
     'diversificación global y un Estado que regula bien.',
     '',
-    'Tenés 8 reformas para transformar el sistema.',
+    'Tienes 8 reformas para transformar el sistema.',
     'El reloj corre.',
   ],
   cellNarration: [
@@ -67,7 +67,7 @@ export default {
   trendChart: null,
   prisoners: [],
   pensionReform: {
-    intro: 'Heredás un sistema donde la gente aporta 40 años y recibe una fracción de lo que ahorró. Cada reforma que aplicás cambia las reglas. El objetivo es llegar a una tasa de reemplazo del 70% o más, sin quebrar el fisco ni perder a la gente.',
+    intro: 'Heredas un sistema donde la gente aporta 40 años y recibe una fracción de lo que ahorró. Cada reforma que aplicas cambia las reglas. El objetivo es llegar a una tasa de reemplazo del 70% o más, sin quebrar el fisco ni perder a la gente.',
     rondas: 8,
     tasaInicial: 25,
     coberturaInicial: 60,

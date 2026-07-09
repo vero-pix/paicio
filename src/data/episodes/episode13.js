@@ -43,7 +43,7 @@ export default {
     'Lo pone el mundo.',
     'Y el mundo es impredecible.',
     '',
-    'Un estaño, un ritmo que no controlas.',
+    'Un extraño, un ritmo que no controlas.',
     'Tu pega es bailar con el precio.',
     'Vender cuando está arriba.',
     'Aguantar cuando está abajo.',
@@ -54,7 +54,7 @@ export default {
   ],
   cellNarration: [
     'El cobre es el 50% de las exportaciones chilenas. Cuando el precio sube, el fisco se llena. Cuando baja, se ajusta el cinturón. El patrón se repite desde 1971: auge, caída, auge, caída.',
-    'La "maldición de los recursos naturales" no es inevitable. Noruea evitó la maldición del petróleo ahorrando en los años buenos. Chile lleva décadas intentándolo — a veces resulta, a veces no.',
+    'La "maldición de los recursos naturales" no es inevitable. Noruega evitó la maldición del petróleo ahorrando en los años buenos. Chile lleva décadas intentándolo — a veces resulta, a veces no.',
     'Codelco es la empresa más importante del país. Pero necesita inversión para mantener producción. Invertir cuando el precio está alto parece obvio... pero siempre hay alguien que quiere gastar la plata en otra cosa.',
   ],
   negotiationIntro: '',
@@ -65,7 +65,7 @@ export default {
   trendChart: null,
   prisoners: [],
   volatilityDance: {
-    intro: 'El precio del cobre baila como cueca. Cada ronda tenés que elegir una estrategia y cliquear en el momento justo. La barra se mueve; la zona dorada es el mejor precio. Afiná el oído y la paciencia.',
+    intro: 'El precio del cobre baila como cueca. Cada ronda tienes que elegir una estrategia y cliquear en el momento justo. La barra se mueve; la zona dorada es el mejor precio. Afina el oído y la paciencia.',
     rondas: 8,
   },
   eventos: [
@@ -100,7 +100,7 @@ export default {
       concept: 'volatilidadCobre',
       headlineWin: '¡MAESTRO CUECUERO! LE AGARRASTE EL RITMO AL COBRE',
       resultText:
-        'Bailaste con el precio del cobre como un cuequero de fiesta: vendiste en los peaks, no entraste en pánico en las bajas, e invertiste cuando hubo viento a favor. Chile tiene colchón fiscal, Codelco está modernizado y el futuro se ve estable. El cobre baila, pero vos llevás la batuta.',
+        'Bailaste con el precio del cobre como un cuequero de fiesta: vendiste en los peaks, no entraste en pánico en las bajas, e invertiste cuando hubo viento a favor. Chile tiene colchón fiscal, Codelco está modernizado y el futuro se ve estable. El cobre baila, pero tú llevas la batuta.',
       scores: { cobre: 92, timing: 88, codelco: 80 },
       history:
         'Chile depende del cobre desde el siglo XIX. En los 2000, con precios históricos (superciclo 2003-2013), el país ahorró US$ 20.000 millones en fondos soberanos. Pero la tentación de gastar siempre gana: en 2014, cuando el precio cayó, el gasto fiscal no se ajustó y el déficit creció. La lección del cobre no es vender caro — es ahorrar cuando está caro.',
@@ -108,7 +108,7 @@ export default {
     partial: {
       id: 'partial',
       concept: 'volatilidadCobre',
-      headlineWin: 'SEDE BIEN, PERO TE FALTÓ RITMO PARA EL AGUANTE',
+      headlineWin: 'SE DEFIENDE, PERO TE FALTÓ RITMO PARA EL AGUANTE',
       resultText:
         'Tuviste momentos brillantes pero también te agarraron mal parado. Tal vez vendiste cuando el precio iba subiendo, o no invertiste en los momentos clave. Chile sobrevive pero sin el colchón que podría haber tenido. El cobre te bailó un poco — la próxima, mejor punteo.',
       scores: { cobre: 60, timing: 55, codelco: 50 },
@@ -123,7 +123,7 @@ export default {
         'El precio del cobre te llevó y te trajo como hoja al viento. Vendiste cuando estaba barato por miedo, te quedaste cuando estaba caro por ambición, y no invertiste en Codelco cuando había que hacerlo. El fisco terminó con déficit y la minería estancada. El cobre no perdona la falta de ritmo.',
       scores: { cobre: 22, timing: 25, codelco: 20 },
       history:
-        'La maldición de los recursos naturales es real cuando un país depende de un solo commoditie sin diversificar. Zambia, Nigeria y Venezuela lo sufrieron. Chile ha esquivado la peor parte — pero no porque el cobre sea diferente: porque hubo instituciones que contuvieron el desastre. Igual, cada ciclo de precios deja una lección: la paciencia y la disciplina son más importantes que el precio mismo.',
+        'La maldición de los recursos naturales es real cuando un país depende de un solo commodity sin diversificar. Zambia, Nigeria y Venezuela lo sufrieron. Chile ha esquivado la peor parte — pero no porque el cobre sea diferente: porque hubo instituciones que contuvieron el desastre. Igual, cada ciclo de precios deja una lección: la paciencia y la disciplina son más importantes que el precio mismo.',
     },
   },
   policies: [],

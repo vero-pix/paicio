@@ -13,6 +13,11 @@ import DailyPanel from './DailyPanel.jsx'
 // ─────────────────────────────────────────────────────────────────────────
 
 // Posiciones del zig-zag (bottom→top) para N episodios.
+// LÍMITE: soporta hasta 7 nodos (Crisis está justo en 7). Con más de 7 en una
+// línea, este `Math.min(count, 7)` deja sin posición a los extras y en el render
+// caen al centro (fallback {50,50}), encimándose. Si alguna línea va a crecer
+// por encima de 7, hay que reemplazar esta tabla por un layout generativo
+// (zig-zag paramétrico + path derivado), no agregar otro bloque a mano.
 function positionsFor(count) {
   const total = Math.min(count, 7)
   // `patterns` es triangular: primero el bloque de 1 nodo, luego el de 2, el de
@@ -25,8 +30,8 @@ function positionsFor(count) {
     { left: 25, top: 82 }, { left: 72, top: 48 }, { left: 47, top: 14 }, // 3
     { left: 25, top: 84 }, { left: 72, top: 60 }, { left: 25, top: 36 }, { left: 72, top: 12 }, // 4
     { left: 25, top: 85 }, { left: 72, top: 67 }, { left: 30, top: 47 }, { left: 74, top: 27 }, { left: 47, top: 9 }, // 5 (original)
-    { left: 50, top: 88 }, { left: 22, top: 74 }, { left: 72, top: 60 }, { left: 30, top: 46 }, { left: 74, top: 32 }, { left: 47, top: 18 }, // 6
-    { left: 50, top: 90 }, { left: 22, top: 77 }, { left: 72, top: 64 }, { left: 30, top: 51 }, { left: 74, top: 38 }, { left: 47, top: 25 }, { left: 72, top: 12 }, // 7
+    { left: 50, top: 88 }, { left: 25, top: 74 }, { left: 72, top: 60 }, { left: 30, top: 46 }, { left: 73, top: 32 }, { left: 47, top: 18 }, // 6
+    { left: 50, top: 90 }, { left: 25, top: 77 }, { left: 72, top: 64 }, { left: 30, top: 51 }, { left: 73, top: 38 }, { left: 47, top: 25 }, { left: 72, top: 12 }, // 7
   ]
   return patterns.slice(offset, offset + total)
 }

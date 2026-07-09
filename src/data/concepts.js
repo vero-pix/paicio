@@ -114,6 +114,11 @@ export const concepts = {
     short: 'Los mercados apuestan contra una moneda que creen sobrevaluada.',
     body: 'Si la paridad fija parece insostenible, los especuladores venden la moneda esperando la devaluación. Defenderla quema reservas (intervención) o empleo (tasas altas). Es una guerra de desgaste: tarde o temprano el banco central se queda sin munición.',
   },
+  terapiaShock: {
+    title: 'Terapia de shock',
+    short: 'Estabilizar de golpe: liberar precios, cortar subsidios y frenar la emisión, todo de una vez.',
+    body: 'En vez de ajustar gradualmente, se aplica todo junto y rápido para quebrar la inercia inflacionaria y recuperar credibilidad. Puede frenar la hiperinflación en seco, pero el costo social inicial es brutal: los precios se disparan al liberarse y el empleo cae. Perú lo vivió con el "Fujishock" de 1990.',
+  },
   trinidadImposible: {
     title: 'La trinidad imposible',
     short: 'No puedes tener a la vez tipo de cambio fijo, libre movimiento de capitales y política monetaria propia.',
@@ -140,6 +145,13 @@ export const concepts = {
     title: 'Ancla nominal',
     short: 'Un precio fijo (tipo de cambio, índice) que ancla las expectativas de inflación.',
     body: 'Si el Real se fija al dólar, la gente espera que los precios en reales se comporten como los precios en dólares. El ancla coordina expectativas y rompe la inercia — mientras sea creíble.',
+  },
+
+  // ── Episodio 14 — Pensiones: La Cuenta que Crece (modelos globales) ────
+  pensiones: {
+    title: 'Diseño de pensiones',
+    short: 'El resultado de un sistema de pensiones depende más de sus reglas que de cuánta plata entra.',
+    body: 'Con el mismo aporte, un sistema puede jubilar a la gente con el doble que otro. La diferencia está en el diseño: comisiones bajas, competencia real, inversión global diversificada y un pilar solidario para quien no alcanza a acumular. Australia, Canadá y Suecia lo demuestran.',
   },
 }
 

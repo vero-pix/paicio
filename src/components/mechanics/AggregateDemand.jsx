@@ -160,7 +160,7 @@ export default function AggregateDemand({ episode, dailySeed, onComplete, onConc
       {!over && !pendingEvent && (
         <div className="mt-4">
           <p className="font-nunito text-[0.72rem] font-extrabold uppercase tracking-wide text-ink-mute">
-            Elegí una política económica
+            Elige una política económica
           </p>
           <div ref={actionsRef} className="mt-2 space-y-2">
             {ACTIONS.map((a, i) => {

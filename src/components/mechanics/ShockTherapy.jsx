@@ -143,7 +143,7 @@ export default function ShockTherapy({ episode, dailySeed, onComplete, onConcept
 
       <div className="mt-2 flex items-center gap-2">
         <EduChip
-          conceptId="ataqueEspeculativo"
+          conceptId="terapiaShock"
           label="¿Qué es terapia de shock?"
           onSeen={onConceptSeen}
         />
