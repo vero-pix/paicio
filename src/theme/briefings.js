@@ -16,7 +16,7 @@ import { portraits } from '../assets/portraits.js'
 export const EPISODE_BRIEFINGS = {
   ep1: {
     mission:
-      'Frena la hiperinflación antes de que el peso se vuelva papel… o de que el pueblo te derroque.',
+      'La imprenta te tienta con alivio fácil, pero cada vez que la enciendes acercas el colapso. Sabe cuándo cortar y estabilizar.',
     antagonist: {
       portrait: portraits.presidente,
       name: 'El Presidente',

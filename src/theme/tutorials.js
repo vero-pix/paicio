@@ -16,29 +16,21 @@
 
 export const EPISODE_TUTORIALS = {
   ep1: {
-    goalChip: 'Frena la inflación antes del mes 8',
-    firstTurnHint: { action: 'ajuste', label: 'Empieza por aquí' },
+    goalChip: 'Consolida el máximo alivio… sin que reviente',
     steps: [
       {
         target: 'goal',
-        caption: 'Eres el ministro. Tu meta: frenar la hiperinflación en 8 meses.',
+        caption: 'Eres el ministro. La imprenta te tienta con alivio fácil, pero cada uso acerca el colapso.',
       },
       {
         target: 'meters',
-        caption: 'Vigila esto. Si la Inflación llega al tope o el Apoyo llega a 0, caes.',
+        caption: 'Imprimir sube el Alivio… y también el Riesgo de reventón. Si revienta, la moneda muere.',
       },
       {
         target: 'actions',
-        caption: 'Cada mes eliges UNA acción. Tócala para ver su efecto antes de confirmar.',
-      },
-      {
-        target: 'reforma',
-        caption: 'La Reforma frena la crisis… pero solo si la lanzas a tiempo. Ese es el reto.',
+        caption: 'Imprime por más alivio, o corta y estabiliza para consolidar lo ganado antes del colapso.',
       },
     ],
-    event: {
-      caption: '¡Imprevisto! Los eventos caen al azar. Reacciona y sigue tu plan.',
-    },
   },
 
   ep2: {

@@ -11,6 +11,7 @@ import AggregateDemand from './AggregateDemand.jsx'
 import MonetaryRule from './MonetaryRule.jsx'
 import VolatilityDance from './VolatilityDance.jsx'
 import PensionReform from './PensionReform.jsx'
+import PrintPress from './PrintPress.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // MechanicHost — despachador de la mecánica central de cada episodio.
@@ -39,10 +40,13 @@ const MECHANICS = {
   monetaryRule: MonetaryRule,
   volatilityDance: VolatilityDance,
   pensionReform: PensionReform,
+  pressYourLuck: PrintPress, // prototipo (archetipo #4), se enruta por episode.mechanicVariant
 }
 
 export default function MechanicHost({ episode, allies, dailySeed, onComplete, onConceptSeen }) {
-  const Mechanic = MECHANICS[episode.mechanic]
+  // `mechanicVariant` permite enrutar a un prototipo sin borrar `mechanic`
+  // (para poder comparar). Ej.: Ep1 con mechanicVariant: 'pressYourLuck'.
+  const Mechanic = MECHANICS[episode.mechanicVariant ?? episode.mechanic]
 
   if (!Mechanic) {
     // Salvaguarda: mecánica desconocida. No debería ocurrir.

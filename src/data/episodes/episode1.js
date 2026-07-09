@@ -39,8 +39,19 @@ export default {
   resumen: 'El dinero se quema en tus manos. El pan cuesta más al mediodía que en la mañana.',
   bloqueado: false,
 
-  // Mecánica central del episodio (ver src/utils/hyperinflation.js).
-  mechanic: 'hyperinflation',
+  // Mecánica de Ep1: "La Imprenta" / Presiona tu suerte (archetipo #4,
+  // push-your-luck; ver src/components/mechanics/PrintPress.jsx). Reemplazó a
+  // `hyperinflation`; el engine viejo (utils/hyperinflation.js, HyperInflation.jsx)
+  // queda en el repo por si hay que revertir vía git.
+  mechanic: 'pressYourLuck',
+  pressYourLuck: {
+    rondas: 8,
+    riesgoBase: 5, // % de reventar en la primera impresión
+    riesgoRampa: 12, // cuánto sube el riesgo por impresión
+    alivioBase: 20, // alivio de la primera impresión
+    alivioDecaimiento: 2, // cuánto rinde menos cada impresión
+    objetivoPozo: 65, // alivio consolidado para "perfect"
+  },
 
   // Periódico de la pantalla de celda.
   newspaper: {
