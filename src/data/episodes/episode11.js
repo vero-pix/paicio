@@ -11,6 +11,11 @@
 // La paradoja del ahorro, el multiplicador y el rol del déficit en crisis.
 //
 // Lógica en src/utils/aggregateDemand.js, UI en AggregateDemand.jsx.
+//
+// PROTOTIPO ACTIVO (verbo REPARTIR): `mechanicVariant: 'budgetFlow'` enruta a un
+// gesto de sliders — arrastras un presupuesto fijo entre palancas y el
+// multiplicador se ve en vivo. No borra aggregateDemand (respaldo por flag).
+// Lógica en src/utils/budgetFlow.js, UI en BudgetFlow.jsx.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -25,6 +30,7 @@ export default {
     'La economía está en el suelo. John Maynard Keynes te dice que gastes. Aprende por qué la demanda agregada es la llave para salir de una depresión.',
   bloqueado: false,
   mechanic: 'aggregateDemand',
+  mechanicVariant: 'budgetFlow',
   newspaper: {
     name: 'THE TIMES',
     dateline: 'LONDRES, 4 de febrero de 1936',
@@ -64,6 +70,61 @@ export default {
     inflacionInicial: 0.5,
     pibInicial: 80,
     deudaInicial: 40,
+  },
+  // Config del verbo REPARTIR (prototipo). Repartes un presupuesto fijo entre
+  // palancas con multiplicadores distintos: la lección es que la MISMA plata
+  // rinde más donde circula (obra/transferencias) y se fuga donde se ahorra.
+  budgetFlow: {
+    intro:
+      'Keynes se sienta a tu lado. "Tienes un presupuesto de estímulo. La pregunta no es cuánto gastar, sino DÓNDE. Cada peso que pongas donde la gente lo gaste, moverá más de un peso. Reparte."',
+    rondas: 3,
+    presupuesto: 100,
+    desempleoInicial: 24,
+    inflacionInicial: 1,
+    pibInicial: 78,
+    deudaInicial: 40,
+    repartoInicial: { obra: 34, transfer: 33, impuestos: 33 },
+    palancas: [
+      {
+        id: 'obra',
+        label: 'Obra pública',
+        icon: '🏗️',
+        desc: 'Carreteras, escuelas, hospitales. Empleo directo; cada sueldo se gasta y circula.',
+        multiplicador: 1.6,
+        efecto: { desempleo: -10, inflacion: 2, pib: 12, deuda: 10 },
+      },
+      {
+        id: 'transfer',
+        label: 'Transferencias',
+        icon: '🤝',
+        desc: 'Ayuda directa a las familias. Quien menos tiene gasta todo: circula al toque.',
+        multiplicador: 1.5,
+        efecto: { desempleo: -8, inflacion: 4, pib: 10, deuda: 7 },
+      },
+      {
+        id: 'impuestos',
+        label: 'Baja de impuestos',
+        icon: '✂️',
+        desc: 'Dejas más plata en el bolsillo… pero buena parte se ahorra y se fuga del circuito.',
+        multiplicador: 0.6,
+        efecto: { desempleo: -3, inflacion: 1, pib: 4, deuda: 6 },
+      },
+    ],
+    objetivo: { desempleoPerfect: 9, desempleoPartial: 16, inflacionMax: 12 },
+    eventos: [
+      {
+        ronda: 1,
+        titulo: 'Huelga general',
+        desc: 'El descontento social todavía pesa: el desempleo duele y la gente se organiza.',
+        efecto: { desempleo: 3 },
+      },
+      {
+        ronda: 2,
+        titulo: 'La Bolsa reacciona',
+        desc: 'Tus medidas dan señales: vuelve algo de confianza y el crédito empieza a fluir.',
+        efecto: { pib: 5, inflacion: 1 },
+      },
+    ],
   },
   eventos: [
     {

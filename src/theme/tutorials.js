@@ -174,7 +174,7 @@ export const EPISODE_TUTORIALS = {
 
   ep11: {
     goalChip: 'Baja el desempleo sin disparar inflación',
-    firstTurnHint: { action: 'gastoPublico', label: 'Keynes recomienda gastar' },
+    firstTurnHint: { action: 'obra', label: 'Keynes recomienda gastar donde circula' },
     steps: [
       {
         target: 'meters',
@@ -182,7 +182,8 @@ export const EPISODE_TUTORIALS = {
       },
       {
         target: 'actions',
-        caption: 'Gasto público, tasas, impuestos o confianza — cada herramienta tiene su costo.',
+        caption:
+          'Arrastra para repartir el presupuesto. La misma plata rinde más donde circula (obra, transferencias) que donde se ahorra (baja de impuestos).',
       },
     ],
   },

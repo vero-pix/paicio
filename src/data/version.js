@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.29.0'
+export const APP_VERSION = '0.30.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.30.0',
+    fecha: '9 jul 2026',
+    cambios: [
+      '🎚️ Nuevo verbo en "La Demanda Agregada" (Keynes): REPARTIR. En vez de tocar botones, arrastras las fronteras de una barra para dividir un presupuesto fijo entre obra pública, transferencias y baja de impuestos. El multiplicador se ve en vivo: la misma plata rinde más donde circula y se fuga donde se ahorra.',
+    ],
+  },
   {
     version: '0.29.0',
     fecha: '9 jul 2026',
