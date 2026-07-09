@@ -3,6 +3,14 @@ import HyperInflation from './HyperInflation.jsx'
 import BankRun from './BankRun.jsx'
 import SpeculativeAttack from './SpeculativeAttack.jsx'
 import Expectations from './Expectations.jsx'
+import ShockTherapy from './ShockTherapy.jsx'
+import PinFactory from './PinFactory.jsx'
+import AssemblyLine from './AssemblyLine.jsx'
+import SurplusValue from './SurplusValue.jsx'
+import AggregateDemand from './AggregateDemand.jsx'
+import MonetaryRule from './MonetaryRule.jsx'
+import VolatilityDance from './VolatilityDance.jsx'
+import PensionReform from './PensionReform.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // MechanicHost — despachador de la mecánica central de cada episodio.
@@ -23,6 +31,14 @@ const MECHANICS = {
   bankRun: BankRun,
   speculativeAttack: SpeculativeAttack,
   expectations: Expectations,
+  shockTherapy: ShockTherapy,
+  pinFactory: PinFactory,
+  assemblyLine: AssemblyLine,
+  surplusValue: SurplusValue,
+  aggregateDemand: AggregateDemand,
+  monetaryRule: MonetaryRule,
+  volatilityDance: VolatilityDance,
+  pensionReform: PensionReform,
 }
 
 export default function MechanicHost({ episode, allies, dailySeed, onComplete, onConceptSeen }) {

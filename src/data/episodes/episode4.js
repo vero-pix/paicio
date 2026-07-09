@@ -13,6 +13,7 @@
 export default {
   id: 'ep4',
   numero: 4,
+  line: 'crisis',
   titulo: 'La Década Perdida',
   año: 1987,
   crisisHistorica: 'Inflación crónica y planes fallidos en serie',

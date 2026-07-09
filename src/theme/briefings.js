@@ -59,6 +59,92 @@ export const EPISODE_BRIEFINGS = {
       quote: '"Es tu última bala, ministro. Si fallas, nadie volverá a intentarlo."',
     },
   },
+  ep6: {
+    mission:
+      'Defiende el peso sin quemar todas las reservas, consigue el rescate internacional y suelta la paridad a tiempo.',
+    antagonist: {
+      portrait: portraits.presidente,
+      name: 'El Presidente saliente',
+      quote: '"El peso es fuerte, Secretario. Solo necesita un poco más de confianza… confianza."',
+    },
+  },
+  ep7: {
+    mission:
+      'Aplica el shock justo: mata la hiperinflación sin que el costo social reviente al país.',
+    antagonist: {
+      portrait: portraits.presidenteReal,
+      name: 'El Presidente electo',
+      quote: '"No me importa lo que prometí en campaña. Esto es lo que hay que hacer. Hágalo."',
+    },
+  },
+  ep8: {
+    mission:
+      'Acompaña a Adam Smith por la fábrica de alfileres y descubre por qué la división del trabajo es la clave de la riqueza.',
+    antagonist: {
+      portrait: portraits.presidenteReal,
+      name: 'Adam Smith',
+      quote: '"Permitidme observar vuestro taller, buen hombre. He oído que fabricáis alfileres."',
+    },
+  },
+  ep9: {
+    mission:
+      'Lleva la producción del Model T de 12 horas a 93 minutos por auto y democratiza el automóvil.',
+    antagonist: {
+      portrait: portraits.presidente,
+      name: 'Henry Ford',
+      quote: '"Cualquier cliente puede tener un auto del color que quiera, siempre que sea negro."',
+    },
+  },
+
+  ep10: {
+    mission:
+      'Descubre la plusvalía: la fuerza invisible que hace funcionar el capitalismo. Marx te guiará.',
+    antagonist: {
+      portrait: portraits.presidenteReal,
+      name: 'Karl Marx',
+      quote: '"El trabajador solo es rico mientras más valor produce de lo que cuesta mantenerlo. Esa diferencia es la plusvalía."',
+    },
+  },
+
+  ep11: {
+    mission:
+      'La economía está en el suelo. Aplica las ideas de Keynes y reactiva la demanda agregada.',
+    antagonist: {
+      portrait: portraits.tecnocrata,
+      name: 'John M. Keynes',
+      quote: '"El problema no es la producción. Es la demanda. Si la gente no gasta, el gobierno debe hacerlo."',
+    },
+  },
+
+  ep12: {
+    mission:
+      'Domina la inflación con la regla monetaria de Friedman. Cada decisión de oferta de dinero afecta las expectativas de todos.',
+    antagonist: {
+      portrait: portraits.banqueroDeuda,
+      name: 'Milton Friedman',
+      quote: '"La inflación es siempre y en todo lugar un fenómeno monetario."',
+    },
+  },
+
+  ep13: {
+    mission:
+      'El cobre es el sueldo de Chile. Aprendé a bailar con su precio: vendé cuando está arriba, aguantá cuando está abajo e invertí cuando hay viento a favor.',
+    antagonist: {
+      portrait: portraits.trabajadorChile,
+      name: 'El Precio del Cobre',
+      quote: '"No me importa tu presupuesto fiscal. Yo bailo solo."',
+    },
+  },
+
+  ep14: {
+    mission:
+      'Misma plata, sistemas distintos, resultados muy diferentes. Descubrí por qué Australia, Canadá y Suecia tienen las pensiones que funcionan — y cómo llevar esas ideas a tu país.',
+    antagonist: {
+      portrait: portraits.tecnocrata,
+      name: 'El Diseñador',
+      quote: '"El sistema no falla porque falte plata. Falla porque está mal diseñado. Las reglas lo son todo."',
+    },
+  },
 }
 
 const FALLBACK = EPISODE_BRIEFINGS.ep1

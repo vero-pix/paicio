@@ -103,6 +103,140 @@ export const EPISODE_TUTORIALS = {
       },
     ],
   },
+
+  ep6: {
+    goalChip: 'Suelta la paridad a tiempo con el rescate',
+    firstTurnHint: { action: 'intervenir', label: 'Defiende primero' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Defender el peso quema Reservas o Empleo. Si cualquiera se agota, la caída es caótica.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada ronda eliges cómo responder. El rescate del Tesoro te da aire, pero no para siempre.',
+      },
+    ],
+    event: {
+      caption: '¡Shock político! Asesinatos, insurgencias y corridas. Aguanta y decide.',
+    },
+  },
+
+  ep7: {
+    goalChip: 'Mata la inflación sin que reviente el país',
+    firstTurnHint: { action: 'shockTotal', label: 'Aprieta fuerte' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Baja la Inflación (bueno) sin agotar el Apoyo social (malo). La deriva inflacionaria sube sola cada ronda.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada ronda eliges la intensidad del shock. Más agresivo mata la inflación más rápido pero quema apoyo.',
+      },
+    ],
+    event: {
+      caption: '¡Crisis social! Sendero, cólera y paros caen al azar. El shock tiene consecuencias.',
+    },
+  },
+  ep8: {
+    steps: [
+      {
+        target: 'actions',
+        caption: 'Cada paso, Smith te hace una pregunta. Elige con cuidado: tus decisiones deciden cuánto produce la fábrica.',
+      },
+    ],
+  },
+
+  ep9: {
+    goalChip: 'Llega a 93 minutos por auto',
+    firstTurnHint: { action: 'lineaMontaje', label: 'Empieza con la línea' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Baja el Tiempo por auto sin disparar el Costo. La línea de montaje transforma todo.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada ronda eliges una innovación. Cada una mejora el tiempo a cambio de costo o inversión.',
+      },
+    ],
+    event: {
+      caption: '¡Imprevisto industrial! Rotación, demanda y competencia cambian el juego.',
+    },
+  },
+
+  ep10: {
+    goalChip: 'Acumula capital sin perder la fábrica',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Equilibra el Capital (tu ganancia) con la Moral obrera. Si una llega a cero, perdiste.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada acción te da capital a costa de la moral — o viceversa. Elige sabiamente.',
+      },
+    ],
+  },
+
+  ep11: {
+    goalChip: 'Baja el desempleo sin disparar inflación',
+    firstTurnHint: { action: 'gastoPublico', label: 'Keynes recomienda gastar' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Vigila Desempleo e Inflación. Si una se dispara, perdiste.',
+      },
+      {
+        target: 'actions',
+        caption: 'Gasto público, tasas, impuestos o confianza — cada herramienta tiene su costo.',
+      },
+    ],
+  },
+
+  ep12: {
+    goalChip: 'Domina la inflación sin causar recesión',
+    firstTurnHint: { action: 'reglaK', label: 'Friedman dice: regla k%' },
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Inflación, Desempleo, Expectativas y Credibilidad. Las expectativas son el termómetro de tu credibilidad.',
+      },
+      {
+        target: 'actions',
+        caption: 'Expandir da empleo hoy pero sube expectativas. Regla k% estabiliza. Contraer frena inflación pero duele.',
+      },
+    ],
+  },
+
+  ep13: {
+    goalChip: 'Acumula cobre vendiendo en el momento justo',
+    steps: [
+      {
+        target: 'actions',
+        caption: 'Cada ronda elegís cómo vender. La barra se mueve sola: hacé clic cuando esté en la zona dorada.',
+      },
+      {
+        target: 'meters',
+        caption: '¡Cuidado! El timing lo es todo. Muy temprano o muy tarde y el precio se te va.',
+      },
+    ],
+  },
+
+  ep14: {
+    goalChip: 'Llevá la tasa de reemplazo al 70%+',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Tasa de reemplazo, cobertura, confianza y fondo. Todo importa. No descuides ninguno.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada reforma tiene efectos distintos. Algunas son impopulares pero necesarias. Otras son fáciles pero insuficientes.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null

@@ -2,9 +2,89 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.16.0'
+export const APP_VERSION = '0.24.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.24.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🧭 Nueva línea: "El Norte" — los modelos que funcionan.',
+      '🏦 Episodio 14: "La Cuenta que Crece" — reforma de pensiones. Seguí el diseño que hizo funcionar a Australia, Canadá y Suecia para construir un sistema que sí sirva.',
+      '📐 Mecánica nueva: pensionReform. Elegí entre 6 reformas estructurales en 8 rondas, con métricas en paralelo (tasa de reemplazo, cobertura, confianza, fondo, costo fiscal).',
+    ],
+  },
+  {
+    version: '0.23.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🇨🇱 Nueva línea: "Chile" — el país como laboratorio económico.',
+      '🪙 Episodio 13: "La Cueca del Cobre" — un rhythm game donde bailás con el precio del cobre. Vendé en el momento exacto, invertí en Codelco y aguantá la volatilidad.',
+      '🎮 Mecánica NUEVA: volatilityDance. Una barra oscila como el precio del cobre; clic en la zona dorada para vender al mejor precio. Primera mecánica de reflejos en PAICIO.',
+    ],
+  },
+  {
+    version: '0.22.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🏛️ Orígenes completo: 5 episodios de historia del pensamiento económico.',
+      '📏 Episodio 12: "La Regla Monetaria" — Milton Friedman, Estocolmo 1976. Controlá la inflación con política monetaria y expectativas.',
+      '📐 Mecánica nueva: monetaryRule. Oferta de dinero, credibilidad y la famosa regla k% de Friedman.',
+    ],
+  },
+  {
+    version: '0.21.1',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🔄 Orígenes reordenado cronológicamente: Smith 1776 → Marx 1867 → Ford 1913 → Keynes 1936.',
+      '🎵 Humor musical propio para episodios 6–11: cada crisis suena distinto (urgente, áspero, sereno, mecánico, tenso, melancólico).',
+      '🇨🇱 Todo el texto del juego corregido a español chileno neutral (sin voseo argentino).',
+    ],
+  },
+  {
+    version: '0.21.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '📖 Dos episodios nuevos en Orígenes: Marx y Keynes completan el arco de historia del pensamiento económico.',
+      '⚒️ Episodio 10: "La Plusvalía" — Karl Marx, Manchester 1867. Equilibra la explotación y la estabilidad en una fábrica textil. Acumula capital sin que los obreros se rebelen.',
+      '📈 Episodio 11: "La Demanda Agregada" — John M. Keynes, Cambridge 1936. Reactiva la economía con gasto público, tasas de interés y confianza. Sal de la Gran Depresión sin disparar la inflación.',
+      '🏠 Portada rediseñada: selector de líneas con hero, animaciones y mejor navegación. Botones "← Mapa" e "⌂ Inicio" durante el juego.',
+    ],
+  },
+  {
+    version: '0.20.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🏭 Nuevo episodio en Orígenes: "La Línea de Montaje". Henry Ford, Highland Park 1913. Lleva el Model T de 12 horas a 93 minutos.',
+      '🚗 Aprende producción en masa, economías de escala e integración vertical mientras diriges la fábrica más productiva del mundo.',
+      '👷 El salario de $5 al día, la línea móvil y la estandarización de piezas — cada innovación tiene su costo y su recompensa.',
+    ],
+  },
+  {
+    version: '0.19.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '📜 Nueva línea: "Orígenes" — viaja a 1776 con Adam Smith y descubre la fábrica de alfileres. La división del trabajo, en vivo.',
+      '📌 Episodio 8: "La Fábrica de Alfileres" — demostración interactiva. Aprende por qué la especialización multiplica la producción.',
+      '⭐ Sistema de progresión: cada episodio te da 1-3 estrellas. Acumula 6 para desbloquear la línea "Orígenes".',
+      '🗺️ Selector de líneas: el mapa de crisis ahora es parte de un menú más grande con múltiples líneas de contenido.',
+    ],
+  },
+  {
+    version: '0.18.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🇵🇪 Nuevo episodio: Perú 1990 — El Fujishock. Mecánica nueva de "Terapia de Shock": eliges la intensidad del ajuste para matar la hiperinflación sin que la sociedad reviente. Sendero Luminoso, cólera, dólar paralelo y el rescate del FMI.',
+      '🇲🇽 México 1994 — El Efecto Tequila ya disponible en el mapa de crisis.',
+    ],
+  },
+  {
+    version: '0.17.0',
+    fecha: '8 jul 2026',
+    cambios: [
+      '🇲🇽 Nuevo episodio: México 1994 — El Efecto Tequila. Defiende la paridad del peso ante la fuga de capitales, el magnicidio de Colosio, la insurgencia en Chiapas y los Tesobonos. Reintroduce el rescate internacional más grande de la historia.',
+    ],
+  },
   {
     version: '0.16.0',
     fecha: '3 jul 2026',

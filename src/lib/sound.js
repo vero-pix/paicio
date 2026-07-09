@@ -234,6 +234,13 @@ const MOODS = {
   ep3: { root: 130.8, cutoff: 600, q: 3 }, // Chile — frío
   ep4: { root: 87.3, cutoff: 420, q: 5 }, // Brasil crónico — pesado
   ep5: { root: 146.8, cutoff: 700, q: 3 }, // Plan Real — algo de esperanza
+  ep6:  { root: 103.8, cutoff: 500, q: 5 },  // México 94 — urgente
+  ep7:  { root:  92.5, cutoff: 440, q: 6 },  // Perú 90 — shock, áspero
+  ep8:  { root: 164.8, cutoff: 780, q: 2 },  // Smith 1776 — sereno
+  ep9:  { root: 123.5, cutoff: 640, q: 3 },  // Ford 1913 — pulso mecánico
+  ep10: { root:  82.4, cutoff: 400, q: 5 },  // Marx 1867 — gris, tenso
+  ep11: { root: 138.6, cutoff: 660, q: 3 },  // Keynes 1936 — melancólico/esperanza
+  ep12: { root: 130.8, cutoff: 620, q: 4 },  // Friedman 1976 — tenso, disciplinado
   menu: { root: 116.5, cutoff: 560, q: 3 },
 }
 

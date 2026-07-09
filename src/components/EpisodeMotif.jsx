@@ -62,6 +62,106 @@ const MOTIFS = {
       <path d="M30 11l4 3-4 3" />
     </>
   ),
+  ep6: (
+    <>
+      {/* águila (símbolo nacional) */}
+      <path d="M24 9l2 3h4l-3 2 1 4-4-2-4 2 1-4-3-2h4z" />
+      {/* serpiente en el pico */}
+      <path d="M28 13c2 1 3 5 2 7s-3 2-4 0" />
+      {/* nopal */}
+      <path d="M8 28l3-8 2 2 2-4 2 3 2-2 1 4 1 2 1 4" />
+      <path d="M8 28H5v5h18v-5h-3" />
+      <ellipse cx="14" cy="36" rx="7" ry="2" />
+    </>
+  ),
+  ep7: (
+    <>
+      {/* rayo (shock) */}
+      <path d="M26 7 14 24h7l-3 12 8-14h-5z" />
+      {/* sol andino / moneda Inti */}
+      <circle cx="24" cy="28" r="9" />
+      <path d="M17 20c3-4 8-4 11-1" />
+      <path d="M28 35c-3 4-8 4-11 1" />
+      <path d="M14 25c-1 3 0 7 2 9" />
+      <path d="M33 27c1 4 0 7-2 9" />
+    </>
+  ),
+  ep12: (
+    <>
+      {/* ábaco o regla (Friedman) */}
+      <rect x="6" y="30" width="36" height="4" rx="1" />
+      <rect x="6" y="24" width="36" height="4" rx="1" />
+      <rect x="6" y="18" width="36" height="4" rx="1" />
+      <rect x="6" y="12" width="36" height="4" rx="1" />
+      <rect x="4" y="10" width="2" height="28" rx="1" />
+    </>
+  ),
+  ep13: (
+    <>
+      {/* barra de precio + onda sinusoidal (cobre) */}
+      <rect x="4" y="28" width="40" height="6" rx="2" />
+      <path d="M4 22 Q12 8 20 22 Q28 36 36 22 Q40 14 44 22" />
+      <circle cx="20" cy="22" r="2" />
+    </>
+  ),
+  ep14: (
+    <>
+      {/* gráfico de crecimiento exponencial (interés compuesto) */}
+      <path d="M4 40 Q8 38 14 34 Q22 28 28 18 Q34 8 44 4" strokeWidth="1.5" />
+      <circle cx="44" cy="4" r="2" fill="currentColor" />
+      {/* monedas apiladas */}
+      <rect x="8" y="36" width="4" height="4" rx="0.5" />
+      <rect x="8" y="32" width="4" height="4" rx="0.5" />
+      <rect x="8" y="28" width="4" height="4" rx="0.5" />
+      {/* línea base */}
+      <path d="M4 42h40" strokeWidth="0.6" />
+    </>
+  ),
+  ep8: (
+    <>
+      {/* pluma (Smith escribiendo) */}
+      <path d="M8 36c6-8 14-16 18-20 2-2 5-1 6 1s1 5-1 7c-4 4-12 12-20 18l-5-2z" />
+      <path d="M28 14l4 4" />
+      {/* libro */}
+      <path d="M16 21a16 16 0 0 1 8-5 16 16 0 0 1 8 5v12a16 16 0 0 0-8-4 16 16 0 0 0-8 4z" />
+      {/* líneas de texto */}
+      <path d="M10 17h6M10 21h6M10 25h6" />
+    </>
+  ),
+  ep9: (
+    <>
+      {/* auto (Model T) */}
+      <rect x="10" y="28" width="28" height="10" rx="2" />
+      <circle cx="15" cy="39" r="3.5" />
+      <circle cx="33" cy="39" r="3.5" />
+      <path d="M8 28L14 16h20l6 12" />
+      {/* línea de montaje debajo */}
+      <path d="M6 45h36" strokeWidth="2" />
+      <path d="M10 44.5l3 2M20 44.5l3 2M30 44.5l3 2" />
+    </>
+  ),
+  ep10: (
+    <>
+      {/* martillo (Marx) */}
+      <rect x="18" y="14" width="12" height="4" rx="1" />
+      <rect x="22" y="10" width="4" height="16" />
+      {/* yunque debajo */}
+      <path d="M10 34h28l-6 6H16z" />
+    </>
+  ),
+  ep11: (
+    <>
+      {/* gráfico de demanda creciente (Keynes) */}
+      <path d="M8 38L18 28l8 4 14-18" />
+      <circle cx="18" cy="28" r="2" />
+      <circle cx="26" cy="32" r="2" />
+      <circle cx="40" cy="14" r="2" />
+      {/* eje X */}
+      <path d="M6 40h38" strokeWidth="0.8" />
+      {/* etiqueta "Y" */}
+      <path d="M26 40v-4" />
+    </>
+  ),
 }
 
 export default function EpisodeMotif({ id, className = '' }) {

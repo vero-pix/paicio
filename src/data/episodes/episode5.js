@@ -17,6 +17,7 @@
 export default {
   id: 'ep5',
   numero: 5,
+  line: 'crisis',
   titulo: 'El Plan Real de Paicio',
   año: 1994,
   crisisHistorica: 'La oportunidad de terminar la inflación crónica',

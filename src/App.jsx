@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useGameState } from './hooks/useGameState.js'
+import { useProgression } from './hooks/useProgression.js'
 import { playMusic, stopMusic, isDecisionMusic } from './lib/sound.js'
 import { useInflation } from './hooks/useInflation.js'
-import { episodesById } from './data/episodes/index.js'
+import { episodes, episodesById } from './data/episodes/index.js'
 
 import Intro from './components/Intro.jsx'
 import WelcomeOverlay from './components/WelcomeOverlay.jsx'
 import EpisodeSelect from './components/EpisodeSelect.jsx'
+import LineSelect from './components/LineSelect.jsx'
 import InflationTicker from './components/InflationTicker.jsx'
 import Cell from './components/Cell.jsx'
 import Outcome from './components/Outcome.jsx'
@@ -27,26 +29,35 @@ export default function App() {
     backToSelect,
   } = useGameState()
 
-  // Inicia el Reto Diario: episodio y semilla del día (desde DailyPanel).
+  const { save, totalStars } = useProgression()
+  const [activeLine, setActiveLine] = useState(null)
+
+  // Va a la portada (LineSelect).
+  const goToHome = useCallback(() => {
+    setActiveLine(null)
+    backToSelect()
+  }, [backToSelect])
+
+  // Inicia el Reto Diario.
   const handleStartDaily = (ep, iso) => startDaily(ep, iso, dailySeed(iso))
 
-  // Episodio activo (null en la pantalla de selección).
+  // Episodio activo.
   const episode = state.episodeId ? episodesById[state.episodeId] : null
 
-  // Música por fase (crossfade entre pistas; nunca toca el estado del juego).
-  //  · menú/selector → 'menu'
-  //  · pantalla de decisión (mecánica, fase que renderiza MechanicHost) →
-  //    'decision' (más tensa). Si decision.mp3 no existe, se mantiene la del
-  //    episodio (fallback, no rompe).
-  //  · resto (briefing/celda, desenlace) → música del episodio.
+  // Guarda progreso al completar un episodio.
+  function handleComplete(outcomeId, meta) {
+    if (state.episodeId) {
+      save(state.episodeId, outcomeId, meta?.score)
+    }
+    choosePolicy(outcomeId, [], meta)
+  }
+
+  // Música por fase.
   useEffect(() => {
     if (state.phase === 'select' || !state.episodeId) {
       playMusic('menu')
       return undefined
     }
-    // Toda mecánica corre en la fase 'negotiation'. En la partida suena la pista
-    // de decisión (lounge, on por defecto); si el jugador la apaga, queda la
-    // música ambiente del episodio.
     const inMechanic = state.phase === 'negotiation'
     if (inMechanic && isDecisionMusic()) {
       playMusic('decision', { fallbackToAmbient: false })
@@ -57,8 +68,7 @@ export default function App() {
   }, [state.phase, state.episodeId])
   useEffect(() => () => stopMusic(), [])
 
-  // Introducción: se muestra una vez por navegador. Se puede volver a ver
-  // desde el selector con el enlace "¿Qué es PAICIO?".
+  // Introducción: se muestra una vez por navegador.
   const [showIntro, setShowIntro] = useState(() => {
     try {
       return localStorage.getItem('paicio.introSeen') !== '1'
@@ -69,14 +79,11 @@ export default function App() {
   function dismissIntro() {
     try {
       localStorage.setItem('paicio.introSeen', '1')
-    } catch {
-      /* localStorage no disponible: la intro no se vuelve a ocultar, no es crítico */
-    }
+    } catch { /* no crítico */ }
     setShowIntro(false)
   }
 
-  // Capa de bienvenida para testers: se muestra una vez por navegador. Al
-  // entrar, marca también la intro como vista para no encimar dos portones.
+  // Bienvenida para testers.
   const [showWelcome, setShowWelcome] = useState(() => {
     try {
       return localStorage.getItem('paicio.welcome.v1') !== '1'
@@ -88,14 +95,12 @@ export default function App() {
     try {
       localStorage.setItem('paicio.welcome.v1', '1')
       localStorage.setItem('paicio.introSeen', '1')
-    } catch {
-      /* localStorage no disponible: no es crítico */
-    }
+    } catch { /* no crítico */ }
     setShowWelcome(false)
     setShowIntro(false)
   }
 
-  // El ticker corre durante la mecánica; se congela en celda y desenlace.
+  // Ticker.
   const tickerActive = state.phase === 'negotiation'
   const ticker = episode?.ticker
   const { price, hyperinflation } = useInflation({
@@ -107,18 +112,26 @@ export default function App() {
 
   const allies = state.allies
 
-  // FASE 0 — Selector de episodios (precedido por la intro la primera vez)
+  // ── FASE 0 — Selección de línea o episodio ──────────────────────────
   if (state.phase === 'select' || !episode) {
     return (
       <div className="min-h-full">
         {showWelcome && <WelcomeOverlay onEnter={dismissWelcome} />}
         {showIntro ? (
           <Intro onEnter={dismissIntro} />
+        ) : !activeLine ? (
+          <LineSelect
+            onSelect={setActiveLine}
+            totalStars={totalStars}
+          />
         ) : (
           <EpisodeSelect
+            line={activeLine}
+            episodes={episodes.filter((e) => e.line === activeLine)}
             onSelect={startEpisode}
             onShowIntro={() => setShowIntro(true)}
             onStartDaily={handleStartDaily}
+            onBack={() => setActiveLine(null)}
           />
         )}
         <VersionBadge />
@@ -126,22 +139,28 @@ export default function App() {
     )
   }
 
-  // El ticker global de inflación solo aplica a la secuencia (Ep5), que no trae
-  // HUD propio. Las demás mecánicas (corrida, paridad, expectativas,
-  // hiperinflación) renderizan su propio HUD interno.
+  // Ticker global (solo Ep5).
   const showTicker = state.phase !== 'cell' && episode.mechanic === 'sequence'
 
   return (
     <div className="min-h-full">
       {showWelcome && <WelcomeOverlay onEnter={dismissWelcome} />}
-      {/* Barra de navegación: volver al menú de episodios desde cualquier fase. */}
-      <div className="mx-auto flex max-w-md items-center px-3 pt-3 pb-1">
+
+      {/* Barra de navegación */}
+      <div className="mx-auto flex max-w-md items-center gap-2 px-3 pt-3 pb-1">
         <button
           type="button"
           onClick={backToSelect}
           className="shadow-card flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 font-nunito text-[0.66rem] font-extrabold uppercase tracking-wide text-ink-soft transition-colors hover:text-ink-warm"
         >
-          ⌂ Episodios
+          ← Mapa
+        </button>
+        <button
+          type="button"
+          onClick={goToHome}
+          className="shadow-card flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 font-nunito text-[0.66rem] font-extrabold uppercase tracking-wide text-ink-soft transition-colors hover:text-ink-warm"
+        >
+          ⌂ Inicio
         </button>
       </div>
 
@@ -158,14 +177,13 @@ export default function App() {
       {/* FASE 1 — Celda */}
       {state.phase === 'cell' && <Cell episode={episode} onStart={startGame} />}
 
-      {/* FASE 2 — La mecánica central del episodio, autocontenida.
-          Termina llamando choosePolicy(outcomeId, meta) → desenlace. */}
+      {/* FASE 2 — Mecánica */}
       {state.phase === 'negotiation' && (
         <MechanicHost
           episode={episode}
           allies={allies}
           dailySeed={state.daily?.seed}
-          onComplete={(outcomeId, meta) => choosePolicy(outcomeId, [], meta)}
+          onComplete={(outcomeId, meta) => handleComplete(outcomeId, meta)}
           onConceptSeen={markConceptSeen}
         />
       )}

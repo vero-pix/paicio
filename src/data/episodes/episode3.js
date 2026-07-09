@@ -18,6 +18,7 @@
 export default {
   id: 'ep3',
   numero: 3,
+  line: 'crisis',
   titulo: 'El Milagro que No Fue',
   año: 1982,
   crisisHistorica: 'Colapso del modelo tras el boom',

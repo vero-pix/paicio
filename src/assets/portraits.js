@@ -45,4 +45,24 @@ export const portraits = {
   ministro, indexador, empresario, congreso,
   // Ep5
   economistaJoven, presidenteReal, puebloReal, mercadoReal,
+  // Ep7 — Perú (retratos pendientes: reusa ep3/ep4 como placeholder)
+  tecnico_peru: tecnocrata,
+  social_peru: empresario,
+  empresario_peru: banqueroDeuda,
+  militar_peru: congreso,
+  // Ep9 — Ford (retratos pendientes)
+  ford: presidenteReal,
+  ingeniero: tecnocrata,
+  obrero: trabajadorChile,
+  proveedor: banqueroDeuda,
+  // Ep10 — Marx
+  marx: presidenteReal,
+  // Ep11 — Keynes
+  keynes: tecnocrata,
+  // Ep12 — Friedman
+  friedman: banqueroDeuda,
+  // Ep13 — Cobre
+  precioCobre: trabajadorChile,
+  // Ep14 — Pensiones
+  diseniador: tecnocrata,
 }

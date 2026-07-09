@@ -31,6 +31,7 @@
 export default {
   id: 'ep1',
   numero: 1,
+  line: 'crisis',
   titulo: 'La Gran Quema',
   año: 1985,
   crisisHistorica: 'Hiperinflación',

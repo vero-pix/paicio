@@ -12,6 +12,7 @@
 export default {
   id: 'ep2',
   numero: 2,
+  line: 'crisis',
   titulo: 'El Corralito de Paicio',
   año: 2001,
   crisisHistorica: 'Corrida bancaria y congelamiento de depósitos',

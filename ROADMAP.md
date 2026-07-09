@@ -56,6 +56,34 @@ compartidas (`utils/gameLayer.js` + `hooks/useGameLayer.js` + `useTutorial.js`).
 
 ---
 
+## ✅ Orígenes — línea de historia del pensamiento económico
+
+**Episodio 8 — Adam Smith 1776: La Fábrica de Alfileres** ✅ AGREGADO
+- Mecánica: **pinFactory** (demostración interactiva guiada, 7 pasos).
+- Lección: división del trabajo, especialización, productividad.
+
+**Episodio 9 — Henry Ford 1913: La Línea de Montaje** ✅ AGREGADO
+- Mecánica: **assemblyLine** (mejora continua, 6 rondas, 4 acciones).
+- Lección: producción en masa, economías de escala, integración vertical, salarios de eficiencia.
+- Highland Park, Model T ($5/day, línea móvil, estandarización).
+
+**Episodio 10 — Karl Marx 1867: La Plusvalía** ✅ AGREGADO
+- Mecánica: **surplusValue** (gestión de capital vs. moral obrera, 6 rondas, 4 acciones).
+- Lección: plusvalía, explotación, acumulación de capital, lucha de clases.
+- Manchester, El Capital (jornada, salario, maquinaria, concesiones).
+
+**Episodio 11 — John M. Keynes 1936: La Demanda Agregada** ✅ AGREGADO
+- Mecánica: **aggregateDemand** (política fiscal y monetaria, 6 rondas, 4 acciones).
+- Lección: demanda agregada, multiplicador keynesiano, rol del gasto público en depresiones.
+- Cambridge, Teoría General (gasto público, tasas, impuestos, confianza).
+
+**Episodio 12 — Milton Friedman 1976: La Regla Monetaria** ✅ AGREGADO
+- Mecánica: **monetaryRule** (política monetaria y expectativas, 8 rondas, 4 acciones).
+- Lección: la inflación es un fenómeno monetario, regla k%, expectativas adaptativas, credibilidad.
+- Estocolmo, Premio Nobel (expandir, contraer, mantener, anunciar).
+
+## ✅ Orígenes completa — 5 episodios de historia del pensamiento económico
+
 ## 🎯 Ahora — VALIDAR antes de expandir
 El lote existía para arreglar el gancho. Antes de construir más contenido, medir
 con testers si el loop ya engancha/retiene (completan el loop, usan combos,
@@ -70,7 +98,7 @@ reintentan, vuelven al Reto Diario). Esta señal es el gate a V2.
 
 ### Nuevos episodios LatAm (solo tras validar que el loop es divertido)
 
-**México 1994 — Efecto Tequila**
+**México 1994 — Efecto Tequila** ✅ AGREGADO (Episodio 6)
 - Crisis: fuga de capitales y devaluación del peso (el "error de diciembre").
 - Mecánica: **defender la paridad** (reusa speculativeAttack) — aguantar reservas
   vs. devaluar a tiempo.
@@ -79,11 +107,11 @@ reintentan, vuelven al Reto Diario). Esta señal es el gate a V2.
 - Lección: crisis de balanza de pagos / *sudden stop*; el costo de sostener una
   paridad insostenible.
 
-**Perú 1990 — Fujishock**
+**Perú 1990 — Fujishock** ✅ AGREGADO (Episodio 7)
 - Crisis: hiperinflación (~7.650% en 1990) frenada por estabilización de shock
   (agosto 1990).
-- Mecánica: NO repetir "La Imprenta" de Bolivia — ángulo de **terapia de shock**:
-  velocidad del ajuste vs. costo social (variante nueva o sobre expectativas).
+- Mecánica: **terapia de shock** (mecánica nueva) — velocidad del ajuste vs.
+  costo social. El jugador elige la intensidad del shock cada ronda.
 - Eventos: Sendero Luminoso, brote de cólera, fin de subsidios, dolarización,
   reinserción financiera.
 - Lección: estabilización heterodoxa fallida vs. shock ortodoxo; el trade-off social.

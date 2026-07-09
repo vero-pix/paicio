@@ -11,6 +11,13 @@ aquí un archivo por episodio con el nombre del `id` del episodio:
 - `ep3.mp3` → El Milagro que No Fue (Chile 1982)
 - `ep4.mp3` → La Década Perdida (Brasil)
 - `ep5.mp3` → El Plan Real (Brasil 1994)
+- `ep6.mp3` → El Efecto Tequila (México 1994)
+- `ep7.mp3` → El Fujishock (Perú 1990)
+- `ep8.mp3` → La Fábrica de Alfileres / Adam Smith (1776)
+- `ep9.mp3` → La Línea de Montaje / Henry Ford (1913)
+- `ep10.mp3` → La Plusvalía / Karl Marx (1867)
+- `ep11.mp3` → La Demanda Agregada / John M. Keynes (1936)
+- `ep12.mp3` → La Regla / Milton Friedman (1976)
 - `menu.mp3` → pantalla de inicio
 
 Formatos aceptados: `.mp3` o `.ogg`. El motor de sonido (`src/lib/sound.js`)
