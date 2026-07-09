@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.30.0'
+export const APP_VERSION = '0.31.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.31.0',
+    fecha: '9 jul 2026',
+    cambios: [
+      '❓ Nuevo botón de Ayuda (?) siempre a mano, en todas las pantallas. Dentro de una partida abre "Cómo se juega esta crisis": qué haces con el dedo, qué miden los medidores, la meta y cuántos turnos tienes. Se abre sin perder tu progreso.',
+      '👋 Un solo onboarding, y ahora sí cuenta el juego completo: sus 4 líneas (Crisis, Orígenes, Chile y El Norte), no solo "cinco crisis". Adiós a las dos bienvenidas que se contradecían.',
+    ],
+  },
   {
     version: '0.30.0',
     fecha: '9 jul 2026',

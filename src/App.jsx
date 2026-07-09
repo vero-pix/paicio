@@ -6,7 +6,6 @@ import { useInflation } from './hooks/useInflation.js'
 import { episodes, episodesById, playableEpisodes } from './data/episodes/index.js'
 
 import Intro from './components/Intro.jsx'
-import WelcomeOverlay from './components/WelcomeOverlay.jsx'
 import EpisodeSelect from './components/EpisodeSelect.jsx'
 import LineSelect from './components/LineSelect.jsx'
 import InflationTicker from './components/InflationTicker.jsx'
@@ -14,6 +13,7 @@ import Cell from './components/Cell.jsx'
 import Outcome from './components/Outcome.jsx'
 import MechanicHost from './components/mechanics/MechanicHost.jsx'
 import VersionBadge from './components/VersionBadge.jsx'
+import HelpButton from './components/HelpButton.jsx'
 import { dailySeed } from './utils/daily.js'
 
 export default function App() {
@@ -68,35 +68,19 @@ export default function App() {
   }, [state.phase, state.episodeId])
   useEffect(() => () => stopMusic(), [])
 
-  // Introducción: se muestra una vez por navegador.
+  // Onboarding ÚNICO: se muestra una vez por navegador. Llave nueva (v2) porque
+  // el contenido cambió de raíz (antes eran dos portones contradictorios).
   const [showIntro, setShowIntro] = useState(() => {
     try {
-      return localStorage.getItem('paicio.introSeen') !== '1'
+      return localStorage.getItem('paicio.onboarding.v2') !== '1'
     } catch {
       return true
     }
   })
   function dismissIntro() {
     try {
-      localStorage.setItem('paicio.introSeen', '1')
+      localStorage.setItem('paicio.onboarding.v2', '1')
     } catch { /* no crítico */ }
-    setShowIntro(false)
-  }
-
-  // Bienvenida para testers.
-  const [showWelcome, setShowWelcome] = useState(() => {
-    try {
-      return localStorage.getItem('paicio.welcome.v1') !== '1'
-    } catch {
-      return true
-    }
-  })
-  function dismissWelcome() {
-    try {
-      localStorage.setItem('paicio.welcome.v1', '1')
-      localStorage.setItem('paicio.introSeen', '1')
-    } catch { /* no crítico */ }
-    setShowWelcome(false)
     setShowIntro(false)
   }
 
@@ -116,7 +100,6 @@ export default function App() {
   if (state.phase === 'select' || !episode) {
     return (
       <div className="min-h-full">
-        {showWelcome && <WelcomeOverlay onEnter={dismissWelcome} />}
         {showIntro ? (
           <Intro onEnter={dismissIntro} />
         ) : !activeLine ? (
@@ -136,6 +119,7 @@ export default function App() {
             onBack={() => setActiveLine(null)}
           />
         )}
+        {!showIntro && <HelpButton />}
         <VersionBadge />
       </div>
     )
@@ -146,8 +130,6 @@ export default function App() {
 
   return (
     <div className="min-h-full">
-      {showWelcome && <WelcomeOverlay onEnter={dismissWelcome} />}
-
       {/* Barra de navegación */}
       <div className="mx-auto flex max-w-md items-center gap-2 px-3 pt-3 pb-1">
         <button
@@ -212,6 +194,7 @@ export default function App() {
         </p>
       </footer>
 
+      <HelpButton episode={episode} />
       <VersionBadge />
     </div>
   )
