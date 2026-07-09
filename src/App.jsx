@@ -3,7 +3,7 @@ import { useGameState } from './hooks/useGameState.js'
 import { useProgression } from './hooks/useProgression.js'
 import { playMusic, stopMusic, isDecisionMusic } from './lib/sound.js'
 import { useInflation } from './hooks/useInflation.js'
-import { episodes, episodesById } from './data/episodes/index.js'
+import { episodes, episodesById, playableEpisodes } from './data/episodes/index.js'
 
 import Intro from './components/Intro.jsx'
 import WelcomeOverlay from './components/WelcomeOverlay.jsx'
@@ -127,7 +127,7 @@ export default function App() {
         ) : (
           <EpisodeSelect
             line={activeLine}
-            episodes={episodes.filter((e) => e.line === activeLine)}
+            episodes={playableEpisodes.filter((e) => e.line === activeLine)}
             onSelect={startEpisode}
             onShowIntro={() => setShowIntro(true)}
             onStartDaily={handleStartDaily}
