@@ -18,6 +18,8 @@ aquí un archivo por episodio con el nombre del `id` del episodio:
 - `ep10.mp3` → La Plusvalía / Karl Marx (1867)
 - `ep11.mp3` → La Demanda Agregada / John M. Keynes (1936)
 - `ep12.mp3` → La Regla / Milton Friedman (1976)
+- `ep13.mp3` → La Cueca del Cobre (Chile)
+- `ep14.mp3` → La Cuenta que Crece (pensiones)
 - `menu.mp3` → pantalla de inicio
 
 Formatos aceptados: `.mp3` o `.ogg`. El motor de sonido (`src/lib/sound.js`)

@@ -241,6 +241,8 @@ const MOODS = {
   ep10: { root:  82.4, cutoff: 400, q: 5 },  // Marx 1867 — gris, tenso
   ep11: { root: 138.6, cutoff: 660, q: 3 },  // Keynes 1936 — melancólico/esperanza
   ep12: { root: 130.8, cutoff: 620, q: 4 },  // Friedman 1976 — tenso, disciplinado
+  ep13: { root: 155.6, cutoff: 720, q: 3 },  // Chile cobre — cueca, mineral, rítmico
+  ep14: { root: 174.6, cutoff: 700, q: 2 },  // Pensiones — paciente, acumulación esperanzada
   menu: { root: 116.5, cutoff: 560, q: 3 },
 }
 

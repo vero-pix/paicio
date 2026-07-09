@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.31.0'
+export const APP_VERSION = '0.31.1'
 
 export const NOVEDADES = [
+  {
+    version: '0.31.1',
+    fecha: '9 jul 2026',
+    cambios: [
+      '🎵 "La Cueca del Cobre" (Chile) y "La Cuenta que Crece" (pensiones) estrenan su propio ambiente musical: antes caían al sonido del menú.',
+    ],
+  },
   {
     version: '0.31.0',
     fecha: '9 jul 2026',
@@ -25,7 +32,6 @@ export const NOVEDADES = [
     fecha: '9 jul 2026',
     cambios: [
       '🖨️ Nueva mecánica en "La Gran Quema" (Bolivia): La Imprenta. Imprime por alivio hoy… pero cada vez sube el riesgo de reventar. ¿Sigues imprimiendo o cortas y estabilizas antes del colapso? La seducción de la máquina de imprimir, hecha juego.',
-      '🃏 Swipe en todas las crisis: desliza las cartas de decisión de cualquier episodio (derecha una opción, izquierda la otra). Los botones siguen ahí si prefieres tocar.',
     ],
   },
   {
