@@ -23,7 +23,7 @@ export default {
   paisReferencia: 'Inglaterra',
   resumen:
     'La economía está en el suelo. John Maynard Keynes te dice que gastes. Aprende por qué la demanda agregada es la llave para salir de una depresión.',
-  bloqueado: true,
+  bloqueado: false,
   mechanic: 'aggregateDemand',
   newspaper: {
     name: 'THE TIMES',

@@ -15,7 +15,10 @@ import DailyPanel from './DailyPanel.jsx'
 // Posiciones del zig-zag (bottom→top) para N episodios.
 function positionsFor(count) {
   const total = Math.min(count, 7)
-  const stepY = 78 / total
+  // `patterns` es triangular: primero el bloque de 1 nodo, luego el de 2, el de
+  // 3… Para `total` nodos hay que saltar los bloques anteriores (1+2+…+(total-1))
+  // y tomar los `total` siguientes. offset = total·(total-1)/2.
+  const offset = (total * (total - 1)) / 2
   const patterns = [
     { left: 47, top: 88 }, // 1 nodo
     { left: 25, top: 78 }, { left: 72, top: 35 }, // 2 nodos
@@ -25,7 +28,7 @@ function positionsFor(count) {
     { left: 50, top: 88 }, { left: 22, top: 74 }, { left: 72, top: 60 }, { left: 30, top: 46 }, { left: 74, top: 32 }, { left: 47, top: 18 }, // 6
     { left: 50, top: 90 }, { left: 22, top: 77 }, { left: 72, top: 64 }, { left: 30, top: 51 }, { left: 74, top: 38 }, { left: 47, top: 25 }, { left: 72, top: 12 }, // 7
   ]
-  return patterns.slice(0, total)
+  return patterns.slice(offset, offset + total)
 }
 
 // Path SVG para N episodios.

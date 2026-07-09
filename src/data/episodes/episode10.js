@@ -23,7 +23,7 @@ export default {
   paisReferencia: 'Inglaterra',
   resumen:
     'Dirige una fábrica textil en Manchester y descubre cómo funciona la plusvalía: la diferencia entre lo que el trabajador produce y lo que recibe.',
-  bloqueado: true,
+  bloqueado: false,
   mechanic: 'surplusValue',
   newspaper: {
     name: 'THE MANCHESTER GUARDIAN',
@@ -66,15 +66,19 @@ export default {
   },
   eventos: [
     {
+      id: 'ludismo',
       ronda: 2,
       titulo: '¡Ludismo!',
-      desc: 'Un grupo de trabajadores rompe las máquinas nuevas. Creen que las máquinas les quitan el trabajo. El ánimo cae en toda la fábrica.',
+      texto: 'Un grupo de trabajadores rompe las máquinas nuevas. Creen que las máquinas les quitan el trabajo. El ánimo cae en toda la fábrica.',
+      icon: '🔨',
       efecto: { moral: -15 },
     },
     {
+      id: 'manifiesto',
       ronda: 4,
       titulo: 'El Manifiesto',
-      desc: 'Circula un panfleto entre los obreros: "Proletarios del mundo, uníos!" Marx sonríe desde la esquina.',
+      texto: 'Circula un panfleto entre los obreros: "Proletarios del mundo, uníos!" Marx sonríe desde la esquina.',
+      icon: '📜',
       efecto: { moral: -10 },
     },
   ],

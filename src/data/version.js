@@ -2,9 +2,18 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.25.0'
+export const APP_VERSION = '0.26.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.26.0',
+    fecha: '9 jul 2026',
+    cambios: [
+      '🔓 ¡Los 14 episodios desbloqueados! Crisis, Orígenes, Chile y El Norte, todos jugables de punta a punta.',
+      '🐛 Fix: "La Cueca del Cobre" (Chile) y "La Cuenta que Crece" (pensiones) ya no se caen — arreglado el crash de las cartas de evento.',
+      '🗺️ Mapa de cada línea rediseñado: los nodos ya no se solapan y salen en orden correcto (hasta 7 por línea).',
+    ],
+  },
   {
     version: '0.25.0',
     fecha: '9 jul 2026',

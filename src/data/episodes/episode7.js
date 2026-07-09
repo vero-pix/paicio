@@ -22,7 +22,7 @@ export default {
   paisReferencia: 'Perú',
   resumen:
     'La inflación devora al país. El nuevo presidente aplica el shock más brutal de América Latina.',
-  bloqueado: true,
+  bloqueado: false,
 
   // Mecánica nueva de terapia de shock.
   mechanic: 'shockTherapy',

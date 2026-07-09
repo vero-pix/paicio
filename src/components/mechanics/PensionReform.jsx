@@ -3,7 +3,7 @@ import { sfx } from '../../lib/sound.js'
 import { accentFor } from '../../theme/accents.js'
 import { MechanicShell, TopBar, LifeBar, EndPanel } from './candyKit.jsx'
 import EventCard from './EventCard.jsx'
-import { initPensionReform, REFORM_LIST, applyReform, skipRound, isOver, outcomeTier } from '../../utils/pensionReform.js'
+import { initPensionReform, REFORM_LIST, applyReform, applyEvent, skipRound, isOver, outcomeTier } from '../../utils/pensionReform.js'
 
 const METERS = [
   { key: 'tasaReemplazo', label: 'Tasa de reemplazo', goodWhen: 'high', danger: 35, color: '#35B98A' },
@@ -24,36 +24,42 @@ export default function PensionReform({ episode, onComplete }) {
 
   const disponibles = REFORM_LIST.filter((r) => !state.reformsAplicadas.includes(r.id))
 
+  // Al avanzar de ronda, la carta de evento (si la hay) queda pendiente hasta
+  // que el jugador la resuelve con "Seguir" (no se auto-descarta).
+  function eventoDeRonda(next) {
+    if (next.ronda > cfg.rondas) return
+    const ev = episode.eventos?.find((e) => e.ronda === next.ronda)
+    if (ev) setEvento(ev)
+  }
+
   function elegir(reformId) {
-    if (animating || over) return
+    if (animating || over || evento) return
     sfx('click')
     const next = applyReform(state, reformId)
     setState(next)
     setAnimating(true)
-
     setTimeout(() => {
       setAnimating(false)
-      const ev = episode.eventos?.find((e) => e.ronda === next.ronda)
-      if (ev) {
-        setEvento(ev)
-        setTimeout(() => setEvento(null), 3000)
-      }
+      eventoDeRonda(next)
     }, 400)
   }
 
   function pasar() {
-    if (animating || over) return
+    if (animating || over || evento) return
     const next = skipRound(state)
     setState(next)
     setAnimating(true)
     setTimeout(() => {
       setAnimating(false)
-      const ev = episode.eventos?.find((e) => e.ronda === next.ronda)
-      if (ev) {
-        setEvento(ev)
-        setTimeout(() => setEvento(null), 3000)
-      }
+      eventoDeRonda(next)
     }, 400)
+  }
+
+  // Aplica el efecto de la carta y la cierra.
+  function resolverEvento(efecto) {
+    sfx('click')
+    setState((s) => applyEvent(s, efecto))
+    setEvento(null)
   }
 
   function metaBar(val) {
@@ -102,7 +108,14 @@ export default function PensionReform({ episode, onComplete }) {
       </div>
 
       {evento && (
-        <EventCard event={evento} accent={acc} onDismiss={() => setEvento(null)} />
+        <EventCard
+          evento={evento}
+          mes={state.ronda}
+          mesLabel="Ronda"
+          accent={acc}
+          onResolve={resolverEvento}
+          meters={METERS}
+        />
       )}
 
       {over ? (
@@ -116,7 +129,7 @@ export default function PensionReform({ episode, onComplete }) {
           }
           onComplete={() => onComplete(tier, { score: state.tasaReemplazo })}
         />
-      ) : (
+      ) : evento ? null : (
         <>
           <p className="mt-4 font-nunito text-[0.7rem] font-extrabold uppercase tracking-wide text-ink-mute">
             Elegí una reforma para aplicar:

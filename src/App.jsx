@@ -127,7 +127,9 @@ export default function App() {
         ) : (
           <EpisodeSelect
             line={activeLine}
-            episodes={episodes.filter((e) => e.line === activeLine)}
+            episodes={episodes
+              .filter((e) => e.line === activeLine)
+              .sort((a, b) => a.numero - b.numero)}
             onSelect={startEpisode}
             onShowIntro={() => setShowIntro(true)}
             onStartDaily={handleStartDaily}

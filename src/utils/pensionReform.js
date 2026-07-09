@@ -65,6 +65,18 @@ export function applyReform(state, reformId) {
   }
 }
 
+// Aplica el `efecto` de una carta de evento sobre los medidores (mismo clamp).
+export function applyEvent(state, efecto = {}) {
+  return {
+    ...state,
+    tasaReemplazo: clamp(Math.round(state.tasaReemplazo + (efecto.tasaReemplazo ?? 0))),
+    cobertura: clamp(Math.round(state.cobertura + (efecto.cobertura ?? 0))),
+    costoFiscal: clamp(Math.round(state.costoFiscal + (efecto.costoFiscal ?? 0))),
+    confianza: clamp(Math.round(state.confianza + (efecto.confianza ?? 0))),
+    fondo: clamp(Math.round(state.fondo + (efecto.fondo ?? 0))),
+  }
+}
+
 export function skipRound(state) {
   return {
     ...state,

@@ -24,7 +24,7 @@ export default {
   paisReferencia: 'Modelos globales',
   resumen:
     'Australia, Canadá, Suecia: tres países donde las pensiones funcionan. Misma plata, resultados muy distintos. Descubrí qué hace la diferencia y construí un sistema que sí sirva.',
-  bloqueado: true,
+  bloqueado: false,
   mechanic: 'pensionReform',
   newspaper: {
     name: 'THE AUSTRALIAN',
@@ -78,21 +78,27 @@ export default {
   },
   eventos: [
     {
+      id: 'retiroAnticipado',
       ronda: 3,
       titulo: 'Presión por retiro anticipado',
-      desc: 'Un grupo político propone permitir retiros del 10% del fondo para "aliviar la economía". Popular, pero desangra el sistema.',
+      texto: 'Un grupo político propone permitir retiros del 10% del fondo para "aliviar la economía". Popular, pero desangra el sistema.',
+      icon: '💸',
       efecto: { confianza: -10 },
     },
     {
+      id: 'crisisMercado',
       ronda: 5,
       titulo: 'Crisis de mercado',
-      desc: 'Los mercados globales caen 20%. Los fondos de pensiones pierden valor. La gente se asusta.',
+      texto: 'Los mercados globales caen 20%. Los fondos de pensiones pierden valor. La gente se asusta.',
+      icon: '📉',
       efecto: { fondo: -15 },
     },
     {
+      id: 'envejecimiento',
       ronda: 7,
       titulo: 'Envejecimiento',
-      desc: 'La población envejece. Cada vez menos activos sostienen a más jubilados. Urge tener un sistema sólido antes de que sea tarde.',
+      texto: 'La población envejece. Cada vez menos activos sostienen a más jubilados. Urge tener un sistema sólido antes de que sea tarde.',
+      icon: '👴',
       efecto: { costoFiscal: 1 },
     },
   ],

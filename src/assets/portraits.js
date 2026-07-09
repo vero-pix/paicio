@@ -45,6 +45,11 @@ export const portraits = {
   ministro, indexador, empresario, congreso,
   // Ep5
   economistaJoven, presidenteReal, puebloReal, mercadoReal,
+  // Ep6 — México (retratos pendientes: reusa ep3/ep4 como placeholder)
+  tesobono: banqueroDeuda,
+  comerciante_mex: empresario,
+  politico_mex: congreso,
+  fmi_mex: fmiChile,
   // Ep7 — Perú (retratos pendientes: reusa ep3/ep4 como placeholder)
   tecnico_peru: tecnocrata,
   social_peru: empresario,

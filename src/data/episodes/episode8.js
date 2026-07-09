@@ -24,7 +24,7 @@ export default {
   paisReferencia: 'Escocia',
   resumen:
     'Acompaña a Adam Smith por una fábrica de alfileres y descubre por qué la división del trabajo cambió el mundo.',
-  bloqueado: true,
+  bloqueado: false,
 
   // Mecánica nueva: demostración interactiva de producción.
   mechanic: 'pinFactory',

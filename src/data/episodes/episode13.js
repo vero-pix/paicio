@@ -23,7 +23,7 @@ export default {
   paisReferencia: 'Chile',
   resumen:
     'El cobre es el sueldo de Chile. Pero su precio baila como cueca: sube, baja, y si no le agarras el ritmo, te deja sin plata. Aprende a bailar con la volatilidad.',
-  bloqueado: true,
+  bloqueado: false,
   mechanic: 'volatilityDance',
   newspaper: {
     name: 'EL MERCURIO',
@@ -70,21 +70,27 @@ export default {
   },
   eventos: [
     {
+      id: 'china',
       ronda: 3,
       titulo: 'China aparece',
-      desc: 'China entra al mercado comprando cobre como si no hubiera mañana. El precio se dispara artificialmente. ¿Vendes ahora o esperas más?',
+      texto: 'China entra al mercado comprando cobre como si no hubiera mañana. El precio se dispara artificialmente. ¿Vendes ahora o esperas más?',
+      icon: '🐉',
       efecto: {},
     },
     {
+      id: 'huelga',
       ronda: 5,
       titulo: 'Huelga en la mina',
-      desc: 'Paro de trabajadores en Chuquicamata. La producción cae y el precio sube por la escasez, pero invertir en Codelco ahora es más caro.',
+      texto: 'Paro de trabajadores en Chuquicamata. La producción cae y el precio sube por la escasez, pero invertir en Codelco ahora es más caro.',
+      icon: '⛏️',
       efecto: {},
     },
     {
+      id: 'sustituto',
       ronda: 7,
       titulo: 'El sustituto',
-      desc: 'Aparece una tecnología que reemplaza el cobre en componentes eléctricos. El precio se desploma — ojo con quedar con inventario caro.',
+      texto: 'Aparece una tecnología que reemplaza el cobre en componentes eléctricos. El precio se desploma — ojo con quedar con inventario caro.',
+      icon: '🔌',
       efecto: {},
     },
   ],

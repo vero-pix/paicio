@@ -6,7 +6,6 @@ import { accentFor } from '../../theme/accents.js'
 import { MechanicShell, TopBar, EndPanel } from './candyKit.jsx'
 import EventCard from './EventCard.jsx'
 import CoachMarks from '../CoachMarks.jsx'
-import { useTutorial } from '../../hooks/useTutorial.js'
 import {
   initVolatilityDance,
   getSpeed,
@@ -162,8 +161,6 @@ export default function VolatilityDance({ episode, onComplete }) {
   const tierFinal = over ? outcomeTier(state) : null
   const vel = getSpeed(state.ronda)
 
-  const tut = useTutorial({ episodeId: episode.id })
-
   function elegirEstrategia(id) {
     sfx('click')
     setEstrategia(id)
@@ -188,13 +185,12 @@ export default function VolatilityDance({ episode, onComplete }) {
     setTier(null)
     setTimed(null)
 
-    const ev = episode.eventos?.find((e) => e.ronda === next.ronda)
-    if (ev) {
-      setEvento(ev)
-      setTimeout(() => setEvento(null), 3000)
-    }
-
     if (isOver(next, cfg)) return
+
+    // La carta de evento (si la hay) queda pendiente hasta que el jugador la
+    // cierra con "Seguir"; recién ahí aparece el menú de la ronda.
+    const ev = episode.eventos?.find((e) => e.ronda === next.ronda)
+    if (ev) setEvento(ev)
     setFase('menu')
   }
 
@@ -233,11 +229,17 @@ export default function VolatilityDance({ episode, onComplete }) {
       <CobreCounter cobre={state.cobre} codelco={state.codelco} />
 
       {evento && (
-        <EventCard event={evento} accent={acc} onDismiss={() => setEvento(null)} />
+        <EventCard
+          evento={evento}
+          mes={state.ronda}
+          mesLabel="Ronda"
+          accent={acc}
+          onResolve={() => setEvento(null)}
+        />
       )}
 
       {/* FASE: Menú de estrategia */}
-      {fase === 'menu' && (
+      {fase === 'menu' && !evento && (
         <div className="mt-4 space-y-2.5">
           <p className="font-nunito text-[0.72rem] font-extrabold uppercase tracking-wide text-ink-mute">
             ¿Cómo vendes esta ronda?
