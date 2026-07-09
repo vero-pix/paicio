@@ -25,6 +25,7 @@ export const EPISODE_ACCENTS = {
   ep12: { face: '#D4A54A', edge: '#B8892F', soft: '#F5E8C9', icon: '🏛️' },
   ep13: { face: '#D4875A', edge: '#B86A3F', soft: '#F3DDC9', icon: '🪙' },
   ep14: { face: '#35B98A', edge: '#1F9A6E', soft: '#D4F0E6', icon: '🏦' },
+  ep15: { face: '#E0554C', edge: '#BE3A32', soft: '#FBDED6', icon: '🍅' }, // Micro — feria/tomate
 }
 
 const FALLBACK = { face: '#F5A524', edge: '#D6871A', soft: '#FBE7C6', icon: '•' }

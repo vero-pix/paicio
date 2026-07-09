@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Coin from './Coin.jsx'
-import { LINES } from '../data/lines.js'
+import { visibleLines } from '../data/lines.js'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Intro — onboarding ÚNICO de PAICIO (antes había dos portones: este y
@@ -88,7 +88,7 @@ function LoopChips() {
 function LinesList() {
   return (
     <div className="mt-6 space-y-2">
-      {LINES.map((l) => (
+      {visibleLines().map((l) => (
         <div
           key={l.id}
           className="shadow-card flex items-center gap-3 rounded-[14px] bg-surface px-3.5 py-2.5 text-left"

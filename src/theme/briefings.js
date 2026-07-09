@@ -145,6 +145,16 @@ export const EPISODE_BRIEFINGS = {
       quote: '"El sistema no falla porque falte plata. Falla porque está mal diseñado. Las reglas lo son todo."',
     },
   },
+
+  ep15: {
+    mission:
+      'Ponle precio a tu puesto de tomates y vacía el mercado: ni cola en la puerta ni cajones de vuelta. Persigue el precio justo cada vez que cambie la demanda.',
+    antagonist: {
+      portrait: portraits.comerciante,
+      name: 'La Casera',
+      quote: '"Mijo, el precio no lo pones tú ni yo. Lo pone la feria. Si cobras de más, te quedas con los tomates."',
+    },
+  },
 }
 
 const FALLBACK = EPISODE_BRIEFINGS.ep1

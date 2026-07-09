@@ -91,6 +91,11 @@ export const MECHANIC_HELP = {
     gesto: 'Cada ronda eliges una reforma al sistema de pensiones.',
     medidores: 'Tasa de reemplazo, cobertura, confianza, fondo y costo fiscal.',
   },
+  marketEquilibrium: {
+    verbo: 'Mueve la aguja',
+    gesto: 'Arrastra la aguja del precio (o usa −/+). Sube si se agota, baja si sobra, hasta vaciar el mercado; luego fija el precio.',
+    medidores: 'Cuánto hay para vender (oferta) y cuánto quiere comprar la gente (demanda).',
+  },
 }
 
 // Turnos del episodio para el verbo activo: rondas o días, con su etiqueta.

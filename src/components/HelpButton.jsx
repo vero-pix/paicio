@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LINES } from '../data/lines.js'
+import { visibleLines } from '../data/lines.js'
 import { helpForEpisode, turnosDe } from '../data/mechanicHelp.js'
 import { tutorialFor } from '../theme/tutorials.js'
 
@@ -96,7 +96,7 @@ function GeneralHelp() {
         Cuatro líneas para recorrer
       </p>
       <div className="mt-2 space-y-2">
-        {LINES.map((l) => (
+        {visibleLines().map((l) => (
           <div key={l.id} className="flex items-start gap-2.5">
             <span className="mt-0.5 shrink-0 text-[1.1rem] leading-none" aria-hidden>
               {l.icon}

@@ -46,6 +46,33 @@ export const LINES = [
     unlocked: true,
     requires: null,
   },
+  {
+    // PROTOTIPO: oculta del mapa de prod hasta tener 3 episodios (evita línea de
+    // un solo nodo). `prototype: true` la filtra en LineSelect/onboarding/ayuda;
+    // se revela con ?proto=1 en la URL para probar. Ver CONCEPTO-LINEA-MICRO.md.
+    id: 'micro',
+    name: 'Microeconomía',
+    subtitle: 'Cómo funcionan los mercados',
+    desc: 'Antes de gobernar un país, entiende la pieza mínima: un precio, un vendedor, una decisión. Por qué suben los arriendos, por qué el único almacén cobra más, por qué lo que conviene a cada uno arruina a todos.',
+    icon: '⚖️',
+    gradient: ['#FDECEC', '#FBEFD2', '#EAF6EC'],
+    unlocked: true,
+    requires: null,
+    prototype: true,
+  },
 ]
+
+// Líneas visibles en el mapa/onboarding: oculta los prototipos salvo que se
+// revelen con ?proto=1 (para que Vero pruebe en el teléfono sin exponerlos en prod).
+export const visibleLines = (revealPrototypes = false) =>
+  LINES.filter((l) => !l.prototype || revealPrototypes)
+
+export const prototypesRevealed = () => {
+  try {
+    return new URLSearchParams(window.location.search).has('proto')
+  } catch {
+    return false
+  }
+}
 
 export const lineFor = (id) => LINES.find((l) => l.id === id)

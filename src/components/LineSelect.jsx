@@ -1,10 +1,11 @@
-import { LINES } from '../data/lines.js'
+import { LINES, visibleLines, prototypesRevealed } from '../data/lines.js'
 import { episodes } from '../data/episodes/index.js'
 import { accentFor } from '../theme/accents.js'
 import Coin from './Coin.jsx'
 
 export default function LineSelect({ onSelect, totalStars }) {
-  const unlockedLines = LINES.filter(
+  const lines = visibleLines(prototypesRevealed())
+  const unlockedLines = lines.filter(
     (l) => l.unlocked || totalStars >= (l.requires?.stars ?? 0),
   ).length
 
@@ -47,7 +48,7 @@ export default function LineSelect({ onSelect, totalStars }) {
             {totalStars}
           </span>
           <span className="font-nunito text-[0.75rem] font-bold text-ink-mute">
-            estrellas · {unlockedLines}/{LINES.length} líneas
+            estrellas · {unlockedLines}/{lines.length} líneas
           </span>
         </div>
       </div>
@@ -63,7 +64,7 @@ export default function LineSelect({ onSelect, totalStars }) {
 
       {/* Tarjetas de líneas */}
       <div className="relative space-y-4">
-        {LINES.map((line, i) => {
+        {lines.map((line, i) => {
           const locked = line.requires && totalStars < line.requires.stars
           const starsNeeded = line.requires ? line.requires.stars - totalStars : 0
           const lineEpisodes = episodes.filter((e) => e.line === line.id)

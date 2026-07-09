@@ -28,6 +28,11 @@ export const concepts = {
     short: 'Atar la moneda a algo fijo (oro, otra divisa) para frenar la inflación.',
     body: 'Cuando la moneda tiene un ancla creíble —un tipo de cambio fijo, un respaldo o una regla firme—, el gobierno ya no puede imprimir sin límite. Frena la inflación rápido, pero el ajuste suele traer recesión.',
   },
+  equilibrioMercado: {
+    title: 'Precio de equilibrio',
+    short: 'El precio donde lo que se ofrece calza con lo que se quiere comprar.',
+    body: 'Si el precio está por encima, sobra (excedente); si está por debajo, falta (escasez y colas). En el cruce de oferta y demanda el mercado "se vacía": se vende justo lo que hay. Ese punto se mueve cuando cambian los gustos, el ingreso o los sustitutos.',
+  },
   indexacion: {
     title: 'Indexación salarial',
     short: 'Subir los salarios automáticamente según la inflación.',

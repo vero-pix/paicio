@@ -230,6 +230,20 @@ export const EPISODE_TUTORIALS = {
       },
     ],
   },
+
+  ep15: {
+    goalChip: 'Vacía el mercado: ni cola ni góndola llena',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Mira cuánto HAY (oferta) y cuánto QUIEREN (demanda). Si no calzan, sobra o falta.',
+      },
+      {
+        target: 'actions',
+        caption: 'Mueve el precio con la aguja o con −/+. Sube si se agota, baja si sobra. Cuando calzan, fija el precio.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null
