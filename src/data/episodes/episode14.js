@@ -24,7 +24,7 @@ export default {
   paisReferencia: 'Modelos globales',
   resumen:
     'Australia, Canadá, Suecia: tres países donde las pensiones funcionan. Misma plata, resultados muy distintos. Descubrí qué hace la diferencia y construí un sistema que sí sirva.',
-  bloqueado: false,
+  bloqueado: true,
   mechanic: 'pensionReform',
   newspaper: {
     name: 'THE AUSTRALIAN',

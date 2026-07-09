@@ -2,16 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.24.0'
+export const APP_VERSION = '0.25.0'
 
 export const NOVEDADES = [
   {
-    version: '0.24.0',
-    fecha: '8 jul 2026',
+    version: '0.25.0',
+    fecha: '9 jul 2026',
     cambios: [
-      '🧭 Nueva línea: "El Norte" — los modelos que funcionan.',
-      '🏦 Episodio 14: "La Cuenta que Crece" — reforma de pensiones. Seguí el diseño que hizo funcionar a Australia, Canadá y Suecia para construir un sistema que sí sirva.',
-      '📐 Mecánica nueva: pensionReform. Elegí entre 6 reformas estructurales en 8 rondas, con métricas en paralelo (tasa de reemplazo, cobertura, confianza, fondo, costo fiscal).',
+      '🗺️ Mapa de crisis rediseñado: muestra solo los episodios jugables (5 crisis LatAm base).',
+      '🔒 Nuevos episodios (México, Perú, Orígenes, Chile, El Norte) bloqueados como "Próximamente" hasta que estén listos.',
+      '🐛 Fix: nodos del mapa ya no se solapan con 14 episodios — el layout usa solo los disponibles.',
     ],
   },
   {

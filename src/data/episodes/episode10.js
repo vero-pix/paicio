@@ -23,7 +23,7 @@ export default {
   paisReferencia: 'Inglaterra',
   resumen:
     'Dirige una fábrica textil en Manchester y descubre cómo funciona la plusvalía: la diferencia entre lo que el trabajador produce y lo que recibe.',
-  bloqueado: false,
+  bloqueado: true,
   mechanic: 'surplusValue',
   newspaper: {
     name: 'THE MANCHESTER GUARDIAN',

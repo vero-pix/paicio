@@ -23,7 +23,7 @@ export default {
   paisReferencia: 'Chile',
   resumen:
     'El cobre es el sueldo de Chile. Pero su precio baila como cueca: sube, baja, y si no le agarras el ritmo, te deja sin plata. Aprende a bailar con la volatilidad.',
-  bloqueado: false,
+  bloqueado: true,
   mechanic: 'volatilityDance',
   newspaper: {
     name: 'EL MERCURIO',

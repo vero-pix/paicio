@@ -24,7 +24,7 @@ export default {
   paisReferencia: 'Estados Unidos',
   resumen:
     'La receta keynesiana dejó de funcionar: inflación y desempleo suben juntos. Friedman dice que el error es creer que puedes elegir entre uno y otro. Aprende por qué la regla vence a la discreción.',
-  bloqueado: false,
+  bloqueado: true,
   mechanic: 'monetaryRule',
   newspaper: {
     name: 'THE WALL STREET JOURNAL',

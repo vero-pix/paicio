@@ -43,10 +43,11 @@ function pathFor(count) {
 }
 
 export default function EpisodeSelect({ line, episodes, onSelect, onShowIntro, onStartDaily, onBack }) {
-  const firstPlayable = episodes.find((e) => !e.bloqueado)
+  const playable = episodes.filter((e) => !e.bloqueado)
+  const firstPlayable = playable[0] ?? null
   const [showDaily, setShowDaily] = useState(false)
-  const NODES = positionsFor(episodes.length)
-  const PATH = pathFor(episodes.length)
+  const NODES = positionsFor(playable.length)
+  const PATH = pathFor(playable.length)
   const lineInfo = line ? lineFor(line) : null
 
   return (
@@ -120,7 +121,7 @@ export default function EpisodeSelect({ line, episodes, onSelect, onShowIntro, o
           />
         </svg>
 
-        {episodes.map((ep, i) => {
+        {playable.map((ep, i) => {
           const pos = NODES[i] ?? { left: 50, top: 50 }
           const a = accentFor(ep.id)
           const locked = ep.bloqueado

@@ -23,7 +23,7 @@ export default {
   paisReferencia: 'México',
   resumen:
     'Las reservas se esfuman. El peso se hunde. El "error de diciembre" cambió la economía mexicana para siempre.',
-  bloqueado: false,
+  bloqueado: true,
 
   // Mecánica central del episodio (reusa speculativeAttack).
   mechanic: 'speculativeAttack',

@@ -24,7 +24,7 @@ export default {
   paisReferencia: 'Estados Unidos',
   resumen:
     'El Ford Model T cuesta $850 y tarda 12 horas en fabricarse. Henry Ford quiere que cueste $300 y tarde 93 minutos.',
-  bloqueado: false,
+  bloqueado: true,
 
   mechanic: 'assemblyLine',
 
