@@ -127,7 +127,7 @@ export default function App() {
         ) : (
           <EpisodeSelect
             line={activeLine}
-            episodes={playableEpisodes.filter((e) => e.line === activeLine)}
+            episodes={episodes.filter((e) => e.line === activeLine)}
             onSelect={startEpisode}
             onShowIntro={() => setShowIntro(true)}
             onStartDaily={handleStartDaily}
