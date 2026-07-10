@@ -47,9 +47,9 @@ export const LINES = [
     requires: null,
   },
   {
-    // PROTOTIPO: oculta del mapa de prod hasta tener 3 episodios (evita línea de
-    // un solo nodo). `prototype: true` la filtra en LineSelect/onboarding/ayuda;
-    // se revela con ?proto=1 en la URL para probar. Ver CONCEPTO-LINEA-MICRO.md.
+    // Visible en prod desde v0.34.0 (arranca con 1 episodio, "El Precio Justo";
+    // crecerá a 2-3). El flag `prototype` sigue soportado por si otra línea futura
+    // lo necesita (ver visibleLines más abajo).
     id: 'micro',
     name: 'Microeconomía',
     subtitle: 'Cómo funcionan los mercados',
@@ -60,7 +60,6 @@ export const LINES = [
     gradient: ['#EAF6F3', '#B7E3D9', '#7DC7BC'],
     unlocked: true,
     requires: null,
-    prototype: true,
   },
 ]
 

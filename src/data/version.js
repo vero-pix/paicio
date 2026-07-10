@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.33.0'
+export const APP_VERSION = '0.34.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.34.0',
+    fecha: '10 jul 2026',
+    cambios: [
+      '⚖️ Nueva línea: Microeconomía — "Cómo funcionan los mercados". Arranca con "El Precio Justo": pones el precio de tu puesto en la feria y ves en vivo cómo se cruzan oferta y demanda. Irá creciendo con más episodios.',
+    ],
+  },
   {
     version: '0.33.0',
     fecha: '10 jul 2026',

@@ -17,7 +17,7 @@ const STEPS = [
     body: 'loop',
   },
   {
-    title: 'Cuatro líneas, una economía',
+    title: 'Cinco líneas, una economía',
     text: 'No son solo crisis: es la economía completa, desde su historia hasta los países que la resolvieron.',
     body: 'lines',
   },
