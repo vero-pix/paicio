@@ -43,6 +43,11 @@ export const concepts = {
     short: 'Lo mejor que dejas fuera cada vez que eliges algo.',
     body: 'Como los recursos (plata, tiempo) son limitados, elegir una cosa es renunciar a otra. El costo real de una decisión no es solo su precio: es la mejor alternativa que sacrificaste. Vale para tu bolsillo, tu tiempo y hasta para un país.',
   },
+  externalidades: {
+    title: 'Externalidad',
+    short: 'Un costo (o beneficio) que tu decisión le pasa a otros sin pagarlo.',
+    body: 'Cuando pescas de más o contaminas, el costo lo pagan todos, no solo tú. Como a cada uno le conviene abusar del recurso compartido, entre todos lo agotan (tragedia de los comunes). El Estado internaliza ese costo con reglas: cuotas, impuestos o permisos.',
+  },
   indexacion: {
     title: 'Indexación salarial',
     short: 'Subir los salarios automáticamente según la inflación.',

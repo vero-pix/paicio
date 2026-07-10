@@ -28,6 +28,7 @@ export const EPISODE_ACCENTS = {
   ep15: { face: '#E0554C', edge: '#BE3A32', soft: '#FBDED6', icon: '🍅' }, // Micro — feria/tomate
   ep16: { face: '#5BA88A', edge: '#3E8A6E', soft: '#DAF0E6', icon: '👛' }, // Micro — bolsillo/elección
   ep17: { face: '#2E9E8F', edge: '#25806F', soft: '#D4EEE8', icon: '💊' }, // Micro — farmacia/monopolio
+  ep18: { face: '#3FA0B5', edge: '#2C7E90', soft: '#D4EBF0', icon: '🐟' }, // Micro — río/externalidades
 }
 
 const FALLBACK = { face: '#F5A524', edge: '#D6871A', soft: '#FBE7C6', icon: '•' }

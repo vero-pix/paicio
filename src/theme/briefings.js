@@ -175,6 +175,16 @@ export const EPISODE_BRIEFINGS = {
       quote: '"No alcanza para todo, y nunca va a alcanzar. La pregunta no es qué quieres: es qué estás dispuesto/a a dejar."',
     },
   },
+
+  ep18: {
+    mission:
+      'El río es de todos y todos pescan al máximo. Pon el límite justo cada temporada: cuida el río para que dé peces mañana, sin ahogar a la gente que vive de él hoy.',
+    antagonist: {
+      portrait: portraits.trabajadorChile,
+      name: 'El Pescador',
+      quote: '"Déjame pescar tranquilo, ¿ya? Si yo no lo saco, lo saca el de al lado. Total, el río es de todos… hasta que no quede nada."',
+    },
+  },
 }
 
 const FALLBACK = EPISODE_BRIEFINGS.ep1

@@ -272,6 +272,20 @@ export const EPISODE_TUTORIALS = {
       },
     ],
   },
+
+  ep18: {
+    goalChip: 'Mantén el río vivo sin matar la economía',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'La salud del río se arrastra entre temporadas: si lo exprimes, colapsa; si lo cuidas, se recupera.',
+      },
+      {
+        target: 'actions',
+        caption: 'Mueve el límite a la pesca: poco límite = mucha actividad pero el río baja; mucho límite = río sano pero poca economía. Busca el punto y cierra la temporada.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null

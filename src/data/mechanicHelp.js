@@ -106,6 +106,11 @@ export const MECHANIC_HELP = {
     gesto: 'Toca los deseos para llevarlos (y de nuevo para soltarlos) sin pasarte de tu plata. No alcanza para todo: elegir uno es dejar otro. Luego confirma.',
     medidores: 'La plata que te queda y la felicidad que juntas con lo elegido.',
   },
+  externalityReg: {
+    verbo: 'Mueve el límite',
+    gesto: 'Arrastra el límite a la pesca (o −/+): poco límite = mucha actividad pero el río se agota; mucho = río sano pero poca economía. Cierra la temporada cuando encuentres el punto.',
+    medidores: 'La salud del río (un stock que se arrastra entre temporadas) y la actividad económica.',
+  },
 }
 
 // Turnos del episodio para el verbo activo: rondas o días, con su etiqueta.
