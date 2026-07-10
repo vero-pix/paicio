@@ -47,9 +47,9 @@ export const LINES = [
     requires: null,
   },
   {
-    // Visible en prod desde v0.34.0 (arranca con 1 episodio, "El Precio Justo";
-    // crecerá a 2-3). El flag `prototype` sigue soportado por si otra línea futura
-    // lo necesita (ver visibleLines más abajo).
+    // PROTOTIPO en esta rama (feat/micro-line): OCULTA del mapa hasta tener 3+
+    // episodios y el OK de Vero. Se prueba con ?proto=1. (En prod/main la línea
+    // está visible; acá se re-esconde a propósito para construir los 4 episodios.)
     id: 'micro',
     name: 'Microeconomía',
     subtitle: 'Cómo funcionan los mercados',
@@ -60,6 +60,7 @@ export const LINES = [
     gradient: ['#EAF6F3', '#B7E3D9', '#7DC7BC'],
     unlocked: true,
     requires: null,
+    prototype: true,
   },
 ]
 

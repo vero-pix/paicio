@@ -93,7 +93,7 @@ function GeneralHelp() {
       </p>
 
       <p className="mt-5 font-nunito text-[0.7rem] font-extrabold uppercase tracking-[0.12em] text-ink-mute">
-        Cinco líneas para recorrer
+        Cuatro líneas para recorrer
       </p>
       <div className="mt-2 space-y-2">
         {visibleLines().map((l) => (
