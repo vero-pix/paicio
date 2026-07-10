@@ -284,6 +284,7 @@ export default {
     },
     {
       id: 'tesobonosVencen',
+      iconKey: 'tesobonos',
       titulo: 'Vencen los Tesobonos',
       texto: 'Los bonos indexados al dólar vencen y el gobierno tiene que pagar. Si paga en dólares, las reservas se desploman.',
       icon: '📄',
@@ -298,6 +299,7 @@ export default {
     },
     {
       id: 'petroleoSube',
+      iconKey: 'petroleo',
       titulo: 'El petróleo repunta en los mercados',
       texto: 'El crudo mexicano sube 15% en una semana. Entran dólares frescos que dan un respiro a las reservas.',
       icon: '🛢️',
@@ -305,6 +307,7 @@ export default {
     },
     {
       id: 'exportaRepunta',
+      iconKey: 'exportaciones',
       titulo: 'Repunta la exportación de agave',
       texto: 'La demanda de tequila se dispara por el Tratado de Libre Comercio y entran dólares a la economía real.',
       icon: '🌵',
@@ -331,6 +334,7 @@ export default {
     },
     {
       id: 'fmiLinea',
+      iconKey: 'rescateFMI',
       titulo: 'El FMI ofrece una línea de crédito rápido',
       texto: 'Dólares inmediatos sin condiciones previas, pero los mercados lo leerán como señal de desesperación.',
       icon: '🏦',

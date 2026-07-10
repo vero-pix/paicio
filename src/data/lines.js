@@ -55,7 +55,9 @@ export const LINES = [
     subtitle: 'Cómo funcionan los mercados',
     desc: 'Antes de gobernar un país, entiende la pieza mínima: un precio, un vendedor, una decisión. Por qué suben los arriendos, por qué el único almacén cobra más, por qué lo que conviene a cada uno arruina a todos.',
     icon: '⚖️',
-    gradient: ['#FDECEC', '#FBEFD2', '#EAF6EC'],
+    // Paleta teal/menta del lote Mercado (hueco de color libre entre el azul de
+    // El Norte y el verde-dorado de Crisis): "limpio / conceptos de mercado".
+    gradient: ['#EAF6F3', '#B7E3D9', '#7DC7BC'],
     unlocked: true,
     requires: null,
     prototype: true,

@@ -47,6 +47,20 @@ import senalFiscal from './senalFiscal.webp'
 import reboteCongelamiento from './reboteCongelamiento.webp'
 import fmiGesto from './fmiGesto.webp'
 
+// Lote Mercado — Ep6 México (Tequila).
+import colosio from './colosio.webp'
+import tesobonos from './tesobonos.webp'
+import rescateFMI from './rescateFMI.webp'
+// Lote Mercado — Ep13 Chile / cobre.
+import china from './china.webp'
+import sustituto from './sustituto.webp'
+// Lote Mercado — Ep14 Pensiones.
+import retiroAnticipado from './retiroAnticipado.webp'
+import crisisMercado from './crisisMercado.webp'
+import envejecimiento from './envejecimiento.webp'
+// Línea Microeconomía — emblema (balanza).
+import microeconomia from './microeconomia.webp'
+
 export const eventIcons = {
   // Ep1
   petroleo,
@@ -81,4 +95,15 @@ export const eventIcons = {
   senalFiscal,
   reboteCongelamiento,
   fmiGesto,
+  // Lote Mercado — Ep6 / Ep13 / Ep14 (fed y fmi ya existen → se reusan)
+  colosio,
+  tesobonos,
+  rescateFMI,
+  china,
+  sustituto,
+  retiroAnticipado,
+  crisisMercado,
+  envejecimiento,
+  // Línea Microeconomía
+  microeconomia,
 }

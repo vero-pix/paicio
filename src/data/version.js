@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.32.1'
+export const APP_VERSION = '0.32.2'
 
 export const NOVEDADES = [
+  {
+    version: '0.32.2',
+    fecha: '10 jul 2026',
+    cambios: [
+      '🎨 Íconos ilustrados nuevos (lote Mercado de diseño) para México (magnicidio, Tesobonos, rescate FMI), Chile/cobre (auge de China, el sustituto) y pensiones (retiro anticipado, crisis de mercado, envejecimiento). Antes caían a emoji.',
+      '⚖️ La línea Microeconomía (aún oculta) estrena su emblema de balanza y su paleta teal/menta.',
+    ],
+  },
   {
     version: '0.32.1',
     fecha: '9 jul 2026',
