@@ -162,7 +162,7 @@ export default function Outcome({
           `${'⭐'.repeat(stars)}  ·  ${score} pts`,
           v.title,
           `Superé al ${percentil}% de los ministros`,
-          'https://paicio.vercel.app',
+          'https://paicio.economics.cl',
         ].join('\n')
     if (navigator.share) {
       navigator.share({ text: texto }).catch(() => {})

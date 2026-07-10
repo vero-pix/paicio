@@ -6,7 +6,8 @@ import SoundToggle from './components/SoundToggle.jsx'
 import Buzon from './components/Buzon.jsx'
 import './index.css'
 
-// Ruta por hash: paicio.vercel.app/#buzon abre la vista privada de Vero.
+// Ruta por hash: paicio.economics.cl/#buzon (o paicio.vercel.app/#buzon de
+// respaldo) abre la vista privada de Vero.
 const esBuzon = window.location.hash.replace('#', '').toLowerCase() === 'buzon'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -2,7 +2,8 @@ import { useState, useCallback } from 'react'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Buzon — vista privada de Vero para leer y responder el feedback de testers.
-// Se accede en paicio.vercel.app/#buzon. Pide la clave (BUZON_PASSWORD) y
+// Se accede en paicio.economics.cl/#buzon (respaldo: paicio.vercel.app/#buzon).
+// Pide la clave (BUZON_PASSWORD) y
 // usa /api/feedback (GET para listar, PATCH para responder).
 // ─────────────────────────────────────────────────────────────────────────
 

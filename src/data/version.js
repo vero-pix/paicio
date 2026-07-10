@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.36.0'
+export const APP_VERSION = '0.37.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.37.0',
+    fecha: '10 jul 2026',
+    cambios: [
+      '🌐 PAICIO tiene dominio propio: paicio.economics.cl (el de lanzamiento). El link de siempre (paicio.vercel.app) sigue funcionando como respaldo. Actualizamos los enlaces para compartir el Reto Diario y tus resultados.',
+    ],
+  },
   {
     version: '0.36.0',
     fecha: '10 jul 2026',

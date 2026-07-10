@@ -86,6 +86,6 @@ export function dailyShareText(iso, result = {}) {
     `PAICIO 🗓️ Reto Diario · ${fechaCorta(iso)}`,
     `${starBar(stars)}  ·  ${score} pts`,
     '¿Lo harías mejor?',
-    'https://paicio.vercel.app',
+    'https://paicio.economics.cl',
   ].join('\n')
 }
