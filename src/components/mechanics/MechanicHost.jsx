@@ -15,6 +15,7 @@ import PrintPress from './PrintPress.jsx'
 import BudgetFlow from './BudgetFlow.jsx'
 import MarketEquilibrium from './MarketEquilibrium.jsx'
 import MonopolyPrice from './MonopolyPrice.jsx'
+import ChoiceBudget from './ChoiceBudget.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // MechanicHost — despachador de la mecánica central de cada episodio.
@@ -47,6 +48,7 @@ const MECHANICS = {
   budgetFlow: BudgetFlow, // prototipo (archetipo #1 — REPARTIR), se enruta por episode.mechanicVariant
   marketEquilibrium: MarketEquilibrium, // prototipo (línea Micro, ep15 — aguja de equilibrio)
   monopolyPrice: MonopolyPrice, // prototipo (línea Micro, ep17 — slider de precio / monopolio)
+  choiceBudget: ChoiceBudget, // prototipo (línea Micro, ep16 — asignar presupuesto / costo de oportunidad)
 }
 
 export default function MechanicHost({ episode, allies, dailySeed, onComplete, onConceptSeen }) {

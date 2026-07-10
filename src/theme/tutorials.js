@@ -258,6 +258,20 @@ export const EPISODE_TUTORIALS = {
       },
     ],
   },
+
+  ep16: {
+    goalChip: 'Elige lo que más felicidad te deje con tu plata',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Tienes plata limitada. Mira cuánto te queda y cuánta felicidad juntas al elegir.',
+      },
+      {
+        target: 'actions',
+        caption: 'Toca los deseos para llevarlos; toca de nuevo para soltarlos. No alcanza para todo: elegir uno es dejar otro. Cuando estés conforme, confirma.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null

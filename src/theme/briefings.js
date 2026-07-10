@@ -165,6 +165,16 @@ export const EPISODE_BRIEFINGS = {
       quote: '"Aquí no hay otra farmacia, ¿verdad? Entonces el precio lo pones tú. Pero cuidado: si cobras demasiado, hasta el enfermo se aguanta."',
     },
   },
+
+  ep16: {
+    mission:
+      'Te llegó la plata del mes y no alcanza para todo. Arma la combinación de deseos que más felicidad te deje — y fíjate en lo que dejas fuera: ese es su verdadero costo.',
+    antagonist: {
+      portrait: portraits.vecina,
+      name: 'Tu bolsillo',
+      quote: '"No alcanza para todo, y nunca va a alcanzar. La pregunta no es qué quieres: es qué estás dispuesto/a a dejar."',
+    },
+  },
 }
 
 const FALLBACK = EPISODE_BRIEFINGS.ep1

@@ -38,6 +38,11 @@ export const concepts = {
     short: 'La capacidad de un vendedor de fijar el precio por encima del costo.',
     body: 'Un monopolista (único vendedor, sin sustituto) elige el precio que maximiza su ganancia, y ese precio queda por encima del competitivo. La competencia le quita ese poder: cuando la gente puede comparar, el precio baja hacia el costo.',
   },
+  costoOportunidad: {
+    title: 'Costo de oportunidad',
+    short: 'Lo mejor que dejas fuera cada vez que eliges algo.',
+    body: 'Como los recursos (plata, tiempo) son limitados, elegir una cosa es renunciar a otra. El costo real de una decisión no es solo su precio: es la mejor alternativa que sacrificaste. Vale para tu bolsillo, tu tiempo y hasta para un país.',
+  },
   indexacion: {
     title: 'Indexación salarial',
     short: 'Subir los salarios automáticamente según la inflación.',

@@ -101,6 +101,11 @@ export const MECHANIC_HELP = {
     gesto: 'Arrastra el slider del precio (o −/+) buscando la máxima ganancia: la barra verde se llena en la cima de la joroba. Luego fija el precio.',
     medidores: 'Las unidades que vendes y la ganancia (precio − costo × unidades).',
   },
+  choiceBudget: {
+    verbo: 'Toca para elegir',
+    gesto: 'Toca los deseos para llevarlos (y de nuevo para soltarlos) sin pasarte de tu plata. No alcanza para todo: elegir uno es dejar otro. Luego confirma.',
+    medidores: 'La plata que te queda y la felicidad que juntas con lo elegido.',
+  },
 }
 
 // Turnos del episodio para el verbo activo: rondas o días, con su etiqueta.
