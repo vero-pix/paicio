@@ -111,6 +111,11 @@ export const MECHANIC_HELP = {
     gesto: 'Arrastra el límite a la pesca (o −/+): poco límite = mucha actividad pero el río se agota; mucho = río sano pero poca economía. Cierra la temporada cuando encuentres el punto.',
     medidores: 'La salud del río (un stock que se arrastra entre temporadas) y la actividad económica.',
   },
+  priceWar: {
+    verbo: 'Decide y lee la reacción',
+    gesto: 'Cada semana eliges: mantener el precio alto (colaborar) o bajarlo (competir). La otra gasolinera reacciona a tu jugada anterior. Elige, lee qué hizo el rival y los pagos, y continúa.',
+    medidores: 'Tu ganancia acumulada frente a la de la otra gasolinera.',
+  },
 }
 
 // Turnos del episodio para el verbo activo: rondas o días, con su etiqueta.

@@ -286,6 +286,20 @@ export const EPISODE_TUTORIALS = {
       },
     ],
   },
+
+  ep19: {
+    goalChip: 'Gana lo más posible… sin caer en la guerra de precios',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Tu ganancia vs. la de la otra gasolinera. Si los dos mantienen el precio alto, a los dos les va bien.',
+      },
+      {
+        target: 'actions',
+        caption: 'Cada semana: mantén el precio alto (colaborar) o bájalo para robar clientes (competir). Ojo: la otra reacciona a lo que hiciste tú.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null

@@ -17,6 +17,7 @@ import MarketEquilibrium from './MarketEquilibrium.jsx'
 import MonopolyPrice from './MonopolyPrice.jsx'
 import ChoiceBudget from './ChoiceBudget.jsx'
 import ExternalityReg from './ExternalityReg.jsx'
+import PriceWar from './PriceWar.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // MechanicHost — despachador de la mecánica central de cada episodio.
@@ -51,6 +52,7 @@ const MECHANICS = {
   monopolyPrice: MonopolyPrice, // prototipo (línea Micro, ep17 — slider de precio / monopolio)
   choiceBudget: ChoiceBudget, // prototipo (línea Micro, ep16 — asignar presupuesto / costo de oportunidad)
   externalityReg: ExternalityReg, // prototipo (línea Micro, ep18 — regular / externalidades)
+  priceWar: PriceWar, // prototipo (línea Micro, ep19 — decidir con contraparte / teoría de juegos)
 }
 
 export default function MechanicHost({ episode, allies, dailySeed, onComplete, onConceptSeen }) {

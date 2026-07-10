@@ -185,6 +185,16 @@ export const EPISODE_BRIEFINGS = {
       quote: '"Déjame pescar tranquilo, ¿ya? Si yo no lo saco, lo saca el de al lado. Total, el río es de todos… hasta que no quede nada."',
     },
   },
+
+  ep19: {
+    mission:
+      'Tú y la gasolinera de enfrente venden lo mismo. Cada semana decides mantener el precio alto o bajarlo para robarle clientes — pero ella reacciona a lo que haces. Gana lo más posible sin caer en la guerra de precios.',
+    antagonist: {
+      portrait: portraits.empresario,
+      name: 'El de Enfrente',
+      quote: '"Yo te copio, socio. Si mantienes el precio alto, yo también. Pero si me bajas el precio una vez… la próxima te la cobro."',
+    },
+  },
 }
 
 const FALLBACK = EPISODE_BRIEFINGS.ep1
