@@ -100,9 +100,7 @@ export default function App() {
   if (state.phase === 'select' || !episode) {
     return (
       <div className="min-h-full">
-        {showIntro ? (
-          <Intro onEnter={dismissIntro} />
-        ) : !activeLine ? (
+        {!activeLine ? (
           <LineSelect
             onSelect={setActiveLine}
             totalStars={totalStars}
@@ -119,8 +117,11 @@ export default function App() {
             onBack={() => setActiveLine(null)}
           />
         )}
-        {!showIntro && <HelpButton />}
+        {!showIntro && <HelpButton onShowWelcome={() => setShowIntro(true)} />}
         <VersionBadge />
+        {/* Bienvenida de tester: overlay que cubre el mapa en la 1ª visita y se
+            reabre desde Ayuda (?). */}
+        {showIntro && <Intro onEnter={dismissIntro} />}
       </div>
     )
   }
@@ -201,8 +202,11 @@ export default function App() {
         </p>
       </footer>
 
-      <HelpButton episode={episode} />
+      <HelpButton episode={episode} onShowWelcome={() => setShowIntro(true)} />
       <VersionBadge />
+      {/* Bienvenida reabierta desde Ayuda (?) durante la partida: overlay que no
+          desmonta el juego → no se pierde el progreso. */}
+      {showIntro && <Intro onEnter={dismissIntro} />}
     </div>
   )
 }

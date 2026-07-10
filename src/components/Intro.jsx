@@ -1,140 +1,49 @@
-import { useState } from 'react'
 import Coin from './Coin.jsx'
-import { visibleLines } from '../data/lines.js'
 
 // ─────────────────────────────────────────────────────────────────────────
-// Intro — onboarding ÚNICO de PAICIO (antes había dos portones: este y
-// WelcomeOverlay, que se contradecían y hablaban de "cinco crisis"). Ahora es
-// uno solo y veraz: explica qué es Paicio a través de sus 4 líneas (Crisis,
-// Orígenes, Chile, El Norte), no solo crisis LatAm. Tres pasos (pager); se
-// muestra una vez por navegador y se reabre desde el mapa con "¿Qué es?".
+// Intro — bienvenida de TESTER (pantalla única, cálida, una mano).
+//
+// Overlay fijo (z-70) que cubre lo que haya detrás: en la primera visita tapa el
+// mapa; reabierta desde Ayuda (?) tapa la pantalla en curso sin perder progreso.
+// Respeta el safe-area (notch de iPhone) arriba y abajo. Explica qué es Paicio,
+// el rol de tester, la nube 💬 (feedback con respuesta) y el sello ✦ (actualizar).
 // ─────────────────────────────────────────────────────────────────────────
 
-const STEPS = [
-  {
-    title: 'No se estudia. Se juega.',
-    text: 'Tomas el mando de un país y decides. Cada nivel es una mecánica distinta — y la mecánica es la lección.',
-    body: 'loop',
-  },
-  {
-    title: 'Cinco líneas, una economía',
-    text: 'No son solo crisis: es la economía completa, desde su historia hasta los países que la resolvieron.',
-    body: 'lines',
-  },
-  {
-    title: 'Decides y vives las consecuencias',
-    text: 'Deslizas, arrastras o tocas en el momento justo. Miras los medidores, ves el desenlace y entiendes por qué salió así.',
-    body: 'tester',
-  },
-]
-
-// Chips del loop del juego.
-const LOOP = [
-  { label: 'Decides', face: '#F5A524', soft: '#FBE7C6', icon: <path d="M6 6h12v12H6z" /> },
-  {
-    label: 'Medidores',
-    face: '#4FA3E3',
-    soft: '#DCEBFA',
-    icon: (
-      <>
-        <path d="M6 15v3" />
-        <path d="M12 10v8" />
-        <path d="M18 6v12" />
-      </>
-    ),
-  },
-  {
-    label: 'Desenlace',
-    face: '#F06A54',
-    soft: '#FBDAD3',
-    icon: <path d="M12 5l2.4 4.9 5.4.8-3.9 3.8.9 5.3-4.8-2.5-4.8 2.5.9-5.3-3.9-3.8 5.4-.8z" />,
-  },
-]
-
-function LoopChips() {
+function Explainer({ chip, chipBg, title, children }) {
   return (
-    <div className="mt-7 grid grid-cols-3 gap-3">
-      {LOOP.map((c) => (
-        <div
-          key={c.label}
-          className="shadow-card flex flex-col items-center gap-2 rounded-[16px] bg-surface px-2 py-3"
-        >
-          <span
-            className="flex h-9 w-9 items-center justify-center rounded-[10px]"
-            style={{ background: c.soft, color: c.face }}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5 w-5"
-              aria-hidden
-            >
-              {c.icon}
-            </svg>
-          </span>
-          <span className="font-nunito text-[0.66rem] font-extrabold uppercase tracking-wide text-ink-soft">
-            {c.label}
-          </span>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function LinesList() {
-  return (
-    <div className="mt-6 space-y-2">
-      {visibleLines().map((l) => (
-        <div
-          key={l.id}
-          className="shadow-card flex items-center gap-3 rounded-[14px] bg-surface px-3.5 py-2.5 text-left"
-        >
-          <span className="shrink-0 text-[1.3rem] leading-none" aria-hidden>
-            {l.icon}
-          </span>
-          <p className="min-w-0 font-nunito text-[0.8rem] leading-snug text-ink-soft">
-            <span className="font-extrabold text-ink-warm">{l.name}</span> · {l.subtitle}
-          </p>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function TesterNote() {
-  return (
-    <div className="mt-6 rounded-[16px] px-4 py-3 text-left" style={{ background: '#FBDAD3' }}>
-      <p className="font-nunito text-[0.6rem] font-extrabold uppercase tracking-[0.12em] text-[#D24C39]">
-        Eres tester
-      </p>
-      <p className="mt-1 font-nunito text-[0.82rem] leading-snug text-ink-soft">
-        ¿Dudas de cómo se juega? Toca el <span className="font-extrabold">?</span> arriba en
-        cualquier momento. ¿Algo se rompe o se puede mejorar? El botón{' '}
-        <span className="font-extrabold">💬</span> me llega directo.
-      </p>
+    <div className="shadow-card animate-fade-up mt-3 flex items-start gap-3 rounded-[16px] bg-surface p-3.5">
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] text-[1.25rem]"
+        style={{ background: chipBg }}
+        aria-hidden
+      >
+        {chip}
+      </span>
+      <div className="min-w-0">
+        <p className="font-round text-[0.9rem] font-bold text-ink-warm">{title}</p>
+        <p className="mt-0.5 font-nunito text-[0.82rem] leading-snug text-ink-soft">{children}</p>
+      </div>
     </div>
   )
 }
 
 export default function Intro({ onEnter }) {
-  const [step, setStep] = useState(0)
-  const last = step === STEPS.length - 1
-  const current = STEPS[step]
-
   return (
     <div
-      className="on-cream relative mx-auto min-h-[100dvh] max-w-md overflow-hidden"
+      className="on-cream animate-fade-in fixed inset-0 z-[70] overflow-y-auto"
       style={{ background: 'linear-gradient(180deg,#FFF3D8,#FCE7C0)' }}
     >
-      <div className="flex min-h-[100dvh] flex-col px-6 pb-8 pt-6">
+      <div
+        className="mx-auto flex min-h-[100dvh] max-w-md flex-col px-6"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top) + 1.25rem)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom) + 1.5rem)',
+        }}
+      >
         {/* Marca */}
-        <div className="mt-2 flex flex-col items-center text-center">
-          <Coin size={92} bob />
-          <h1 className="mt-3 font-round text-[2.6rem] font-bold leading-none tracking-tight text-ink-warm">
+        <div className="flex flex-col items-center text-center">
+          <Coin size={82} bob />
+          <h1 className="mt-3 font-round text-[2.4rem] font-bold leading-none tracking-tight text-ink-warm">
             PAICIO
           </h1>
           <p className="mt-1 font-nunito text-[0.84rem] font-bold text-ink-mute">
@@ -142,57 +51,50 @@ export default function Intro({ onEnter }) {
           </p>
         </div>
 
-        {/* Paso actual */}
-        <div className="mt-7 text-center">
-          <h2 className="mx-auto max-w-[18rem] text-balance font-round text-[1.35rem] font-bold leading-tight text-ink-warm">
-            {current.title}
-          </h2>
-          <p className="mx-auto mt-2 max-w-[20rem] font-nunito text-[0.92rem] leading-snug text-ink-soft">
-            {current.text}
+        {/* Qué es, en una línea */}
+        <p className="mt-5 text-center font-nunito text-[0.95rem] leading-snug text-ink-soft">
+          Eres <span className="font-extrabold text-ink-warm">Ministro/a de Economía</span>:
+          resuelves crisis reales, teoría y modelos de país…{' '}
+          <span className="font-extrabold text-ink-warm">jugándolos</span>. La mecánica es la
+          lección.
+        </p>
+
+        {/* Eres tester */}
+        <div className="animate-fade-up mt-5 rounded-[18px] px-4 py-3.5" style={{ background: '#FBDAD3' }}>
+          <p className="font-nunito text-[0.64rem] font-extrabold uppercase tracking-[0.14em] text-[#D24C39]">
+            🛠️ Eres tester
+          </p>
+          <p className="mt-1 font-nunito text-[0.86rem] leading-snug text-ink-soft">
+            El juego está <span className="font-extrabold text-ink-warm">en construcción</span> y
+            tu opinión lo moldea. Lo que pruebes hoy cambia lo que viene.
           </p>
         </div>
 
-        {/* Cuerpo del paso */}
-        {current.body === 'loop' && <LoopChips />}
-        {current.body === 'lines' && <LinesList />}
-        {current.body === 'tester' && <TesterNote />}
+        {/* La nube 💬 */}
+        <Explainer chip="💬" chipBg="#DCEBFA" title="La nube: tu voz">
+          Tócala (abajo a la derecha) en cualquier momento para dejar un comentario — qué se
+          rompe, confunde o mejorarías.{' '}
+          <span className="font-extrabold text-ink-warm">Te respondo ahí mismo.</span>
+        </Explainer>
 
-        {/* Empuja el pager + CTA al fondo */}
+        {/* El sello ✦ */}
+        <Explainer chip="✦" chipBg="#FBE7C6" title="Siempre la última versión">
+          Aprieta <span className="font-extrabold">Actualizar</span> en el sello{' '}
+          <span className="font-extrabold">✦ v…</span> (abajo a la izquierda) y trae lo último; en{' '}
+          <span className="font-extrabold">Novedades</span> ves qué cambió. Actualizo casi a diario.
+        </Explainer>
+
+        {/* Empuja el CTA al fondo */}
         <div className="min-h-6 flex-1" />
-
-        {/* Pager */}
-        <div className="mb-5 flex items-center justify-center gap-2">
-          {STEPS.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setStep(i)}
-              aria-label={`Paso ${i + 1}`}
-              className="rounded-full transition-all"
-              style={{
-                width: i === step ? 22 : 7,
-                height: 7,
-                background: i === step ? 'var(--color-gold)' : '#E4CE9E',
-              }}
-            />
-          ))}
-        </div>
 
         {/* CTA */}
         <button
           type="button"
-          onClick={() => (last ? onEnter() : setStep((s) => s + 1))}
-          className="candy w-full px-5 py-3.5 text-[1rem]"
+          onClick={onEnter}
+          className="candy mt-6 w-full px-5 py-4 text-[1.05rem]"
           style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
         >
-          {last ? 'Empezar a jugar' : 'Siguiente'}
-        </button>
-        <button
-          type="button"
-          onClick={onEnter}
-          className="mt-3 font-nunito text-[0.8rem] font-extrabold text-ink-mute transition-colors hover:text-ink-soft"
-        >
-          Ya tengo progreso →
+          Entrar a Paicio →
         </button>
       </div>
     </div>

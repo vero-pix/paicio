@@ -129,7 +129,7 @@ function GeneralHelp() {
   )
 }
 
-export default function HelpButton({ episode = null }) {
+export default function HelpButton({ episode = null, onShowWelcome }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -179,10 +179,23 @@ export default function HelpButton({ episode = null }) {
               {episode ? <ContextualHelp episode={episode} /> : <GeneralHelp />}
             </div>
 
+            {onShowWelcome && (
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  onShowWelcome()
+                }}
+                className="mt-4 w-full text-center font-nunito text-[0.8rem] font-extrabold text-ink-mute transition-colors hover:text-ink-soft"
+              >
+                Ver la bienvenida de nuevo →
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="candy mt-6 w-full px-5 py-3 text-[0.95rem]"
+              className="candy mt-3 w-full px-5 py-3 text-[0.95rem]"
               style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
             >
               Entendido

@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.34.0'
+export const APP_VERSION = '0.35.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.35.0',
+    fecha: '10 jul 2026',
+    cambios: [
+      '👋 Nueva bienvenida de tester: en una pantalla te cuenta qué es Paicio, que tu opinión moldea el juego, cómo usar la nube 💬 (te respondo ahí mismo) y el sello ✦ (Actualizar para traer lo último). Se puede reabrir cuando quieras desde el botón de Ayuda (?).',
+    ],
+  },
   {
     version: '0.34.0',
     fecha: '10 jul 2026',
