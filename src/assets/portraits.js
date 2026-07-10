@@ -34,6 +34,13 @@ import presidenteReal from './presidente-ep5.webp'
 import puebloReal from './pueblo-ep5.webp'
 import mercadoReal from './mercado-ep5.webp'
 
+// ── Orígenes — economistas (Lote Orígenes, retratos reales) ───────────────
+import smith from './smith-ep8.webp'
+import ford from './ford-ep9.webp'
+import marx from './marx-ep10.webp'
+import keynes from './keynes-ep11.webp'
+import friedman from './friedman-ep12.webp'
+
 export const portraits = {
   // Ep1
   marcos, rosa, fondo, comerciante, presidente,
@@ -55,17 +62,16 @@ export const portraits = {
   social_peru: empresario,
   empresario_peru: banqueroDeuda,
   militar_peru: congreso,
-  // Ep9 — Ford (retratos pendientes)
-  ford: presidenteReal,
+  // Orígenes — economistas (Lote Orígenes, retratos reales)
+  smith,
+  ford,
+  marx,
+  keynes,
+  friedman,
+  // Ep9 — Ford, personajes secundarios (placeholder hasta tener retratos)
   ingeniero: tecnocrata,
   obrero: trabajadorChile,
   proveedor: banqueroDeuda,
-  // Ep10 — Marx
-  marx: presidenteReal,
-  // Ep11 — Keynes
-  keynes: tecnocrata,
-  // Ep12 — Friedman
-  friedman: banqueroDeuda,
   // Ep13 — Cobre
   precioCobre: trabajadorChile,
   // Ep14 — Pensiones

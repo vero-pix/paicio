@@ -61,6 +61,28 @@ import envejecimiento from './envejecimiento.webp'
 // Línea Microeconomía — emblema (balanza).
 import microeconomia from './microeconomia.webp'
 
+// Lote Orígenes — Ep9 Ford (assemblyLine).
+import lineaMontaje from './lineaMontaje.webp'
+import estandarizacion from './estandarizacion.webp'
+import integracionVertical from './integracionVertical.webp'
+import salarioCinco from './salarioCinco.webp'
+import rolFabrica from './rolFabrica.webp'
+import rolMecanico from './rolMecanico.webp'
+import rolObrero from './rolObrero.webp'
+// Lote Orígenes — Ep10 Marx (surplusValue).
+import ludismo from './ludismo.webp'
+import manifiesto from './manifiesto.webp'
+// Lote Orígenes — Ep11 Keynes (aggregateDemand).
+import huelga from './huelga.webp'
+import bolsa from './bolsa.webp'
+// Lote Orígenes — Ep12 Friedman (monetaryRule).
+import expandir from './expandir.webp'
+import reglaK from './reglaK.webp'
+import contraer from './contraer.webp'
+import presionElectoral from './presionElectoral.webp'
+// Lote Orígenes — Ep4 (heredado): respaldo del Congreso.
+import respaldoCongreso from './respaldoCongreso.webp'
+
 export const eventIcons = {
   // Ep1
   petroleo,
@@ -106,4 +128,25 @@ export const eventIcons = {
   envejecimiento,
   // Línea Microeconomía
   microeconomia,
+  // Lote Orígenes — Ep4 heredado
+  respaldoCongreso,
+  // Lote Orígenes — Ep9 Ford
+  lineaMontaje,
+  estandarizacion,
+  integracionVertical,
+  salarioCinco,
+  rolFabrica,
+  rolMecanico,
+  rolObrero,
+  // Lote Orígenes — Ep10 Marx
+  ludismo,
+  manifiesto,
+  // Lote Orígenes — Ep11 Keynes
+  huelga,
+  bolsa,
+  // Lote Orígenes — Ep12 Friedman (choque petrolero reusa 'petroleo')
+  expandir,
+  reglaK,
+  contraer,
+  presionElectoral,
 }

@@ -81,7 +81,7 @@ export const EPISODE_BRIEFINGS = {
     mission:
       'Acompaña a Adam Smith por la fábrica de alfileres y descubre por qué la división del trabajo es la clave de la riqueza.',
     antagonist: {
-      portrait: portraits.presidenteReal,
+      portrait: portraits.smith,
       name: 'Adam Smith',
       quote: '"Permitidme observar vuestro taller, buen hombre. He oído que fabricáis alfileres."',
     },
@@ -90,7 +90,7 @@ export const EPISODE_BRIEFINGS = {
     mission:
       'Lleva la producción del Model T de 12 horas a 93 minutos por auto y democratiza el automóvil.',
     antagonist: {
-      portrait: portraits.presidente,
+      portrait: portraits.ford,
       name: 'Henry Ford',
       quote: '"Cualquier cliente puede tener un auto del color que quiera, siempre que sea negro."',
     },
@@ -100,7 +100,7 @@ export const EPISODE_BRIEFINGS = {
     mission:
       'Descubre la plusvalía: la fuerza invisible que hace funcionar el capitalismo. Marx te guiará.',
     antagonist: {
-      portrait: portraits.presidenteReal,
+      portrait: portraits.marx,
       name: 'Karl Marx',
       quote: '"El trabajador solo es rico mientras más valor produce de lo que cuesta mantenerlo. Esa diferencia es la plusvalía."',
     },
@@ -110,7 +110,7 @@ export const EPISODE_BRIEFINGS = {
     mission:
       'La economía está en el suelo. Aplica las ideas de Keynes y reactiva la demanda agregada.',
     antagonist: {
-      portrait: portraits.tecnocrata,
+      portrait: portraits.keynes,
       name: 'John M. Keynes',
       quote: '"El problema no es la producción. Es la demanda. Si la gente no gasta, el gobierno debe hacerlo."',
     },
@@ -120,7 +120,7 @@ export const EPISODE_BRIEFINGS = {
     mission:
       'Domina la inflación con la regla monetaria de Friedman. Cada decisión de oferta de dinero afecta las expectativas de todos.',
     antagonist: {
-      portrait: portraits.banqueroDeuda,
+      portrait: portraits.friedman,
       name: 'Milton Friedman',
       quote: '"La inflación es siempre y en todo lugar un fenómeno monetario."',
     },

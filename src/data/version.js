@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.32.2'
+export const APP_VERSION = '0.33.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.33.0',
+    fecha: '10 jul 2026',
+    cambios: [
+      '🎨 Retratos reales de los economistas de Orígenes: Adam Smith, Marx, Ford, Keynes y Friedman estrenan sus ilustraciones (antes reusaban caras de otros episodios).',
+      '🖼️ Íconos ilustrados nuevos (lote Orígenes) para las cartas de evento: ludismo y el manifiesto (Marx), la huelga (Ford/Keynes), presión electoral y shock petrolero (Friedman), y el respaldo del Congreso (Brasil). Adiós emojis.',
+    ],
+  },
   {
     version: '0.32.2',
     fecha: '10 jul 2026',

@@ -73,12 +73,14 @@ export default {
   eventos: [
     {
       ronda: 3,
+      iconKey: 'presionElectoral',
       titulo: 'Presión Electoral',
       desc: 'El gobierno te pide expandir la oferta para bajar el desempleo antes de las elecciones. La tentación es grande.',
       efecto: { credibilidad: -8 },
     },
     {
       ronda: 5,
+      iconKey: 'petroleo',
       titulo: 'Shock Petrolero',
       desc: 'La OPEP sube el precio del crudo. La inflación importada salta sola, sin que hayas movido la política monetaria.',
       efecto: { inflacion: 3 },
