@@ -125,14 +125,27 @@ export default function Buzon() {
         )}
         {items.map((m) => (
           <div key={m.id} className="rounded-md border border-edge bg-cell/70 p-4">
-            <div className="mb-1.5 flex items-center justify-between">
+            <div className="mb-1.5 flex items-start justify-between gap-2">
               <span className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-paper-dim">
                 {m.name || 'Anónimo'}
                 {m.stage ? ` · ${m.stage}` : ''}
               </span>
-              <span className="font-mono text-[0.58rem] text-paper-dim/70">
+              <span className="shrink-0 font-mono text-[0.58rem] text-paper-dim/70">
                 {fmt(m.created_at)}
               </span>
+            </div>
+            <div className="mb-2 flex items-center gap-2">
+              <span
+                className="font-mono text-[0.55rem] text-paper-dim/60"
+                title={m.client_id || ''}
+              >
+                id: {m.client_id ? m.client_id.slice(0, 12) : '—'}
+              </span>
+              {!m.reply && (
+                <span className="rounded-full border border-crisis/50 bg-crisis/10 px-1.5 py-0.5 font-mono text-[0.5rem] uppercase tracking-[0.12em] text-crisis">
+                  sin responder
+                </span>
+              )}
             </div>
             <p className="font-body text-[0.95rem] leading-relaxed text-paper">{m.comment}</p>
 

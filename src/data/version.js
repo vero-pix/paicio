@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.35.0'
+export const APP_VERSION = '0.36.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.36.0',
+    fecha: '10 jul 2026',
+    cambios: [
+      '💬 Afinado el circuito de comentarios: leo y respondo tu feedback más fácil, así que si dejas un comentario con la nube, revisa después — te respondo ahí mismo.',
+    ],
+  },
   {
     version: '0.35.0',
     fecha: '10 jul 2026',

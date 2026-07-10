@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     if (!checkPass(req)) return res.status(401).json({ error: 'Clave incorrecta.' })
     const { data, error } = await supabase
       .from('feedback')
-      .select('id, created_at, name, comment, stage, url, reply, replied_at')
+      .select('id, created_at, name, comment, stage, url, client_id, reply, replied_at')
       .order('created_at', { ascending: false })
       .limit(300)
     if (error) return res.status(500).json({ error: error.message })
