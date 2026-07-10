@@ -33,6 +33,11 @@ export const concepts = {
     short: 'El precio donde lo que se ofrece calza con lo que se quiere comprar.',
     body: 'Si el precio está por encima, sobra (excedente); si está por debajo, falta (escasez y colas). En el cruce de oferta y demanda el mercado "se vacía": se vende justo lo que hay. Ese punto se mueve cuando cambian los gustos, el ingreso o los sustitutos.',
   },
+  poderMercado: {
+    title: 'Poder de mercado',
+    short: 'La capacidad de un vendedor de fijar el precio por encima del costo.',
+    body: 'Un monopolista (único vendedor, sin sustituto) elige el precio que maximiza su ganancia, y ese precio queda por encima del competitivo. La competencia le quita ese poder: cuando la gente puede comparar, el precio baja hacia el costo.',
+  },
   indexacion: {
     title: 'Indexación salarial',
     short: 'Subir los salarios automáticamente según la inflación.',

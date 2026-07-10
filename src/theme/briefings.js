@@ -155,6 +155,16 @@ export const EPISODE_BRIEFINGS = {
       quote: '"Mijo, el precio no lo pones tú ni yo. Lo pone la feria. Si cobras de más, te quedas con los tomates."',
     },
   },
+
+  ep17: {
+    mission:
+      'Eres la única farmacia del pueblo. Ponle precio al remedio buscando la máxima ganancia (por encima del costo, porque puedes)… y cuando llegue la competencia, aprende a soltar el margen.',
+    antagonist: {
+      portrait: portraits.comerciante,
+      name: 'El Boticario',
+      quote: '"Aquí no hay otra farmacia, ¿verdad? Entonces el precio lo pones tú. Pero cuidado: si cobras demasiado, hasta el enfermo se aguanta."',
+    },
+  },
 }
 
 const FALLBACK = EPISODE_BRIEFINGS.ep1

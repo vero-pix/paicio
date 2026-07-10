@@ -244,6 +244,20 @@ export const EPISODE_TUTORIALS = {
       },
     ],
   },
+
+  ep17: {
+    goalChip: 'Encuentra el precio que más ganancia deja',
+    steps: [
+      {
+        target: 'meters',
+        caption: 'Sube el precio: ganas más por unidad pero vendes menos. La ganancia es una joroba con una cima.',
+      },
+      {
+        target: 'actions',
+        caption: 'Mueve el precio con el slider o −/+ hasta que la barra de ganancia esté lo más llena posible. Ahí fija el precio.',
+      },
+    ],
+  },
 }
 
 export const tutorialFor = (id) => EPISODE_TUTORIALS[id] ?? null

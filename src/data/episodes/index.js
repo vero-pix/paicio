@@ -15,7 +15,8 @@ import episode12 from './episode12.js'
 import episode13 from './episode13.js'
 import episode14 from './episode14.js'
 import episode15 from './episode15.js'
+import episode17 from './episode17.js'
 
-export const episodes = [episode1, episode2, episode3, episode4, episode5, episode6, episode7, episode8, episode9, episode10, episode11, episode12, episode13, episode14, episode15]
+export const episodes = [episode1, episode2, episode3, episode4, episode5, episode6, episode7, episode8, episode9, episode10, episode11, episode12, episode13, episode14, episode15, episode17]
 export const episodesById = Object.fromEntries(episodes.map((e) => [e.id, e]))
 export const playableEpisodes = episodes.filter((e) => !e.bloqueado)

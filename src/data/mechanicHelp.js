@@ -96,6 +96,11 @@ export const MECHANIC_HELP = {
     gesto: 'Arrastra la aguja del precio (o usa −/+). Sube si se agota, baja si sobra, hasta vaciar el mercado; luego fija el precio.',
     medidores: 'Cuánto hay para vender (oferta) y cuánto quiere comprar la gente (demanda).',
   },
+  monopolyPrice: {
+    verbo: 'Mueve el precio',
+    gesto: 'Arrastra el slider del precio (o −/+) buscando la máxima ganancia: la barra verde se llena en la cima de la joroba. Luego fija el precio.',
+    medidores: 'Las unidades que vendes y la ganancia (precio − costo × unidades).',
+  },
 }
 
 // Turnos del episodio para el verbo activo: rondas o días, con su etiqueta.
