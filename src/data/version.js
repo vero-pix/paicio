@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.40.0'
+export const APP_VERSION = '0.40.1'
 
 export const NOVEDADES = [
+  {
+    version: '0.40.1',
+    fecha: '11 jul 2026',
+    cambios: [
+      '🔊 Se arregló la música que se encimaba (sonaban dos pistas a la vez al entrar a las crisis). Ahora suena una sola, con transición suave.',
+      '🖨️ "La Gran Quema" (Bolivia) rebalanceada: antes casi siempre reventabas hagas lo que hagas. Ahora imprimir unas 3 veces y cortar a tiempo te deja ganar — pero pasarte sigue haciendo reventar la imprenta.',
+    ],
+  },
   {
     version: '0.40.0',
     fecha: '11 jul 2026',

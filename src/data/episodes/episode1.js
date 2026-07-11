@@ -47,10 +47,12 @@ export default {
   pressYourLuck: {
     rondas: 8,
     riesgoBase: 5, // % de reventar en la primera impresión
-    riesgoRampa: 12, // cuánto sube el riesgo por impresión
+    riesgoRampa: 8, // sube el riesgo por impresión (antes 12: reventaba casi seguro)
     alivioBase: 20, // alivio de la primera impresión
     alivioDecaimiento: 2, // cuánto rinde menos cada impresión
-    objetivoPozo: 65, // alivio consolidado para "perfect"
+    // Balance: "imprime ~3 y corta" gana (pozo 54 ≥ 50, P≈0.65 de sobrevivir 3);
+    // cortar tras 2 da partial (pozo 38 ≥ 25); imprimir 5+ sí revienta seguido.
+    objetivoPozo: 50, // alivio consolidado para "perfect"
   },
 
   // Periódico de la pantalla de celda.

@@ -250,6 +250,23 @@ let currentId = null
 let currentHowl = null
 let ambient = null // { nodes[], gain, lfo }
 
+// Registro de TODOS los Howls vivos. Sirve para que, cuando una pista nueva
+// empieza a sonar, se apague cualquier otra que haya quedado colgada por una
+// carrera (playMusic llamado antes de que cargara la anterior). Autolimpieza.
+const allHowls = new Set()
+
+// Apaga (fade-out + unload) todos los Howls vivos salvo `keepHowl`, y detiene el
+// ambient salvo que se pida conservarlo. Garantiza una sola fuente audible.
+function fadeOutOthers(keepHowl = null, { keepAmbient = false, fade = 1400 } = {}) {
+  allHowls.forEach((h) => {
+    if (h !== keepHowl) {
+      allHowls.delete(h)
+      fadeOutHowl(h, fade)
+    }
+  })
+  if (!keepAmbient) stopAmbient(fade / 1000)
+}
+
 // Desvanece y detiene un ambiente concreto (para poder cruzar dos a la vez).
 function fadeOutAmbient(a, fade = 0.8) {
   if (!a) return
@@ -288,6 +305,8 @@ function fadeOutHowl(h, fade = 1200) {
 function startAmbient(id) {
   const c = ensureCtx()
   if (!c) return
+  // Defensivo: nunca dejar dos drones sonando a la vez.
+  if (ambient) stopAmbient(0.6)
   const mood = MOODS[id] || MOODS.menu
   const now = c.currentTime
   const gain = c.createGain()
@@ -334,16 +353,14 @@ export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
   const prevId = currentId
   currentId = id
 
-  // Adoptamos lo que sonaba como "saliente"; se cruza al confirmar la entrada.
+  // La pista/ambient anterior sigue sonando hasta que la NUEVA entre de verdad;
+  // recién ahí se apaga TODO lo demás (fadeOutOthers), lo que también barre
+  // cualquier Howl colgado por una carrera. Nada de crossOut diferido y frágil.
   const prevHowl = currentHowl
   const prevAmbient = ambient
   currentHowl = null
   ambient = null
 
-  const crossOut = () => {
-    fadeOutHowl(prevHowl, fade)
-    fadeOutAmbient(prevAmbient, fade / 1000)
-  }
   // Restaura lo anterior cuando la pista nueva no llega (archivo ausente).
   const keepPrevious = () => {
     currentId = prevId
@@ -359,22 +376,27 @@ export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
       volume: 0,
       mute: musicSilenced(),
     })
+    allHowls.add(howl)
     currentHowl = howl
     howl.once('load', () => {
+      // Superada por una llamada posterior: descartar esta y salir (la llamada
+      // nueva se encargará de apagar el resto cuando su pista entre).
       if (currentId !== id || currentHowl !== howl) {
+        allHowls.delete(howl)
         howl.unload()
         return
       }
       howl.play()
-      howl.fade(0, musicSilenced() ? 0 : musicVol(), fade) // entra (o queda mudo si la música está silenciada)
-      crossOut() // sale lo anterior en paralelo
+      howl.fade(0, musicSilenced() ? 0 : musicVol(), fade) // entra (o mudo si silenciada)
+      fadeOutOthers(howl, { fade }) // apaga cualquier otra pista/drone que quede
     })
     howl.once('loaderror', () => {
+      allHowls.delete(howl)
       if (currentHowl === howl) currentHowl = null
       if (currentId !== id) return
       if (fallbackToAmbient) {
         startAmbient(id) // drone procedural (entra con su propio fade)
-        crossOut()
+        fadeOutOthers(null, { keepAmbient: true, fade }) // apaga los Howls, deja el drone
       } else {
         keepPrevious() // pista opcional ausente: seguimos con lo que sonaba
       }
@@ -382,7 +404,7 @@ export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
   } catch {
     if (fallbackToAmbient) {
       startAmbient(id)
-      crossOut()
+      fadeOutOthers(null, { keepAmbient: true, fade })
     } else {
       keepPrevious()
     }
@@ -391,16 +413,17 @@ export function playMusic(id, { fallbackToAmbient = true, fade = 1400 } = {}) {
 
 export function stopMusic() {
   currentId = null
-  if (currentHowl) {
-    const h = currentHowl
-    currentHowl = null
+  currentHowl = null
+  // Apaga y descarga TODO Howl vivo (no solo el "actual"), por si quedó alguno.
+  allHowls.forEach((h) => {
+    allHowls.delete(h)
     try {
       h.fade(h.volume(), 0, 800)
-      setTimeout(() => h.unload(), 900)
+      setTimeout(() => { try { h.unload() } catch { /* */ } }, 900)
     } catch {
       /* */
     }
-  }
+  })
   stopAmbient()
 }
 
