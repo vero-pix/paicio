@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────
-// EPISODIO 16 — LA ELECCIÓN  (línea Micro · PROTOTIPO · numero 2)
+// EPISODIO 16 — LA ELECCIÓN  (línea Micro · PROTOTIPO · numero 1 — abre la línea)
 // Referencia: costo de oportunidad / restricción presupuestaria. Ancla: tu
 // bolsillo (mesada o sueldo del mes).
 //
@@ -13,7 +13,7 @@
 
 export default {
   id: 'ep16',
-  numero: 2,
+  numero: 1,
   line: 'micro',
   titulo: 'La Elección',
   año: 'hoy',

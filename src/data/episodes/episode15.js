@@ -16,7 +16,7 @@
 
 export default {
   id: 'ep15',
-  numero: 1,
+  numero: 2,
   line: 'micro',
   titulo: 'El Precio Justo',
   año: 'hoy',
