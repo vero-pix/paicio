@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Analytics } from '@vercel/analytics/react'
 import App from './App.jsx'
 import FeedbackButton from './components/FeedbackButton.jsx'
 import SoundToggle from './components/SoundToggle.jsx'
@@ -21,5 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <SoundToggle />
       </>
     )}
+    {/* Vercel Web Analytics: page views anónimos (sin cookies ni datos personales). */}
+    <Analytics />
   </React.StrictMode>,
 )

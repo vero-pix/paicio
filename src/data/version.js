@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.37.0'
+export const APP_VERSION = '0.38.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.38.0',
+    fecha: '11 jul 2026',
+    cambios: [
+      '📊 Ahora medimos cuánta gente entra y juega (visitas anónimas, sin cookies ni datos personales). Sirve para saber qué episodios enganchan y mejorar PAICIO con datos reales.',
+    ],
+  },
   {
     version: '0.37.0',
     fecha: '10 jul 2026',
