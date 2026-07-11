@@ -1,17 +1,16 @@
 // ─────────────────────────────────────────────────────────────────────────
-// EPISODIO 17 — EL ÚNICO VENDEDOR  (línea Micro · PROTOTIPO · numero 3)
+// EPISODIO 17 — EL ÚNICO VENDEDOR  (línea Micro · numero 3)
 // Referencia: monopolio y poder de mercado. Ancla: la única farmacia del pueblo.
 //
-// Mecánica NUEVA: monopolyPrice (slider de precio). Mueves el precio sobre la
-// curva de demanda; la ganancia = (precio − costo) × unidades es una joroba con
-// un punto máximo (el precio de monopolio). Cuando llega la competencia, la
-// demanda se vuelve más elástica y ese punto baja.
+// Mecánica: monopolyPrice (slider de precio). Mueves el precio sobre la curva de
+// demanda; la ganancia = (precio − costo) × unidades es una joroba con un punto
+// máximo (el precio de monopolio). Cuando llega la competencia, la demanda se
+// vuelve más elástica y ese punto baja.
 //
 // La lección: el único vendedor cobra por encima del costo porque puede; la
 // competencia empuja el precio hacia el costo.
 //
 // Lógica en src/utils/monopolyPrice.js, UI en MonopolyPrice.jsx.
-// CONTENIDO BORRADOR — revisar mazo de eventos, cifras y copy.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {

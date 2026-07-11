@@ -1,18 +1,16 @@
 // ─────────────────────────────────────────────────────────────────────────
-// EPISODIO 18 — LA CUENTA DE TODOS  (línea Micro · PROTOTIPO · numero 4)
+// EPISODIO 18 — LA CUENTA DE TODOS  (línea Micro · numero 4)
 // Referencia: externalidades / tragedia de los comunes. Ancla: un río (caladero)
 // compartido del pueblo.
 //
-// Mecánica NUEVA: externalityReg (regular). Pones el límite a la pesca cada
-// temporada. Poco límite → mucha actividad pero el río colapsa; mucho límite →
-// río sano pero economía muerta. El río es un stock que evoluciona.
+// Mecánica: externalityReg (regular). Pones el límite a la pesca cada temporada.
+// Poco límite → mucha actividad pero el río colapsa; mucho límite → río sano
+// pero economía muerta. El río es un stock que evoluciona.
 //
 // La lección: lo que conviene a cada uno (pescar al máximo) arruina a todos (el
 // río se agota). El rol del Estado es internalizar ese costo con una regla.
 //
 // Lógica en src/utils/externalityReg.js, UI en ExternalityReg.jsx.
-// CONTENIDO BORRADOR — revisar balance (que colapse sin regla y aguante con
-// regla moderada), mazo de eventos y copy.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {

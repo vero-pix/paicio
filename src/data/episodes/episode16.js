@@ -1,14 +1,15 @@
 // ─────────────────────────────────────────────────────────────────────────
-// EPISODIO 16 — LA ELECCIÓN  (línea Micro · PROTOTIPO · numero 1 — abre la línea)
+// EPISODIO 16 — LA ELECCIÓN  (línea Micro · numero 1 — abre la línea)
 // Referencia: costo de oportunidad / restricción presupuestaria. Ancla: tu
 // bolsillo (mesada o sueldo del mes).
 //
-// Mecánica NUEVA: choiceBudget (asignar presupuesto). Eliges qué deseos llevar
-// con plata limitada; no puedes tenerlo todo. Cada elección cuesta lo mejor que
+// Mecánica: choiceBudget (asignar presupuesto). Eliges qué deseos llevar con
+// plata limitada; no puedes tenerlo todo. Cada elección cuesta lo mejor que
 // dejas fuera (costo de oportunidad).
 //
-// Lógica en src/utils/choiceBudget.js, UI en ChoiceBudget.jsx.
-// CONTENIDO BORRADOR — revisar precios/felicidades (balance) y copy.
+// Balance verificado: en cada ronda el óptimo reparte en gustos chicos y la
+// tentación cara (zapatillas/audífonos) rinde menos — el costo de oportunidad
+// se siente. Lógica en src/utils/choiceBudget.js, UI en ChoiceBudget.jsx.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {

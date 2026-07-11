@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────
-// EPISODIO 19 — EL DILEMA  (línea Micro · PROTOTIPO · numero 5)
+// EPISODIO 19 — EL DILEMA  (línea Micro · numero 5)
 // Referencia: teoría de juegos / dilema del prisionero iterado. Ancla: dos
 // gasolineras, una frente a la otra.
 //
-// Mecánica NUEVA: priceWar (decidir con contraparte). Cada semana eliges mantener
-// el precio alto (colaborar) o bajarlo para robar clientes (competir). La otra
+// Mecánica: priceWar (decidir con contraparte). Cada semana eliges mantener el
+// precio alto (colaborar) o bajarlo para robar clientes (competir). La otra
 // gasolinera REACCIONA a tu jugada anterior (tit-for-tat). Eliges → lees la
 // reacción y los pagos → continúas.
 //
@@ -13,8 +13,6 @@
 // y la reputación hacen posible la cooperación.
 //
 // Lógica en src/utils/priceWar.js, UI en PriceWar.jsx.
-// CONTENIDO BORRADOR — revisar balance de pagos (que perfect exija sostener la
-// colaboración), y copy.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {
@@ -68,8 +66,11 @@ export default {
       CD: { tu: 0, ellos: 5 }, // tú no, ellos bajan → te los roban
       DD: { tu: 1, ellos: 1 }, // ambos bajan → guerra de precios
     },
-    // Sostener CC las 5 rondas da 15 (perfect). Traicionar una vez a tit-for-tat
-    // dispara la guerra y baja el total: 14+ exige colaboración casi pura.
+    // Balance (decisión final): sostener CC las 5 rondas da 15 → perfect. El techo
+    // real es 17 (cooperar 4 rondas y traicionar solo la última, sin castigo
+    // posterior: la clásica defección de fin de juego). Traicionar antes dispara la
+    // guerra de precios y baja el total. Umbrales: perfect 14 (colaboración casi
+    // pura), partial 10; traición temprana/mutua cae a 9 o menos → wrong.
     objetivo: { perfect: 14, partial: 10 },
   },
   outcomes: {

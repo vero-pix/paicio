@@ -1,17 +1,15 @@
 // ─────────────────────────────────────────────────────────────────────────
-// EPISODIO 15 — EL PRECIO JUSTO  (línea Micro · PROTOTIPO)
+// EPISODIO 15 — EL PRECIO JUSTO  (línea Micro · numero 2)
 // Referencia: oferta y demanda / equilibrio de mercado. Ancla cotidiana chilena
 // (la feria, el puesto de tomates), no académica.
 //
-// Mecánica NUEVA: marketEquilibrium (aguja de equilibrio). Mueves el precio y
-// ves en vivo el cruce de oferta y demanda: sobra (excedente), falta (escasez) o
-// se vacía justo (equilibrio). Shocks desplazan la demanda cada ronda.
+// Mecánica: marketEquilibrium (aguja de equilibrio). Mueves el precio y ves en
+// vivo el cruce de oferta y demanda: sobra (excedente), falta (escasez) o se
+// vacía justo (equilibrio). Shocks desplazan la demanda cada ronda.
 //
 // La lección: el precio no es capricho; lo fija dónde se cruzan oferta y demanda.
 //
 // Lógica en src/utils/marketEquilibrium.js, UI en MarketEquilibrium.jsx.
-// NOTA: la línea 'micro' está tras flag (prototype) — no aparece en el mapa de
-// prod hasta tener 3 episodios. Ver src/data/lines.js.
 // ─────────────────────────────────────────────────────────────────────────
 
 export default {
