@@ -47,9 +47,9 @@ export const LINES = [
     requires: null,
   },
   {
-    // PROTOTIPO en esta rama (feat/micro-line): OCULTA del mapa hasta tener 3+
-    // episodios y el OK de Vero. Se prueba con ?proto=1. (En prod/main la línea
-    // está visible; acá se re-esconde a propósito para construir los 4 episodios.)
+    // Línea Microeconomía — REVELADA en prod (2026-07-11): 5 episodios, cada uno
+    // con su verbo propio. El helper `visibleLines`/`prototype` sigue disponible
+    // por si se quiere volver a ocultar una línea en el futuro.
     id: 'micro',
     name: 'Microeconomía',
     subtitle: 'Cómo funcionan los mercados',
@@ -60,7 +60,6 @@ export const LINES = [
     gradient: ['#EAF6F3', '#B7E3D9', '#7DC7BC'],
     unlocked: true,
     requires: null,
-    prototype: true,
   },
 ]
 

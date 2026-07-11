@@ -80,7 +80,10 @@ function ContextualHelp({ episode }) {
   )
 }
 
+const NUM_PALABRA = { 1: 'Una', 2: 'Dos', 3: 'Tres', 4: 'Cuatro', 5: 'Cinco', 6: 'Seis' }
+
 function GeneralHelp() {
+  const lineas = visibleLines()
   return (
     <>
       <h3 className="font-round text-[1.5rem] font-bold leading-tight text-ink-warm">
@@ -93,10 +96,10 @@ function GeneralHelp() {
       </p>
 
       <p className="mt-5 font-nunito text-[0.7rem] font-extrabold uppercase tracking-[0.12em] text-ink-mute">
-        Cuatro líneas para recorrer
+        {NUM_PALABRA[lineas.length] ?? lineas.length} líneas para recorrer
       </p>
       <div className="mt-2 space-y-2">
-        {visibleLines().map((l) => (
+        {lineas.map((l) => (
           <div key={l.id} className="flex items-start gap-2.5">
             <span className="mt-0.5 shrink-0 text-[1.1rem] leading-none" aria-hidden>
               {l.icon}

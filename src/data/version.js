@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.38.0'
+export const APP_VERSION = '0.39.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.39.0',
+    fecha: '11 jul 2026',
+    cambios: [
+      '⚖️ ¡Nueva línea: Microeconomía! 5 episodios, cada uno con su propia mecánica, para entender la pieza mínima antes de gobernar un país: La Elección (tu plata no alcanza para todo → costo de oportunidad), El Precio Justo (oferta y demanda en la feria), El Único Vendedor (el monopolio y su precio), La Cuenta de Todos (contaminar/sobrepescar → externalidades) y El Dilema (coludir o competir → teoría de juegos).',
+    ],
+  },
   {
     version: '0.38.0',
     fecha: '11 jul 2026',
