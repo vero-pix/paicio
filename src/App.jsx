@@ -15,6 +15,7 @@ import MechanicHost from './components/mechanics/MechanicHost.jsx'
 import VersionBadge from './components/VersionBadge.jsx'
 import HelpButton from './components/HelpButton.jsx'
 import { dailySeed } from './utils/daily.js'
+import { track } from './lib/track.js'
 
 export default function App() {
   const {
@@ -38,8 +39,25 @@ export default function App() {
     backToSelect()
   }, [backToSelect])
 
+  // Analítica de producto: registra el inicio de una partida (anónimo).
+  const trackStart = useCallback((ep) => {
+    if (ep?.id) track('inicia_partida', { episodio: ep.id })
+  }, [])
+
+  // Inicia un episodio (desde el mapa o "siguiente episodio"): mide + arranca.
+  const handleStartEpisode = useCallback(
+    (ep) => {
+      trackStart(ep)
+      startEpisode(ep)
+    },
+    [trackStart, startEpisode],
+  )
+
   // Inicia el Reto Diario.
-  const handleStartDaily = (ep, iso) => startDaily(ep, iso, dailySeed(iso))
+  const handleStartDaily = (ep, iso) => {
+    trackStart(ep)
+    startDaily(ep, iso, dailySeed(iso))
+  }
 
   // Episodio activo.
   const episode = state.episodeId ? episodesById[state.episodeId] : null
@@ -48,6 +66,9 @@ export default function App() {
   function handleComplete(outcomeId, meta) {
     if (state.episodeId) {
       save(state.episodeId, outcomeId, meta?.score)
+      // Analítica: partida completada (resultado + estrellas, anónimo).
+      const estrellas = outcomeId === 'perfect' ? 3 : outcomeId === 'partial' ? 2 : 1
+      track('completa_partida', { episodio: state.episodeId, resultado: outcomeId, estrellas })
     }
     choosePolicy(outcomeId, [], meta)
   }
@@ -111,7 +132,7 @@ export default function App() {
             episodes={episodes
               .filter((e) => e.line === activeLine)
               .sort((a, b) => a.numero - b.numero)}
-            onSelect={startEpisode}
+            onSelect={handleStartEpisode}
             onShowIntro={() => setShowIntro(true)}
             onStartDaily={handleStartDaily}
             onBack={() => setActiveLine(null)}
@@ -189,10 +210,16 @@ export default function App() {
           allies={allies}
           daily={state.daily}
           onConceptSeen={markConceptSeen}
-          onRestart={() => restartEpisode(episode)}
-          onRetry={() => retryEpisode(episode)}
+          onRestart={() => {
+            trackStart(episode)
+            restartEpisode(episode)
+          }}
+          onRetry={() => {
+            trackStart(episode)
+            retryEpisode(episode)
+          }}
           onExit={backToSelect}
-          onNextEpisode={(ep) => startEpisode(ep)}
+          onNextEpisode={handleStartEpisode}
         />
       )}
 

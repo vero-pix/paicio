@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { episodesById } from '../data/episodes/index.js'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Buzon — vista privada de Vero para leer y responder el feedback de testers.
@@ -14,6 +15,7 @@ export default function Buzon() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [replies, setReplies] = useState({}) // borradores de respuesta por id
+  const [stats, setStats] = useState(null) // analítica de producto
 
   const load = useCallback(async (clave) => {
     setLoading(true)
@@ -24,6 +26,11 @@ export default function Buzon() {
       if (!res.ok) throw new Error(data.error || 'Error')
       setItems(data.items || [])
       setAuthed(true)
+      // Analítica (mejor esfuerzo: no bloquea el buzón si aún no hay datos/tabla).
+      try {
+        const r = await fetch(`/api/evento?pass=${encodeURIComponent(clave)}`)
+        if (r.ok) setStats(await r.json())
+      } catch { /* sin analítica, no crítico */ }
     } catch (e) {
       setError(e.message)
       setAuthed(false)
@@ -117,6 +124,55 @@ export default function Buzon() {
       </button>
 
       {error && <p className="mt-3 font-mono text-[0.72rem] text-crisis">{error}</p>}
+
+      {/* Analítica de producto (anónima) */}
+      {stats && (
+        <div className="mt-5 rounded-md border border-edge bg-cell/50 p-4">
+          <h2 className="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-paper-dim">
+            Analítica · anónima
+          </h2>
+          <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+            <div>
+              <p className="font-display text-2xl font-black text-paper">
+                {stats.jugadores_unicos ?? 0}
+              </p>
+              <p className="font-mono text-[0.5rem] uppercase tracking-wide text-paper-dim">
+                jugadores únicos
+              </p>
+            </div>
+            <div>
+              <p className="font-display text-2xl font-black text-paper">{stats.inicia ?? 0}</p>
+              <p className="font-mono text-[0.5rem] uppercase tracking-wide text-paper-dim">
+                partidas iniciadas
+              </p>
+            </div>
+            <div>
+              <p className="font-display text-2xl font-black text-paper">{stats.completa ?? 0}</p>
+              <p className="font-mono text-[0.5rem] uppercase tracking-wide text-paper-dim">
+                partidas completadas
+              </p>
+            </div>
+          </div>
+          {Array.isArray(stats.por_episodio) && stats.por_episodio.length > 0 && (
+            <div className="mt-4 space-y-1.5">
+              {stats.por_episodio.map((e) => (
+                <div
+                  key={e.episodio || 'sin'}
+                  className="flex items-center justify-between font-mono text-[0.62rem] text-paper-dim"
+                >
+                  <span className="truncate text-paper/90">
+                    {episodesById[e.episodio]?.titulo || e.episodio || '—'}
+                  </span>
+                  <span className="shrink-0">
+                    {e.completa ?? 0}/{e.inicia ?? 0}
+                    <span className="text-paper-dim/60"> compl./inic.</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="mt-5 space-y-4">
         {items.length === 0 && (

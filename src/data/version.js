@@ -2,9 +2,16 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.39.0'
+export const APP_VERSION = '0.40.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.40.0',
+    fecha: '11 jul 2026',
+    cambios: [
+      '📈 Medición anónima del juego: registramos cuándo se empieza y se termina una partida (por episodio, con el resultado) para saber qué engancha y qué pulir. Es 100% anónimo — el mismo identificador de navegador del buzón, sin datos personales. Además dejamos afinada y lista la línea Microeconomía.',
+    ],
+  },
   {
     version: '0.39.0',
     fecha: '11 jul 2026',

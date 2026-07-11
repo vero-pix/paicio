@@ -8,3 +8,7 @@ dist
 # Respaldos y exports locales (no versionar)
 *.zip
 _backups/
+.env*
+
+# Supabase CLI (link local, no versionar)
+supabase/
