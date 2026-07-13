@@ -210,7 +210,7 @@ export default function PensionReform({ episode, dailySeed, onComplete, onConcep
                   <span className="mt-0.5 block font-nunito text-[0.7rem] leading-snug text-white/85">
                     {r.desc}
                   </span>
-                  <div className="mt-1.5 flex gap-3 font-nunito text-[0.55rem] font-bold text-white/70">
+                  <div className="mt-1.5 flex gap-3 font-nunito text-[0.68rem] font-bold text-white/70">
                     <span>📈 +{r.efecto.tasaReemplazo}% reemplazo</span>
                     {r.efecto.cobertura > 0 && <span>👥 +{r.efecto.cobertura}% cobertura</span>}
                     {r.efecto.confianza !== 0 && (

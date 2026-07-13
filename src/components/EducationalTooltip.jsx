@@ -1,12 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { concepts } from '../data/concepts.js'
+
+const autoShown = new Set()
 
 // Popup de concepto económico. Aparece en contexto, nunca interrumpe:
 // es un chip con borde punteado que el jugador puede abrir si quiere profundizar.
+// Se auto-abre la primera vez que se encuentra en la sesión.
 export default function EducationalTooltip({ conceptId, label, onSeen }) {
   const [open, setOpen] = useState(false)
+  const mounted = useRef(false)
   const concept = concepts[conceptId]
   if (!concept) return null
+
+  useEffect(() => {
+    if (!mounted.current && !autoShown.has(conceptId)) {
+      autoShown.add(conceptId)
+      mounted.current = true
+      setOpen(true)
+      onSeen?.(conceptId)
+    }
+  }, [conceptId, onSeen])
 
   function toggle() {
     const next = !open

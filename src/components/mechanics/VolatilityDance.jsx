@@ -131,7 +131,7 @@ function BarraPrecio({ speed, onTimed, onMissed, live }) {
 function Timeline({ speed, zone }) {
   const labels = ['Bajo', 'Peak', 'Bajo']
   return (
-    <div className="mt-1 flex items-center justify-center gap-12 font-nunito text-[0.55rem] font-extrabold text-ink-mute/60 uppercase tracking-wider">
+    <div className="mt-1 flex items-center justify-center gap-12 font-nunito text-[0.68rem] font-extrabold text-ink-mute/60 uppercase tracking-wider">
       {labels.map((l) => (
         <span key={l}>{l}</span>
       ))}
@@ -293,7 +293,7 @@ export default function VolatilityDance({ episode, onComplete }) {
               </span>
               <span className="ml-1 font-nunito text-[0.6rem] font-bold text-ink-mute">US$</span>
             </div>
-            <span className="font-nunito text-[0.55rem] text-ink-mute/60">
+            <span className="font-nunito text-[0.68rem] text-ink-mute/60">
               ×{estrategia === 'esperar' ? '1.6 ' : '1.0 '}
               · Codelco ×{state.codelco.toFixed(2)}
             </span>

@@ -203,10 +203,10 @@ export default function FeedbackButton() {
                       <div key={m.id} className="space-y-2">
                         <div className="shadow-card rounded-[16px] bg-surface p-3">
                           <div className="mb-1.5 flex items-center justify-between">
-                            <span className="font-nunito text-[0.56rem] font-extrabold uppercase tracking-[0.14em] text-ink-mute">
+                            <span className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-[0.14em] text-ink-mute">
                               Tú{m.stage ? ` · ${m.stage}` : ''}
                             </span>
-                            <span className="font-nunito text-[0.56rem] font-bold text-ink-mute/70">
+                            <span className="font-nunito text-[0.68rem] font-bold text-ink-mute/70">
                               {fmt(m.created_at)}
                             </span>
                           </div>
@@ -216,7 +216,7 @@ export default function FeedbackButton() {
                         </div>
                         {m.reply ? (
                           <div className="ml-4 rounded-[16px] border-l-2 border-[#2FB37E] bg-[#D6F0E5] p-3">
-                            <span className="font-nunito text-[0.56rem] font-extrabold uppercase tracking-[0.14em] text-[#1F9A6E]">
+                            <span className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-[0.14em] text-[#1F9A6E]">
                               Respuesta de Vero
                             </span>
                             <p className="mt-1 font-nunito text-[0.92rem] leading-relaxed text-ink-warm">

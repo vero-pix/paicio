@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { concepts } from '../../data/concepts.js'
+
+const autoShown = new Set()
 import { useCountUp } from '../../lib/animations.js'
 import ActionIcon from '../icons/ActionIcon.jsx'
 
@@ -224,7 +226,7 @@ export function CandyAction({
           <span className="font-round text-[0.95rem] font-bold leading-tight">{name}</span>
         </span>
         {meta && (
-          <span className="shrink-0 font-nunito text-[0.56rem] font-extrabold uppercase tracking-wide text-white/85">
+          <span className="shrink-0 font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-white/85">
             {meta}
           </span>
         )}
@@ -239,7 +241,7 @@ export function CandyAction({
           {pills.map((p, i) => (
             <span
               key={i}
-              className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white"
+              className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.68rem] font-extrabold text-white"
             >
               {p}
             </span>
@@ -300,10 +302,22 @@ export function EndPanel({ text, onComplete }) {
 }
 
 // Chip educativo: revela un concepto en un panel claro y marca "visto".
+// Se auto-abre la primera vez que se encuentra en la sesión.
 export function EduChip({ conceptId, label, onSeen }) {
   const [open, setOpen] = useState(false)
+  const mounted = useRef(false)
   const c = concepts[conceptId]
   if (!c) return null
+
+  useEffect(() => {
+    if (!mounted.current && !autoShown.has(conceptId)) {
+      autoShown.add(conceptId)
+      mounted.current = true
+      setOpen(true)
+      onSeen?.(conceptId)
+    }
+  }, [conceptId, onSeen])
+
   return (
     <div className="relative inline-block">
       <button

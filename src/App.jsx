@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useGameState } from './hooks/useGameState.js'
 import { useProgression } from './hooks/useProgression.js'
+import { checkAchievements } from './hooks/useAchievements.js'
 import { playMusic, stopMusic, isDecisionMusic } from './lib/sound.js'
 import { useInflation } from './hooks/useInflation.js'
 import { episodes, episodesById, playableEpisodes } from './data/episodes/index.js'
@@ -14,6 +15,7 @@ import Outcome from './components/Outcome.jsx'
 import MechanicHost from './components/mechanics/MechanicHost.jsx'
 import VersionBadge from './components/VersionBadge.jsx'
 import HelpButton from './components/HelpButton.jsx'
+import AchievementToast from './components/AchievementToast.jsx'
 import { dailySeed } from './utils/daily.js'
 import { track } from './lib/track.js'
 
@@ -30,8 +32,9 @@ export default function App() {
     backToSelect,
   } = useGameState()
 
-  const { save, totalStars } = useProgression()
+  const { save, totalStars, reputation } = useProgression()
   const [activeLine, setActiveLine] = useState(null)
+  const [newAchievements, setNewAchievements] = useState([])
 
   // Va a la portada (LineSelect).
   const goToHome = useCallback(() => {
@@ -65,7 +68,10 @@ export default function App() {
   // Guarda progreso al completar un episodio.
   function handleComplete(outcomeId, meta) {
     if (state.episodeId) {
-      save(state.episodeId, outcomeId, meta?.score)
+      const nextP = save(state.episodeId, outcomeId, meta?.score)
+      const fueRetry = !!state.chosenPolicy
+      const fresh = checkAchievements(nextP, { retried: fueRetry })
+      if (fresh.length) setNewAchievements(fresh)
       // Analítica: partida completada (resultado + estrellas, anónimo).
       const estrellas = outcomeId === 'perfect' ? 3 : outcomeId === 'partial' ? 2 : 1
       track('completa_partida', { episodio: state.episodeId, resultado: outcomeId, estrellas })
@@ -209,6 +215,7 @@ export default function App() {
           mechanicResult={state.chosenMeta}
           allies={allies}
           daily={state.daily}
+          reputation={reputation}
           onConceptSeen={markConceptSeen}
           onRestart={() => {
             trackStart(episode)
@@ -224,11 +231,17 @@ export default function App() {
       )}
 
       <footer className="mx-auto max-w-md px-5 pb-8 pt-4 text-center">
-        <p className="font-nunito text-[0.58rem] font-extrabold uppercase tracking-[0.2em] text-ink-mute/60">
+        <p className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-[0.2em] text-ink-mute/60">
           PAICIO · Episodio {episode.numero} · {episode.titulo}
         </p>
       </footer>
 
+      {newAchievements.length > 0 && (
+        <AchievementToast
+          achievements={newAchievements}
+          onDone={() => setNewAchievements([])}
+        />
+      )}
       <HelpButton episode={episode} onShowWelcome={() => setShowIntro(true)} />
       <VersionBadge />
       {/* Bienvenida reabierta desde Ayuda (?) durante la partida: overlay que no

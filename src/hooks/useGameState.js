@@ -40,6 +40,29 @@ function load() {
   }
 }
 
+// Briefings vistos (para saltar la celda en repeticiones).
+const BRIEFING_KEY = 'paicio.briefings.v1'
+function seenBriefing(episodeId) {
+  try {
+    const raw = localStorage.getItem(BRIEFING_KEY)
+    if (!raw) return false
+    const seen = JSON.parse(raw)
+    return Array.isArray(seen) && seen.includes(episodeId)
+  } catch {
+    return false
+  }
+}
+function markBriefingSeen(episodeId) {
+  try {
+    const raw = localStorage.getItem(BRIEFING_KEY)
+    const seen = raw ? JSON.parse(raw) : []
+    if (Array.isArray(seen) && !seen.includes(episodeId)) {
+      seen.push(episodeId)
+      localStorage.setItem(BRIEFING_KEY, JSON.stringify(seen))
+    }
+  } catch { /* no crítico */ }
+}
+
 export function useGameState() {
   const [state, setState] = useState(() => load() || initialState())
 
@@ -55,18 +78,19 @@ export function useGameState() {
     setState((s) => ({ ...s, phase }))
   }, [])
 
-  // Selecciona un episodio y entra a su celda con los prisioneros frescos.
+  // Selecciona un episodio: si ya viste el briefing, salta directo a la mecánica.
   const startEpisode = useCallback((episode) => {
+    const skip = seenBriefing(episode.id)
     setState({
-      phase: 'cell',
+      phase: skip ? 'negotiation' : 'cell',
       episodeId: episode.id,
-      startedAt: null,
+      startedAt: skip ? Date.now() : null,
       prisoners: buildPrisoners(episode),
       allies: [],
       chosenPolicy: null,
       chosenMeta: null,
       seenConcepts: [],
-      daily: null, // jugar normal siempre limpia el modo diario
+      daily: null,
     })
   }, [])
 

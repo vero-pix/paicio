@@ -137,7 +137,7 @@ export default function SoundToggle() {
               className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-cream"
               style={{ accentColor: '#E8604F' }}
             />
-            <p className="mt-1 text-right font-nunito text-[0.58rem] font-extrabold text-ink-mute/80">
+            <p className="mt-1 text-right font-nunito text-[0.68rem] font-extrabold text-ink-mute/80">
               Volumen {vol}%
             </p>
           </div>

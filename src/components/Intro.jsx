@@ -1,33 +1,34 @@
+import { useState } from 'react'
 import Coin from './Coin.jsx'
 
-// ─────────────────────────────────────────────────────────────────────────
-// Intro — bienvenida de TESTER (pantalla única, cálida, una mano).
-//
-// Overlay fijo (z-70) que cubre lo que haya detrás: en la primera visita tapa el
-// mapa; reabierta desde Ayuda (?) tapa la pantalla en curso sin perder progreso.
-// Respeta el safe-area (notch de iPhone) arriba y abajo. Explica qué es Paicio,
-// el rol de tester, la nube 💬 (feedback con respuesta) y el sello ✦ (actualizar).
-// ─────────────────────────────────────────────────────────────────────────
-
-function Explainer({ chip, chipBg, title, children }) {
-  return (
-    <div className="shadow-card animate-fade-up mt-3 flex items-start gap-3 rounded-[16px] bg-surface p-3.5">
-      <span
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] text-[1.25rem]"
-        style={{ background: chipBg }}
-        aria-hidden
-      >
-        {chip}
-      </span>
-      <div className="min-w-0">
-        <p className="font-round text-[0.9rem] font-bold text-ink-warm">{title}</p>
-        <p className="mt-0.5 font-nunito text-[0.82rem] leading-snug text-ink-soft">{children}</p>
-      </div>
-    </div>
-  )
-}
+const STEPS = [
+  {
+    icon: '🏛️',
+    title: 'Eres Ministro/a de Economía',
+    desc: 'Cada decisión tuya cambia el destino de Paicio. Crisis reales, consecuencias reales.',
+    color: '#F5B331',
+    bg: '#FBE7C6',
+  },
+  {
+    icon: '🌎',
+    title: 'Crisis que marcaron América Latina',
+    desc: 'Hiperinflación, corridas bancarias, deuda externa. Aprende la economía jugándola.',
+    color: '#4FA3E3',
+    bg: '#DCEBFA',
+  },
+  {
+    icon: '🎮',
+    title: 'Decides, ves resultados, mejoras',
+    desc: 'Cada partida es distinta. Reintenta, bate tu récord, comparte tu resultado.',
+    color: '#35B98A',
+    bg: '#D6F0E5',
+  },
+]
 
 export default function Intro({ onEnter }) {
+  const [step, setStep] = useState(0)
+  const s = STEPS[step]
+
   return (
     <div
       className="on-cream animate-fade-in fixed inset-0 z-[70] overflow-y-auto"
@@ -42,59 +43,92 @@ export default function Intro({ onEnter }) {
       >
         {/* Marca */}
         <div className="flex flex-col items-center text-center">
-          <Coin size={82} bob />
-          <h1 className="mt-3 font-round text-[2.4rem] font-bold leading-none tracking-tight text-ink-warm">
+          <Coin size={72} bob />
+          <h1 className="mt-2 font-round text-[2rem] font-bold leading-none tracking-tight text-ink-warm">
             PAICIO
           </h1>
-          <p className="mt-1 font-nunito text-[0.84rem] font-bold text-ink-mute">
+          <p className="mt-0.5 font-nunito text-[0.8rem] font-bold text-ink-mute">
             economía que se juega, no se estudia
           </p>
         </div>
 
-        {/* Qué es, en una línea */}
-        <p className="mt-5 text-center font-nunito text-[0.95rem] leading-snug text-ink-soft">
-          Eres <span className="font-extrabold text-ink-warm">Ministro/a de Economía</span>:
-          resuelves crisis reales, teoría y modelos de país…{' '}
-          <span className="font-extrabold text-ink-warm">jugándolos</span>. La mecánica es la
-          lección.
-        </p>
+        {/* Tester badge sutil */}
+        <div className="mt-3 flex justify-center">
+          <span className="rounded-full px-3 py-1 font-nunito text-[0.6rem] font-extrabold uppercase tracking-wide"
+            style={{ background: '#FBDAD3', color: '#D24C39' }}
+          >
+            🛠️ Versión en desarrollo
+          </span>
+        </div>
 
-        {/* Eres tester */}
-        <div className="animate-fade-up mt-5 rounded-[18px] px-4 py-3.5" style={{ background: '#FBDAD3' }}>
-          <p className="font-nunito text-[0.64rem] font-extrabold uppercase tracking-[0.14em] text-[#D24C39]">
-            🛠️ Eres tester
-          </p>
-          <p className="mt-1 font-nunito text-[0.86rem] leading-snug text-ink-soft">
-            El juego está <span className="font-extrabold text-ink-warm">en construcción</span> y
-            tu opinión lo moldea. Lo que pruebes hoy cambia lo que viene.
+        {/* Empuja el contenido abajo */}
+        <div className="flex-1" />
+
+        {/* Visual central del paso */}
+        <div className="flex flex-col items-center text-center" key={step}>
+          <div
+            className="flex h-28 w-28 items-center justify-center rounded-[28px] text-[3.2rem] transition-all duration-500"
+            style={{ background: s.bg }}
+          >
+            <span className="animate-pop">{s.icon}</span>
+          </div>
+          <h2 className="mt-5 text-balance font-round text-[1.5rem] font-bold leading-tight text-ink-warm">
+            {s.title}
+          </h2>
+          <p className="mx-auto mt-2 max-w-[18rem] font-nunito text-[0.88rem] leading-snug text-ink-soft">
+            {s.desc}
           </p>
         </div>
 
-        {/* La nube 💬 */}
-        <Explainer chip="💬" chipBg="#DCEBFA" title="La nube: tu voz">
-          Tócala (abajo a la derecha) en cualquier momento para dejar un comentario — qué se
-          rompe, confunde o mejorarías.{' '}
-          <span className="font-extrabold text-ink-warm">Te respondo ahí mismo.</span>
-        </Explainer>
-
-        {/* El sello ✦ */}
-        <Explainer chip="✦" chipBg="#FBE7C6" title="Siempre la última versión">
-          Aprieta <span className="font-extrabold">Actualizar</span> en el sello{' '}
-          <span className="font-extrabold">✦ v…</span> (abajo a la izquierda) y trae lo último; en{' '}
-          <span className="font-extrabold">Novedades</span> ves qué cambió. Actualizo casi a diario.
-        </Explainer>
+        {/* Pager */}
+        <div className="mt-8 flex items-center justify-center gap-2">
+          {STEPS.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setStep(i)}
+              aria-label={`Paso ${i + 1}`}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width: i === step ? 28 : 8,
+                height: 8,
+                background: i === step ? 'var(--color-gold)' : '#E4CE9E',
+              }}
+            />
+          ))}
+        </div>
 
         {/* Empuja el CTA al fondo */}
-        <div className="min-h-6 flex-1" />
+        <div className="min-h-4 flex-1" />
 
         {/* CTA */}
+        {step === STEPS.length - 1 ? (
+          <button
+            type="button"
+            onClick={onEnter}
+            className="candy mt-4 w-full px-5 py-4 text-[1.05rem]"
+            style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
+          >
+            Entrar a Paicio →
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setStep(step + 1)}
+            className="candy mt-4 w-full px-5 py-4 text-[1.05rem]"
+            style={{ '--face': s.color, '--edge': s.color }}
+          >
+            Siguiente →
+          </button>
+        )}
+
+        {/* Skip */}
         <button
           type="button"
           onClick={onEnter}
-          className="candy mt-6 w-full px-5 py-4 text-[1.05rem]"
-          style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
+          className="mt-3 w-full text-center font-nunito text-[0.78rem] font-extrabold text-ink-mute underline underline-offset-2"
         >
-          Entrar a Paicio →
+          Saltar
         </button>
       </div>
     </div>

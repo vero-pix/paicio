@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { portraits } from '../../assets/portraits.js'
 import EducationalTooltip from '../EducationalTooltip.jsx'
+import CausalChain from '../CausalChain.jsx'
 import { sfx } from '../../lib/sound.js'
 import { useScreenFx, useCountUp } from '../../lib/animations.js'
 import ActionIcon from '../icons/ActionIcon.jsx'
@@ -171,6 +172,11 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
   const [gold, setGold] = useState(false) // destello dorado de la celebración
   const { fx, trigger } = useScreenFx()
   const over = isOver(state, cfg)
+  const [showChain, setShowChain] = useState(false)
+
+  useEffect(() => {
+    if (over) setShowChain(true)
+  }, [over])
 
   // La Reforma "está a tiro" cuando aún es creíble (frenaría en seco).
   const reformaReady = !over && !state.reformo && state.inflacion < cfg.umbralReforma
@@ -289,6 +295,13 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
     }
   }
 
+  // Auto-descarta el toast del asesor tras 3s.
+  useEffect(() => {
+    if (!report) return
+    const t = setTimeout(() => setReport(null), 3000)
+    return () => clearTimeout(t)
+  }, [report])
+
   const tier = over ? outcomeTier(state, cfg) : null
   const advisor = report ? prisonersById[report.advisor] : null
 
@@ -321,7 +334,7 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
         {/* Top bar */}
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="font-round text-[1.3rem] font-bold leading-none text-ink-warm">
+            <h2 className="font-round text-[1.6rem] font-bold leading-none text-ink-warm">
               {episode.titulo}
             </h2>
             <p
@@ -339,15 +352,13 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
           </span>
         </div>
 
-        {/* Progreso de la partida + meta + puntaje corrido (game feel). */}
+        {/* Progreso: solo score + timeline compacto */}
         {!over && (
           <GameProgress
             mes={state.mes}
             meses={cfg.meses}
             score={score}
             accent={acc}
-            reformaReady={reformaReady}
-            goalLabel={tut?.goalChip ?? 'Frena la inflación antes del final'}
           />
         )}
 
@@ -401,17 +412,17 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
             style={{ background: 'radial-gradient(circle, rgba(245,179,49,.25), transparent 70%)' }}
           />
           <div className="relative flex items-center gap-3.5">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px] bg-[#F3E2C2] text-[1.6rem]">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[#F3E2C2] text-[1.2rem]">
               🍞
             </span>
             <div className="min-w-0 flex-1">
-              <p className="font-nunito text-[0.62rem] font-extrabold uppercase tracking-[0.1em] text-[#E8C67F]">
-                Precio del pan · hoy
+              <p className="font-nunito text-[0.6rem] font-extrabold uppercase tracking-[0.1em] text-[#E8C67F]">
+                Precio del pan
               </p>
               <div className="flex items-baseline gap-1.5">
                 <span
                   key={Math.round(precio)}
-                  className="animate-pop font-round text-[2.1rem] font-bold leading-none tabular-nums text-[#FFE9A8]"
+                  className="animate-pop font-round text-[1.5rem] font-bold leading-none tabular-nums text-[#FFE9A8]"
                 >
                   {fmt(precio)}
                 </span>
@@ -439,28 +450,25 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
           </div>
         </div>
 
-        {/* Asesor */}
+        {/* Réplica del asesor (toast breve sobre las acciones) */}
         {report && advisor && (
-          <div className="animate-fade-up mt-3 flex items-start gap-3">
-            <span className="coin shrink-0 rounded-full p-[3px]">
-              <img
-                src={portraits[advisor.id]}
-                alt=""
-                className="h-10 w-10 rounded-full border-2 border-white object-cover"
-              />
-            </span>
-            <div
-              className="shadow-card min-w-0 flex-1 rounded-[16px] rounded-tl-[5px] bg-surface p-2.5"
-            >
-              <p
-                className="font-round text-[0.78rem] font-bold"
-                style={{ color: acc.edge }}
-              >
-                {advisor.name}
-              </p>
-              <p className="mt-0.5 font-nunito text-[0.82rem] leading-snug text-ink-soft">
-                {report.reaccion}
-              </p>
+          <div className="animate-fade-up fixed bottom-24 left-1/2 z-30 -translate-x-1/2">
+            <div className="shadow-card flex max-w-[18rem] items-start gap-2 rounded-[16px] rounded-tl-[5px] bg-surface p-2.5">
+              <span className="coin flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full p-[2px]">
+                <img
+                  src={portraits[advisor.id]}
+                  alt=""
+                  className="h-full w-full rounded-full border-2 border-white object-cover"
+                />
+              </span>
+              <div className="min-w-0">
+                <p className="font-round text-[0.7rem] font-bold" style={{ color: acc.edge }}>
+                  {advisor.name}
+                </p>
+                <p className="mt-0.5 font-nunito text-[0.75rem] leading-snug text-ink-soft">
+                  {report.reaccion}
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -533,15 +541,20 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
                     <span className="mt-1 block font-nunito text-[0.66rem] font-extrabold leading-tight text-white/85">
                       {actionHint(a, restantes)}
                     </span>
+                    {restantes != null && restantes <= 2 && (
+                      <span className="mt-1 inline-block rounded-full bg-black/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white/90">
+                        {restantes} {restantes === 1 ? 'uso' : 'usos'} restantes
+                      </span>
+                    )}
                     {(infl || apy) && (
                       <span className="mt-1.5 flex flex-wrap gap-1">
                         {infl && (
-                          <span className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white">
+                          <span className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.68rem] font-extrabold text-white">
                             {infl}
                           </span>
                         )}
                         {apy && (
-                          <span className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold text-white">
+                          <span className="rounded-full bg-white/20 px-1.5 py-0.5 font-nunito text-[0.68rem] font-extrabold text-white">
                             {apy}
                           </span>
                         )}
@@ -566,14 +579,21 @@ export default function HyperInflation({ episode, dailySeed, onComplete, onConce
                     ? 'Aplicaste el plan de estabilización. Veamos si el pueblo le creyó.'
                     : 'Pasaron los meses. Es hora de ver qué quedó de Paicio.'}
             </p>
-            <button
-              type="button"
-              onClick={() => onComplete(tier, { score, momentumMax: state.momentumMax })}
-              className="candy mt-4 w-full px-5 py-3.5 text-[1rem]"
-              style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
-            >
-              Ver el desenlace →
-            </button>
+
+            {showChain && (
+              <CausalChain onDone={() => setShowChain(false)} />
+            )}
+
+            {!showChain && (
+              <button
+                type="button"
+                onClick={() => onComplete(tier, { score, momentumMax: state.momentumMax })}
+                className="candy mt-4 w-full px-5 py-3.5 text-[1rem]"
+                style={{ '--face': 'var(--color-gold)', '--edge': 'var(--color-gold-edge)' }}
+              >
+                Ver el desenlace →
+              </button>
+            )}
           </div>
         )}
       </div>

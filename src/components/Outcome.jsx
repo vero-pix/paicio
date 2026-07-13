@@ -5,6 +5,7 @@ import { sting } from '../lib/sound.js'
 import { useScreenFx } from '../lib/animations.js'
 import { readBest, recordBest } from '../utils/gameLayer.js'
 import { writeDaily, dailyShareText, starBar, fechaCorta } from '../utils/daily.js'
+import ConceptCheck from './ConceptCheck.jsx'
 
 // ─────────────────────────────────────────────────────────────────────────
 // Outcome — "Desenlace / Veredicto" (rediseño LatAm).
@@ -36,6 +37,11 @@ const FLAGS = { ep1: '🇧🇴', ep2: '🇦🇷', ep3: '🇨🇱', ep4: '🇧�
 // Color de un score según su nivel.
 function scoreColor(v) {
   return v >= 60 ? '#2FB37E' : v >= 40 ? '#F5A524' : '#E8604F'
+}
+
+// Icono de score (alternativa al color para daltónicos).
+function scoreIcon(v) {
+  return v >= 60 ? '✓' : v >= 40 ? '~' : '✗'
 }
 
 // Cómo quedó la crisis en tu partida (columna derecha de la card real).
@@ -94,6 +100,7 @@ export default function Outcome({
   mechanicResult,
   allies,
   daily,
+  reputation,
   onConceptSeen,
   onRestart,
   onRetry,
@@ -129,6 +136,7 @@ export default function Outcome({
   const v = verdict(global)
   const resultKind = global >= 55 ? 'perfect' : global >= 42 ? 'partial' : 'wrong'
   const stars = resultKind === 'perfect' ? 3 : resultKind === 'partial' ? 2 : 1
+  const repDelta = resultKind === 'perfect' ? 10 : resultKind === 'partial' ? 3 : -5
   const partida = partidaFor(resultKind)
 
   // Jugo de la pantalla final: puntaje + "superaste al X%". Ahora en toda
@@ -270,7 +278,7 @@ export default function Outcome({
                   >
                     {score.toLocaleString('es-CL')}
                   </p>
-                  <p className="mt-1 font-nunito text-[0.56rem] font-extrabold uppercase tracking-wide text-ink-mute">
+                  <p className="mt-1 font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
                     Puntaje
                   </p>
                 </div>
@@ -282,8 +290,8 @@ export default function Outcome({
                     </span>{' '}
                     de los ministros
                   </p>
-                  <p className="mt-0.5 font-nunito text-[0.52rem] font-extrabold uppercase tracking-wide text-ink-mute/70">
-                    estimado
+                  <p className="mt-0.5 font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute/70">
+                    referencia
                   </p>
                 </div>
               </div>
@@ -299,6 +307,41 @@ export default function Outcome({
               </p>
             )}
 
+            {/* Reputación acumulada + delta */}
+            {reputation != null && !isDaily && (
+              <div className="mt-4 flex items-center justify-center gap-2 rounded-[14px] bg-surface/70 px-3 py-2 shadow-card">
+                <span className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
+                  Reputación
+                </span>
+                <div className="h-2 w-24 overflow-hidden rounded-full bg-cream">
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{
+                      width: `${reputation}%`,
+                      background: reputation >= 60
+                        ? 'linear-gradient(90deg,#7FD3A6,#2FB37E)'
+                        : reputation >= 40
+                          ? 'linear-gradient(90deg,#F5A524,#D6871A)'
+                          : 'linear-gradient(90deg,#E8604F,#C43D2C)',
+                    }}
+                  />
+                </div>
+                <span
+                  className="font-round text-[0.82rem] font-bold tabular-nums"
+                  style={{
+                    color: reputation >= 60 ? '#2FB37E' : reputation >= 40 ? '#D6871A' : '#C43D2C',
+                  }}
+                >
+                  {reputation}%
+                </span>
+                <span
+                  className={`animate-rise font-round text-[0.72rem] font-bold ${repDelta >= 0 ? 'text-good' : 'text-crisis-hot'}`}
+                >
+                  {repDelta >= 0 ? `+${repDelta}` : repDelta}
+                </span>
+              </div>
+            )}
+
             {/* Chips de score */}
             <div className="mt-5 grid grid-cols-3 gap-2.5">
               {CHIPS.map((c) => (
@@ -310,9 +353,12 @@ export default function Outcome({
                     className="font-round text-[1.6rem] font-bold leading-none tabular-nums"
                     style={{ color: scoreColor(scores[c.key]) }}
                   >
+                    <span aria-hidden className="mr-0.5 text-[1.1rem]">
+                      {scoreIcon(scores[c.key])}
+                    </span>
                     {scores[c.key]}
                   </p>
-                  <p className="mt-1 font-nunito text-[0.58rem] font-extrabold uppercase tracking-wide text-ink-mute">
+                  <p className="mt-1 font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
                     {c.label}
                   </p>
                 </div>
@@ -329,7 +375,7 @@ export default function Outcome({
               </p>
               <div className="mt-2.5 flex items-stretch gap-3">
                 <div className="min-w-0 flex-1">
-                  <p className="font-nunito text-[0.52rem] font-extrabold uppercase tracking-wide text-[#B79A63]">
+                  <p className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-[#B79A63]">
                     En la realidad
                   </p>
                   <p className="font-round text-[1.5rem] font-bold leading-none text-[#E8604F]">
@@ -338,7 +384,7 @@ export default function Outcome({
                 </div>
                 <div className="w-px shrink-0 bg-white/10" />
                 <div className="min-w-0 flex-1">
-                  <p className="font-nunito text-[0.52rem] font-extrabold uppercase tracking-wide text-[#B79A63]">
+                  <p className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-[#B79A63]">
                     Tu partida
                   </p>
                   <p
@@ -455,7 +501,9 @@ export default function Outcome({
               )}
             </div>
 
-            <p className="mt-5 text-center font-nunito text-[0.58rem] font-extrabold uppercase tracking-[0.18em] text-ink-mute/70">
+            <ConceptCheck episodeId={episode.id} />
+
+            <p className="mt-5 text-center font-nunito text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-ink-mute/70">
               PAICIO · ¿Lo harías mejor?
             </p>
           </div>

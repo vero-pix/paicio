@@ -165,7 +165,7 @@ export default function ExternalityReg({ episode, dailySeed, onComplete, onConce
       <div className="mt-3 grid grid-cols-2 gap-2.5">
         <div className="shadow-card rounded-[16px] bg-surface p-2.5 text-center">
           <p className="font-round text-[1.3rem] font-bold tabular-nums text-ink-warm">{act.toFixed(1)}</p>
-          <p className="mt-0.5 font-nunito text-[0.56rem] font-extrabold uppercase tracking-wide text-ink-mute">
+          <p className="mt-0.5 font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
             🎣 Actividad ahora
           </p>
         </div>
@@ -173,7 +173,7 @@ export default function ExternalityReg({ episode, dailySeed, onComplete, onConce
           <p className="font-round text-[1.3rem] font-bold tabular-nums text-ink-warm">
             {state.actividadAcum.toFixed(0)}
           </p>
-          <p className="mt-0.5 font-nunito text-[0.56rem] font-extrabold uppercase tracking-wide text-ink-mute">
+          <p className="mt-0.5 font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
             📦 Total acumulado
           </p>
         </div>

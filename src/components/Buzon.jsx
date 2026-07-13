@@ -183,17 +183,17 @@ export default function Buzon() {
         {items.map((m) => (
           <div key={m.id} className="rounded-md border border-edge bg-cell/70 p-4">
             <div className="mb-1.5 flex items-start justify-between gap-2">
-              <span className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-paper-dim">
+              <span className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-paper-dim">
                 {m.name || 'Anónimo'}
                 {m.stage ? ` · ${m.stage}` : ''}
               </span>
-              <span className="shrink-0 font-mono text-[0.58rem] text-paper-dim/70">
+              <span className="shrink-0 font-mono text-[0.68rem] text-paper-dim/70">
                 {fmt(m.created_at)}
               </span>
             </div>
             <div className="mb-2 flex items-center gap-2">
               <span
-                className="font-mono text-[0.55rem] text-paper-dim/60"
+                className="font-mono text-[0.68rem] text-paper-dim/60"
                 title={m.client_id || ''}
               >
                 id: {m.client_id ? m.client_id.slice(0, 12) : '—'}
@@ -208,7 +208,7 @@ export default function Buzon() {
 
             {m.reply ? (
               <div className="mt-3 rounded-md border-l-2 border-positive bg-positive/10 p-3">
-                <span className="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-positive">
+                <span className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-positive">
                   Tu respuesta · {fmt(m.replied_at)}
                 </span>
                 <p className="mt-1 font-body text-[0.9rem] leading-relaxed text-paper">

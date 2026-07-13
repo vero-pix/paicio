@@ -15,6 +15,7 @@ export const LINES = [
     gradient: ['#EAF6EC', '#FBEFD2', '#FCE3C4'],
     unlocked: true,
     requires: null,
+    orden: 'Por dificultad',
   },
   {
     id: 'origins',
@@ -25,6 +26,7 @@ export const LINES = [
     gradient: ['#F0E6FF', '#E0D4F5', '#D0C2EB'],
     unlocked: true,
     requires: null,
+    orden: 'Cronológico (1776→1976)',
   },
   {
     id: 'chile',
@@ -35,6 +37,7 @@ export const LINES = [
     gradient: ['#EAF6EC', '#D4EDDA', '#FBEFD2'],
     unlocked: true,
     requires: null,
+    enConstruccion: true,
   },
   {
     id: 'norte',
@@ -45,6 +48,7 @@ export const LINES = [
     gradient: ['#E3F2FD', '#F0E6FF', '#E8F5E9'],
     unlocked: true,
     requires: null,
+    enConstruccion: true,
   },
   {
     // Línea Microeconomía — REVELADA en prod (2026-07-11): 5 episodios, cada uno
@@ -60,6 +64,7 @@ export const LINES = [
     gradient: ['#EAF6F3', '#B7E3D9', '#7DC7BC'],
     unlocked: true,
     requires: null,
+    orden: 'De lo simple a lo estratégico',
   },
 ]
 

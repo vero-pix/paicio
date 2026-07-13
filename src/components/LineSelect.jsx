@@ -136,6 +136,11 @@ export default function LineSelect({ onSelect, totalStars }) {
                 ) : (
                   <span className="font-nunito text-[0.7rem] font-bold text-ink-mute">
                     {completed}/{lineEpisodes.length} episodios
+                    {line.enConstruccion && (
+                      <span className="ml-1.5 rounded-full bg-warn/15 px-1.5 py-0.5 font-nunito text-[0.58rem] font-extrabold uppercase tracking-wide text-warn">
+                        En construcción
+                      </span>
+                    )}
                   </span>
                 )}
                 {!locked && (

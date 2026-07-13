@@ -7,12 +7,29 @@ import Coins from './mechanics/Coins.jsx'
 import CoachMarks from './CoachMarks.jsx'
 import { useTutorial } from '../hooks/useTutorial.js'
 
-// ─────────────────────────────────────────────────────────────────────────
-// SequenceChoice — Fase 3 exclusiva del Episodio 5 (Plan Real).
-// El jugador reordena 4 acciones hasta la secuencia correcta. No hay medidores
-// ni cifra hero: es un puzzle de orden. Rediseño LatAm en tarjetas candy claras.
-// Misma lógica (orden inicial mezclado, score por posiciones correctas).
-// ─────────────────────────────────────────────────────────────────────────
+// Por qué cada paso va en esa posición (explicación causal).
+const WHY_ORDER = {
+  urv: {
+    pos: 0,
+    label: '1°',
+    razon: 'La URV crea una referencia de valor estable. Sin ella, cualquier moneda nueva se derrite.',
+  },
+  migrar: {
+    pos: 1,
+    label: '2°',
+    razon: 'La migración voluntaria desindexa la economía sin decretos. La gente adopta la URV porque le sirve.',
+  },
+  anclar: {
+    pos: 2,
+    label: '3°',
+    razon: 'El ancla cambiaria da credibilidad. La gente confía en que el nuevo valor no se evaporará mañana.',
+  },
+  convertir: {
+    pos: 3,
+    label: '4°',
+    razon: 'La conversión es el broche: cuando todo ya está en URV, crear el Real es casi una formalidad.',
+  },
+}
 
 function scoreSequence(chosen, correct) {
   return chosen.filter((id, i) => id === correct[i]).length
@@ -24,13 +41,14 @@ export default function SequenceChoice({ episode, onComplete }) {
 
   const [ordered, setOrdered] = useState(() => {
     const shuffled = [...sequence.actions]
-    shuffled.push(shuffled.shift()) // arranca deliberadamente desordenado
+    shuffled.push(shuffled.shift())
     return shuffled
   })
   const [confirming, setConfirming] = useState(false)
   const [rainKey, setRainKey] = useState(0)
+  // Estado de feedback tras confirmar.
+  const [feedback, setFeedback] = useState(null)
 
-  // Onboarding: un solo coach que resalta la lista ordenable (una vez).
   const listRef = useRef(null)
   const tut = useTutorial(episode.id, {
     refByTarget: { list: listRef },
@@ -60,14 +78,27 @@ export default function SequenceChoice({ episode, onComplete }) {
 
   function handleConfirm() {
     const outcome = getOutcome()
-    // Jugo de recompensa proporcional al acierto: lluvia + fanfarria si es el
-    // final feliz, avance simple si no.
+    // Feedback educativo: mostrar qué posiciones están bien/mal.
+    const correct = sequence.correctOrder
+    const results = ordered.map((a, i) => ({
+      ...a,
+      correct: a.id === correct[i],
+      correctPos: correct.indexOf(a.id) + 1,
+      razon: WHY_ORDER[a.id]?.razon ?? '',
+    }))
+    setFeedback(results)
+
     if (outcome.id === 'perfect') {
       sfx('fanfare')
       setRainKey((k) => k + 1)
     } else {
       sfx('advance')
     }
+  }
+
+  function cerrarFeedback() {
+    setFeedback(null)
+    const outcome = getOutcome()
     onComplete(outcome.id)
   }
 
@@ -80,19 +111,17 @@ export default function SequenceChoice({ episode, onComplete }) {
         pill={`${ordered.length} pasos`}
       />
 
-      {/* Cómo funciona */}
       <div className="shadow-card mt-4 rounded-[16px] bg-surface p-3.5">
-        <p className="font-nunito text-[0.62rem] font-extrabold uppercase tracking-wide text-ink-mute">
+        <p className="font-nunito text-[0.68rem] font-extrabold uppercase tracking-wide text-ink-mute">
           ¿Cómo funciona?
         </p>
         <p className="mt-1 font-nunito text-[0.84rem] leading-snug text-ink-soft">
-          Ordena las 4 acciones con las flechas ↑ ↓. Solo existe{' '}
-          <span className="font-extrabold text-ink-warm">una secuencia correcta</span>: si
-          aciertas el orden exacto, es el único final feliz del juego.
+          Ordena las 4 acciones con las flechas ↑ ↓. La{' '}
+          <span className="font-extrabold text-ink-warm">secuencia correcta</span> replica el
+          Plan Real de Brasil 1994. Cada paso tiene una razón económica.
         </p>
       </div>
 
-      {/* Lista ordenable */}
       <div ref={listRef} className="mt-4 space-y-2.5">
         {ordered.map((action, idx) => {
           const pal = ACTION_PALETTE[idx % ACTION_PALETTE.length]
@@ -153,12 +182,68 @@ export default function SequenceChoice({ episode, onComplete }) {
         Ejecutar esta secuencia →
       </button>
 
-      {confirming && (
+      {confirming && !feedback && (
         <ConfirmSequence
           ordered={ordered}
           onCancel={() => setConfirming(false)}
           onConfirm={handleConfirm}
         />
+      )}
+
+      {/* Feedback educativo: qué posiciones fueron correctas y por qué */}
+      {feedback && (
+        <div className="on-cream animate-fade-in fixed inset-0 z-50 flex items-end justify-center bg-[#2A1C0C]/60 px-4 pb-4 backdrop-blur-sm sm:items-center">
+          <div className="shadow-panel w-full max-w-md rounded-[24px] bg-panel p-5">
+            <h3 className="font-round text-[1.2rem] font-bold text-ink-warm">Tu secuencia</h3>
+            <p className="mt-1 font-nunito text-[0.85rem] text-ink-soft">
+              Así quedó tu orden. Cada paso tiene su razón económica.
+            </p>
+
+            <div className="mt-4 space-y-3">
+              {feedback.map((item, i) => (
+                <div key={item.id} className="rounded-[14px] bg-surface p-3">
+                  <div className="flex items-start gap-2.5">
+                    <span
+                      className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[0.7rem] font-bold text-white ${
+                        item.correct ? 'bg-good' : 'bg-crisis-hot'
+                      }`}
+                    >
+                      {item.correct ? '✓' : '✗'}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="font-round text-[0.85rem] font-bold text-ink-warm">
+                        {i + 1}. {item.name}
+                        {!item.correct && (
+                          <span className="ml-1.5 font-nunito text-[0.68rem] font-extrabold text-crisis-hot">
+                            (iba en {item.correctPos}°)
+                          </span>
+                        )}
+                      </p>
+                      <p className="mt-0.5 font-nunito text-[0.75rem] italic leading-snug text-ink-soft">
+                        {item.razon}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-4 font-nunito text-[0.8rem] italic text-ink-mute">
+              {getOutcome().id === 'perfect'
+                ? 'Cada pieza en su lugar. El Plan Real funciona.'
+                : 'La secuencia incorrecta rompe la lógica — igual que pasó con los 5 planes que fallaron en Brasil.'}
+            </p>
+
+            <button
+              type="button"
+              onClick={cerrarFeedback}
+              className="candy mt-5 w-full px-5 py-3 text-[0.95rem]"
+              style={{ '--face': GOOD_ACCENT.face, '--edge': GOOD_ACCENT.edge }}
+            >
+              {getOutcome().id === 'perfect' ? '¡Victoria! Ver resultado →' : 'Ver desenlace →'}
+            </button>
+          </div>
+        </div>
       )}
 
       <Coins runKey={rainKey} mode="rain" count={30} />
@@ -175,7 +260,6 @@ export default function SequenceChoice({ episode, onComplete }) {
   )
 }
 
-// Modal de confirmación con el resumen del orden elegido.
 function ConfirmSequence({ ordered, onCancel, onConfirm }) {
   return (
     <div className="on-cream animate-fade-in fixed inset-0 z-50 flex items-end justify-center bg-[#2A1C0C]/60 px-4 pb-4 backdrop-blur-sm sm:items-center">
@@ -196,7 +280,7 @@ function ConfirmSequence({ ordered, onCancel, onConfirm }) {
         </ol>
 
         <p className="mt-4 font-nunito text-[0.8rem] italic text-ink-mute">
-          El orden lo es todo. ¿Seguro?
+          ¿Seguro? Después de ejecutar sabrás cuántos acertaste.
         </p>
 
         <div className="mt-5 flex items-center gap-3">
@@ -213,7 +297,7 @@ function ConfirmSequence({ ordered, onCancel, onConfirm }) {
             className="candy flex-1 px-5 py-3 text-[0.95rem]"
             style={{ '--face': GOOD_ACCENT.face, '--edge': GOOD_ACCENT.edge }}
           >
-            Ejecutar →
+            Ver resultado →
           </button>
         </div>
       </div>

@@ -103,6 +103,11 @@ export default function EpisodeSelect({ line, episodes, onSelect, onShowIntro, o
               {lineInfo.icon} {lineInfo.subtitle}
             </p>
           )}
+          {lineInfo?.orden && !lineInfo.enConstruccion && (
+            <p className="mt-0.5 font-nunito text-[0.6rem] font-semibold text-ink-mute/70">
+              {lineInfo.orden}
+            </p>
+          )}
         </div>
         <span className="flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 shadow-card">
           <span className="coin flex h-4 w-4 items-center justify-center rounded-full text-[0.5rem] font-bold text-[#8A4E12]">
@@ -111,6 +116,11 @@ export default function EpisodeSelect({ line, episodes, onSelect, onShowIntro, o
           <span className="font-round text-[0.8rem] font-bold tabular-nums text-ink-warm">
             {episodes.length} episodios
           </span>
+          {lineInfo?.enConstruccion && (
+            <span className="rounded-full bg-warn/15 px-2 py-0.5 font-nunito text-[0.58rem] font-extrabold uppercase tracking-wide text-warn">
+              En construcción
+            </span>
+          )}
         </span>
       </header>
 
