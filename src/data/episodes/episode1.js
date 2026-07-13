@@ -46,13 +46,32 @@ export default {
   mechanic: 'pressYourLuck',
   pressYourLuck: {
     rondas: 8,
-    riesgoBase: 5, // % de reventar en la primera impresión
-    riesgoRampa: 8, // sube el riesgo por impresión (antes 12: reventaba casi seguro)
-    alivioBase: 20, // alivio de la primera impresión
-    alivioDecaimiento: 2, // cuánto rinde menos cada impresión
-    // Balance: "imprime ~3 y corta" gana (pozo 54 ≥ 50, P≈0.65 de sobrevivir 3);
-    // cortar tras 2 da partial (pozo 38 ≥ 25); imprimir 5+ sí revienta seguido.
-    objetivoPozo: 50, // alivio consolidado para "perfect"
+    riesgoBase: 6, // presión inicial
+    objetivoPozo: 45, // alivio consolidado para "perfect"
+    alivioDecaimiento: 1.5, // la imprenta rinde algo menos cada ronda
+
+    // Decisión graduada: cada ronda eliges CUÁNTO imprimir. Más alivio ahora =
+    // más calor (salto de presión) ahora y para la próxima. No hay una jugada
+    // única óptima: depende de cuán cerca estás de cortar y de tu apetito de riesgo.
+    //   alivio: lo que suma al pozo · calor: cuánto sube la presión (= +prob. reventar)
+    // Balance: la 1ª tanda nunca revienta (protección de entrada). Un audaz llega
+    // a perfect en ~2 "todo" (≈54% cada uno) o ~3 "media"; cortar tras 2 asegura
+    // partial; jugar solo cortas sobrevive pero rara vez llega a perfect.
+    tandas: [
+      { id: 'corta', label: 'Tanda corta', desc: 'Un respiro. Poco alivio, poca presión.', alivio: 10, calor: 6 },
+      { id: 'media', label: 'Tanda media', desc: 'El término medio. Alivio real, presión real.', alivio: 18, calor: 12 },
+      { id: 'todo', label: 'Todo a la máquina', desc: 'A fondo. Mucho alivio… y la caldera salta.', alivio: 30, calor: 20 },
+    ],
+
+    // Incertidumbre viva: 2 de estos caen a mitad de run (sembrados) y mueven la
+    // presión en vivo. `rescate` la enfría; `shock` la dispara. Cambian el cálculo
+    // a mitad de partida para que no se pueda "resolver" de antemano.
+    eventosImprenta: [
+      { id: 'petroleo', tipo: 'shock', icon: '🛢️', titulo: 'Se dispara el petróleo', calor: 16, texto: 'Todo lo que anda en camión sube. La caldera se calienta sola.' },
+      { id: 'deuda', tipo: 'shock', icon: '📄', titulo: 'Vence la deuda externa', calor: 14, texto: 'Los acreedores cobran hoy y la tentación de imprimir aprieta.' },
+      { id: 'renegocia', tipo: 'rescate', icon: '🤝', titulo: 'Renegocias la deuda', calor: -18, texto: 'Reprogramas los pagos: la imprenta alcanza a respirar.' },
+      { id: 'fmi', tipo: 'rescate', icon: '🏦', titulo: 'Entra un crédito del FMI', calor: -16, texto: 'Dólares frescos a la caja y baja la presión de emitir.' },
+    ],
   },
 
   // Periódico de la pantalla de celda.

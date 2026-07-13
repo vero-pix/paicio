@@ -29,6 +29,7 @@
      en segundo plano posterga el rAF que activa el flash). */
   --animate-flash-green: flash-green 0.5s ease-out forwards;
   --animate-drop-in: drop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-out: fade-out 0.4s ease-out both;
 
   /* ── Rediseño LatAm (casual · cálido · táctil) ────────────────────────
      Se agrega de forma aditiva mientras migramos pantalla por pantalla.
@@ -102,6 +103,15 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 
@@ -489,4 +499,67 @@ body {
 .on-cream *:focus-visible {
   outline: 2px solid var(--color-gold-deep);
   outline-offset: 2px;
+}
+
+/* ── "La Imprenta" (Ep1) — manómetro que se recalienta y reventón ──────── */
+
+/* Temblor rápido del manómetro cuando la presión entra en zona roja. */
+@keyframes press-tremble {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(-1.2px, 1px) rotate(-0.4deg);
+  }
+  40% {
+    transform: translate(1.2px, -1px) rotate(0.4deg);
+  }
+  60% {
+    transform: translate(-1px, -1px) rotate(-0.3deg);
+  }
+  80% {
+    transform: translate(1px, 1px) rotate(0.3deg);
+  }
+}
+.animate-press-tremble {
+  animation: press-tremble 0.18s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-press-tremble {
+    animation: none;
+  }
+}
+
+/* Flash rojo del colapso (billetes sin valor). */
+@keyframes flash-red {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.animate-flash-red {
+  animation: flash-red 0.7s ease-out forwards;
+}
+
+/* Billete que cae y se apaga a gris (pierde todo valor). */
+@keyframes bill-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-12vh) rotate(0deg);
+    filter: grayscale(0);
+  }
+  12% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(112vh) rotate(var(--rot, 240deg));
+    filter: grayscale(1);
+  }
 }

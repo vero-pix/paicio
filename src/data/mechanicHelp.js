@@ -12,8 +12,8 @@
 export const MECHANIC_HELP = {
   pressYourLuck: {
     verbo: 'Presiona tu suerte',
-    gesto: 'Toca "Imprimir" para ganar alivio ahora… o "Cortar" y estabilizar antes de que reviente.',
-    medidores: 'El alivio que acumulas y el riesgo de un reventón hiperinflacionario.',
+    gesto: 'Elige cuánto imprimir cada ronda (tanda corta, media o todo) para ganar alivio… o corta y estabiliza antes de que la presión reviente.',
+    medidores: 'La presión de reventón (el manómetro, la estrella) y el alivio que guardas.',
   },
   hyperinflation: {
     verbo: 'Toca',

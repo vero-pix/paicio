@@ -2,9 +2,17 @@
 // Actualizar acá cada vez que haya un cambio que los testers deban notar.
 // La entrada [0] es la versión actual (se muestra como "v" + version).
 
-export const APP_VERSION = '0.40.1'
+export const APP_VERSION = '0.41.0'
 
 export const NOVEDADES = [
+  {
+    version: '0.41.0',
+    fecha: '13 jul 2026',
+    cambios: [
+      '🖨️ Rediseñamos "La Gran Quema" (Bolivia) para que enganche más: ahora decides CUÁNTO imprimir cada ronda (tanda corta, media o todo a la máquina), y un gran manómetro muestra la presión de reventón subiendo hacia el rojo. A mitad de partida caen shocks (sube el petróleo, vence la deuda) o rescates (crédito del FMI) que mueven la presión solos: hay que leer el manómetro y decidir.',
+      '💥 Cortar a tiempo se siente mejor (alivio + jugo) y reventar ahora es un colapso de verdad: billetes sin valor cayendo. La lección es la misma — imprimir alivia hoy y revienta mañana.',
+    ],
+  },
   {
     version: '0.40.1',
     fecha: '11 jul 2026',

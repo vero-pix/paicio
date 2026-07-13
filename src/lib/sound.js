@@ -173,12 +173,38 @@ const SFX = {
       tone(2093, { type: 'sine', dur: 0.7, gain: 0.07 })
     }, 450)
   },
+  // Golpe de imprenta que ESCALA con el calor (0..1): mientras más caliente la
+  // caldera, más agudo el chirrido y más tensa la máquina. Para "La Imprenta".
+  press(opts = {}) {
+    const heat = Math.max(0, Math.min(1, opts.heat ?? 0))
+    // Golpe mecánico (troquel).
+    noiseBurst({ dur: 0.05, gain: 0.3, type: 'lowpass', freq: 480 + heat * 520, q: 0.8 })
+    tone(130 + heat * 110, { type: 'square', dur: 0.06, gain: 0.13 })
+    // Chirrido de vapor que sube con el calor.
+    tone(300 + heat * 640, {
+      type: 'sawtooth',
+      dur: 0.14 + heat * 0.16,
+      gain: 0.04 + heat * 0.07,
+      attack: 0.008,
+      glideTo: 260 + heat * 860,
+    })
+  },
+  // Reventón: colapso hiperinflacionario. Bajón grave demoledor + estruendo +
+  // "papeles" que caen. Debe sentirse el piso hundiéndose (billetes sin valor).
+  blowout() {
+    tone(210, { type: 'sawtooth', dur: 1.1, gain: 0.3, attack: 0.003, glideTo: 40 })
+    tone(165, { type: 'square', dur: 1.1, gain: 0.2, attack: 0.003, glideTo: 32 })
+    noiseBurst({ dur: 0.6, gain: 0.3, type: 'lowpass', freq: 900, q: 0.5 })
+    // Lluvia de papeles sin valor.
+    setTimeout(() => noiseBurst({ dur: 0.5, gain: 0.14, type: 'highpass', freq: 3200 }), 130)
+    setTimeout(() => noiseBurst({ dur: 0.4, gain: 0.1, type: 'highpass', freq: 2600 }), 320)
+  },
 }
 
-export function sfx(name) {
+export function sfx(name, opts) {
   if (prefs.muted) return
   try {
-    SFX[name]?.()
+    SFX[name]?.(opts)
   } catch {
     /* audio no disponible */
   }

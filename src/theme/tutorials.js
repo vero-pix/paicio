@@ -16,19 +16,19 @@
 
 export const EPISODE_TUTORIALS = {
   ep1: {
-    goalChip: 'Consolida el máximo alivio… sin que reviente',
+    goalChip: 'Guarda el máximo alivio… y corta antes de que reviente',
     steps: [
       {
-        target: 'goal',
-        caption: 'Eres el ministro. La imprenta te tienta con alivio fácil, pero cada uso acerca el colapso.',
-      },
-      {
         target: 'meters',
-        caption: 'Imprimir sube el Alivio… y también el Riesgo de reventón. Si revienta, la moneda muere.',
+        caption: 'Este manómetro es la presión de reventón. Cada tanda que imprimes lo empuja hacia el rojo. Si llega, la moneda muere.',
       },
       {
         target: 'actions',
-        caption: 'Imprime por más alivio, o corta y estabiliza para consolidar lo ganado antes del colapso.',
+        caption: 'Elige cuánto imprimir: más alivio ahora = más salto de presión. O corta y estabiliza para guardar lo ganado antes del colapso.',
+      },
+      {
+        target: 'goal',
+        caption: 'Ojo: a mitad de partida caen shocks que mueven la presión sola. Lee el manómetro cada ronda y decide.',
       },
     ],
   },
